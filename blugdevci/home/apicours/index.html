@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours sur les API: Création et Utilisation</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --light-bg: #f5f7fa;
+            --dark-bg: #2c3e50;
+            --text-color: #333;
+            --light-text: #ecf0f1;
+            --code-bg: #f1f1f1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-bg);
+            padding: 0;
+        }
+        
+        header {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            padding: 2rem 0;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .course-nav {
+            background-color: var(--primary-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .course-nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            overflow-x: auto;
+        }
+        
+        .course-nav li {
+            padding: 1rem;
+            white-space: nowrap;
+        }
+        
+        .course-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .course-nav a:hover {
+            color: var(--light-bg);
+        }
+        
+        section {
+            padding: 3rem 0;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        h3 {
+            color: var(--secondary-color);
+            margin: 1.5rem 0 1rem;
+        }
+        
+        p {
+            margin-bottom: 1.2rem;
+        }
+        
+        .highlight {
+            background-color: #ffffcc;
+            padding: 0.2rem;
+        }
+        
+        .info-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .warning-box {
+            background-color: #fff3e0;
+            border-left: 4px solid #ff9800;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9rem;
+        }
+        
+        pre {
+            background-color: var(--code-bg);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        pre code {
+            background-color: transparent;
+            padding: 0;
+        }
+        
+        .step {
+            margin-bottom: 2rem;
+            padding-left: 1rem;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .step-number {
+            background-color: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+        
+        .resource-list {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+        
+        .resource-list li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .resource-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: left;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .image-placeholder {
+            background-color: #ddd;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+        
+        .flex-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .card {
+            flex: 1 1 300px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card h4 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        footer {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Cours Complet sur les API</h1>
+            <p class="subtitle">De la compréhension à la création et l'utilisation d'APIs</p>
+        </div>
+    </header>
+
+    <nav class="course-nav">
+        <div class="container">
+            <ul>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#concepts">Concepts de base</a></li>
+                <li><a href="#rest-api">API REST</a></li>
+                <li><a href="#creation">Création d'une API</a></li>
+                <li><a href="#utilisation">Utilisation d'API</a></li>
+                <li><a href="#projet">Projet pratique</a></li>
+                <li><a href="#ressources">Ressources</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section id="introduction">
+            <h2>Introduction aux API</h2>
+            <p>Bienvenue dans ce cours complet sur les API (Application Programming Interface) ! Que vous soyez débutant ou que vous souhaitiez approfondir vos connaissances, ce cours vous guidera pas à pas.</p>
+            
+            <div class="info-box">
+                <p><strong>Qu'est-ce qu'une API?</strong> Une API est essentiellement un ensemble de règles et de protocoles qui permettent à différentes applications de communiquer entre elles. C'est comme un serveur dans un restaurant qui prend votre commande, la transmet à la cuisine, puis vous rapporte votre plat.</p>
+            </div>
+            
+            <h3>Pourquoi les API sont-elles importantes?</h3>
+            <p>Les API sont devenues la colonne vertébrale du développement logiciel moderne pour plusieurs raisons :</p>
+            <ul>
+                <li>Elles permettent l'<strong>interopérabilité</strong> entre différents systèmes</li>
+                <li>Elles favorisent la <strong>modularité</strong> et la réutilisation du code</li>
+                <li>Elles accélèrent le <strong>développement</strong> en permettant d'intégrer des services existants</li>
+                <li>Elles permettent la <strong>séparation des préoccupations</strong> entre frontend et backend</li>
+            </ul>
+            
+            <div class="image-placeholder">
+                <p>Illustration du concept d'API</p>
+            </div>
+        </section>
+
+        <section id="concepts">
+            <h2>Concepts fondamentaux des API</h2>
+            
+            <h3>Les différents types d'API</h3>
+            <div class="flex-container">
+                <div class="card">
+                    <h4>API Web</h4>
+                    <p>Accessibles via HTTP/HTTPS, elles permettent la communication entre applications via internet.</p>
+                </div>
+                <div class="card">
+                    <h4>API de bibliothèque</h4>
+                    <p>Interfaces de programmation offertes par les bibliothèques de code.</p>
+                </div>
+                <div class="card">
+                    <h4>API de système d'exploitation</h4>
+                    <p>Permettent aux applications d'interagir avec le système d'exploitation.</p>
+                </div>
+            </div>
+            
+            <h3>Architectures d'API</h3>
+            <p>Plusieurs architectures existent pour concevoir et implémenter des API :</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Architecture</th>
+                            <th>Description</th>
+                            <th>Cas d'usage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>REST</td>
+                            <td>Architecture basée sur des ressources avec des opérations CRUD</td>
+                            <td>La majorité des API web publiques</td>
+                        </tr>
+                        <tr>
+                            <td>GraphQL</td>
+                            <td>Langage de requête permettant aux clients de demander précisément les données dont ils ont besoin</td>
+                            <td>Applications avec des besoins de données complexes</td>
+                        </tr>
+                        <tr>
+                            <td>SOAP</td>
+                            <td>Protocole standardisé utilisant XML, plus formel</td>
+                            <td>Entreprises, secteur bancaire, situations nécessitant une sécurité élevée</td>
+                        </tr>
+                        <tr>
+                            <td>gRPC</td>
+                            <td>Système RPC moderne utilisant HTTP/2 et Protocol Buffers</td>
+                            <td>Communication entre microservices, systèmes à faible latence</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Format des données</h3>
+            <p>Les API modernes utilisent principalement ces formats pour transférer des données :</p>
+            <ul>
+                <li><strong>JSON</strong> (JavaScript Object Notation) : Format léger, facile à lire et à analyser</li>
+                <li><strong>XML</strong> (eXtensible Markup Language) : Plus structuré mais plus verbeux</li>
+                <li><strong>Protocol Buffers</strong> : Format binaire, compact et efficace</li>
+            </ul>
+            
+            <div class="info-box">
+                <p>JSON est devenu le format standard pour la plupart des API web modernes en raison de sa simplicité et de sa compatibilité native avec JavaScript.</p>
+            </div>
+        </section>
+
+        <section id="rest-api">
+            <h2>Les API REST</h2>
+            
+            <p>REST (Representational State Transfer) est un style d'architecture pour la création d'API web. Il s'agit moins d'un standard strict que d'un ensemble de principes et de contraintes.</p>
+            
+            <h3>Les principes REST</h3>
+            <ol>
+                <li><strong>Architecture client-serveur</strong> : Séparation des responsabilités</li>
+                <li><strong>Sans état (Stateless)</strong> : Chaque requête contient toutes les informations nécessaires pour être comprise</li>
+                <li><strong>Mise en cache</strong> : Les réponses indiquent si elles sont cachables ou non</li>
+                <li><strong>Interface uniforme</strong> : Identification des ressources, manipulation par représentations, messages auto-descriptifs</li>
+                <li><strong>Système en couches</strong> : Le client ne sait pas s'il communique directement avec le serveur final</li>
+            </ol>
+            
+            <h3>Les méthodes HTTP</h3>
+            <p>Les API REST utilisent les méthodes HTTP pour indiquer l'action à effectuer sur une ressource :</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Méthode</th>
+                            <th>Action</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GET</td>
+                            <td>Lire</td>
+                            <td>Récupérer des données</td>
+                        </tr>
+                        <tr>
+                            <td>POST</td>
+                            <td>Créer</td>
+                            <td>Créer une nouvelle ressource</td>
+                        </tr>
+                        <tr>
+                            <td>PUT</td>
+                            <td>Mettre à jour</td>
+                            <td>Remplacer une ressource existante</td>
+                        </tr>
+                        <tr>
+                            <td>PATCH</td>
+                            <td>Modifier partiellement</td>
+                            <td>Mettre à jour partiellement une ressource</td>
+                        </tr>
+                        <tr>
+                            <td>DELETE</td>
+                            <td>Supprimer</td>
+                            <td>Supprimer une ressource</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <h3>Les codes de statut HTTP</h3>
+            <p>Les API REST utilisent des codes de statut HTTP pour indiquer le résultat d'une requête :</p>
+            <ul>
+                <li><strong>2xx</strong> : Succès (200 OK, 201 Created, 204 No Content)</li>
+                <li><strong>3xx</strong> : Redirection</li>
+                <li><strong>4xx</strong> : Erreur client (400 Bad Request, 401 Unauthorized, 404 Not Found)</li>
+                <li><strong>5xx</strong> : Erreur serveur (500 Internal Server Error)</li>
+            </ul>
+            
+            <pre><code>// Exemple de réponse JSON d'une API REST
+{
+    "id": 1,
+    "title": "Article de blog",
+    "content": "Contenu de l'article",
+    "author": {
+        "id": 42,
+        "name": "Jean Dupont"
+    },
+    "created_at": "2023-04-23T10:15:30Z"
+}</code></pre>
+        </section>
+
+        <section id="creation">
+            <h2>Création d'une API</h2>
+            
+            <p>Nous allons voir comment créer une API REST simple en utilisant Node.js et Express.js, l'un des frameworks les plus populaires pour développer des API en JavaScript.</p>
+            
+            <div class="warning-box">
+                <p><strong>Prérequis :</strong> Vous devez avoir Node.js installé sur votre machine. Si ce n'est pas le cas, téléchargez-le sur <a href="https://nodejs.org/" target="_blank">nodejs.org</a>.</p>
+            </div>
+            
+            <h3>Étape 1 : Configuration du projet</h3>
+            <div class="step">
+                <p><span class="step-number">1</span> Créez un nouveau dossier pour votre projet et accédez-y via le terminal :</p>
+                <pre><code>mkdir mon-api
+cd mon-api</code></pre>
+                
+                <p><span class="step-number">2</span> Initialisez un projet Node.js :</p>
+                <pre><code>npm init -y</code></pre>
+                
+                <p><span class="step-number">3</span> Installez les dépendances nécessaires :</p>
+                <pre><code>npm install express body-parser cors</code></pre>
+            </div>
+            
+            <h3>Étape 2 : Structure du projet</h3>
+            <p>Créez la structure de fichiers suivante :</p>
+            <pre><code>mon-api/
+  ├── node_modules/
+  ├── package.json
+  ├── package-lock.json
+  └── server.js</code></pre>
+            
+            <h3>Étape 3 : Création du serveur Express</h3>
+            <p>Créez le fichier <code>server.js</code> avec le contenu suivant :</p>
+            <pre><code>// Importation des dépendances
+const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
+// Initialisation de l'application Express
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Base de données simulée
+let users = [
+  { id: 1, name: 'Alice', email: 'alice@example.com' },
+  { id: 2, name: 'Bob', email: 'bob@example.com' }
+];
+
+// Routes
+// GET - Récupérer tous les utilisateurs
+app.get('/api/users', (req, res) => {
+  res.json(users);
+});
+
+// GET - Récupérer un utilisateur par ID
+app.get('/api/users/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const user = users.find(user => user.id === id);
+  
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404).json({ message: 'Utilisateur non trouvé' });
+  }
+});
+
+// POST - Créer un nouvel utilisateur
+app.post('/api/users', (req, res) => {
+  const { name, email } = req.body;
+  
+  if (!name || !email) {
+    return res.status(400).json({ message: 'Nom et email requis' });
+  }
+  
+  const newId = users.length > 0 ? Math.max(...users.map(user => user.id)) + 1 : 1;
+  const newUser = { id: newId, name, email };
+  
+  users.push(newUser);
+  res.status(201).json(newUser);
+});
+
+// PUT - Mettre à jour un utilisateur
+app.put('/api/users/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const { name, email } = req.body;
+  
+  if (!name || !email) {
+    return res.status(400).json({ message: 'Nom et email requis' });
+  }
+  
+  const userIndex = users.findIndex(user => user.id === id);
+  
+  if (userIndex !== -1) {
+    users[userIndex] = { id, name, email };
+    res.json(users[userIndex]);
+  } else {
+    res.status(404).json({ message: 'Utilisateur non trouvé' });
+  }
+});
+
+// DELETE - Supprimer un utilisateur
+app.delete('/api/users/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const userIndex = users.findIndex(user => user.id === id);
+  
+  if (userIndex !== -1) {
+    const deletedUser = users[userIndex];
+    users = users.filter(user => user.id !== id);
+    res.json(deletedUser);
+  } else {
+    res.status(404).json({ message: 'Utilisateur non trouvé' });
+  }
+});
+
+// Route racine
+app.get('/', (req, res) => {
+  res.send('Bienvenue sur l\'API RESTful de gestion d\'utilisateurs');
+});
+
+// Démarrage du serveur
+app.listen(PORT, () => {
+  console.log(`Serveur en cours d'exécution sur le port ${PORT}`);
+});</code></pre>
+            
+            <h3>Étape 4 : Exécution de l'API</h3>
+            <p>Lancez votre API avec la commande suivante :</p>
+            <pre><code>node server.js</code></pre>
+            <p>Votre API devrait maintenant être accessible à l'adresse <code>http://localhost:3000</code>.</p>
+            
+            <div class="info-box">
+                <p><strong>Félicitations !</strong> Vous venez de créer une API RESTful simple avec Node.js et Express. Cette API permet de gérer une liste d'utilisateurs avec les opérations CRUD (Create, Read, Update, Delete).</p>
+            </div>
+        </section>
+
+        <section id="utilisation">
+            <h2>Utilisation d'une API</h2>
+            
+            <p>Maintenant que nous avons créé une API, voyons comment l'utiliser depuis différents contextes.</p>
+            
+            <h3>Utilisation avec Fetch API (JavaScript)</h3>
+            <pre><code>// Récupérer tous les utilisateurs
+fetch('http://localhost:3000/api/users')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Erreur:', error));
+
+// Créer un nouvel utilisateur
+fetch('http://localhost:3000/api/users', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    name: 'Charlie',
+    email: 'charlie@example.com'
+  })
+})
+  .then(response => response.json())
+  .then(data => console.log('Utilisateur créé:', data))
+  .catch(error => console.error('Erreur:', error));</code></pre>
+            
+            <h3>Utilisation avec Axios</h3>
+            <p>Axios est une bibliothèque populaire pour effectuer des requêtes HTTP :</p>
+            <pre><code>// Installation avec npm
+// npm install axios
+
+// Utilisation
+const axios = require('axios');
+
+// Récupérer un utilisateur par ID
+axios.get('http://localhost:3000/api/users/1')
+  .then(response => {
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.error('Erreur:', error);
+  });
+
+// Mettre à jour un utilisateur
+axios.put('http://localhost:3000/api/users/2', {
+  name: 'Robert',
+  email: 'robert@example.com'
+})
+  .then(response => {
+    console.log('Utilisateur mis à jour:', response.data);
+  })
+  .catch(error => {
+    console.error('Erreur:', error);
+  });</code></pre>
+            
+            <h3>Utilisation avec Postman</h3>
+            <p>Postman est un outil puissant pour tester et documenter les API :</p>
+            <ol>
+                <li>Téléchargez et installez Postman depuis <a href="https://www.postman.com/downloads/" target="_blank">postman.com</a></li>
+                <li>Créez une nouvelle requête</li>
+                <li>Sélectionnez la méthode HTTP (GET, POST, PUT, DELETE)</li>
+                <li>Entrez l'URL de l'API (ex: http://localhost:3000/api/users)</li>
+                <li>Pour les méthodes POST ou PUT, ajoutez les données dans l'onglet "Body" en format JSON</li>
+                <li>Cliquez sur "Send" pour exécuter la requête</li>
+            </ol>
+            
+            <div class="image-placeholder">
+                <p>Capture d'écran de Postman</p>
+            </div>
+            
+            <h3>Authentication et sécurité</h3>
+            <p>La plupart des API publiques nécessitent une forme d'authentification. Voici les méthodes courantes :</p>
+            <ul>
+                <li><strong>API Key</strong> : Clé unique envoyée dans l'en-tête ou comme paramètre de requête</li>
+                <li><strong>OAuth</strong> : Protocole d'autorisation standard permettant un accès sécurisé</li>
+                <li><strong>JWT (JSON Web Tokens)</strong> : Jetons signés pour l'authentification et l'échange d'informations</li>
+                <li><strong>Basic Auth</strong> : Nom d'utilisateur et mot de passe encodés en Base64</li>
+            </ul>
+            
+            <div class="warning-box">
+                <p><strong>Attention :</strong> Ne stockez jamais les clés API ou les informations d'authentification directement dans votre code source, surtout si celui-ci est public. Utilisez des variables d'environnement ou des fichiers de configuration sécurisés.</p>
+            </div>
+        </section>
+
+        <section id="projet">
+            <h2>Projet pratique</h2>
+            
+            <p>Pour mettre en pratique ce que vous avez appris, voici un projet simple à réaliser : une API de gestion de tâches (todo list).</p>
+            
+            <h3>Cahier des charges</h3>
+            <p>Créez une API RESTful qui permet de :</p>
+            <ul>
+                <li>Créer une nouvelle tâche (titre, description, statut)</li>
+                <li>Récupérer toutes les tâches</li>
+                <li>Récupérer une tâche par son ID</li>
+                <li>Mettre à jour une tâche</li>
+                <li>Marquer une tâche comme terminée</li>
+                <li>Supprimer une tâche</li>
+            </ul>
+            
+            <h3>Structure suggérée</h3>
+            <pre><code>todo-api/
+  ├── node_modules/
+  ├── package.json
+  ├── package-lock.json
+  ├── server.js
+  ├── routes/
+  │    └── tasks.js
+  ├── controllers/
+  │    └── taskController.js
+  └── models/
+       └── Task.js</code></pre>
+            
+            <div class="info-box">
+                <p><strong>Conseil :</strong> Pour un projet plus avancé, vous pourriez ajouter une base de données comme MongoDB avec Mongoose, ou utiliser SQLite avec Sequelize.</p>
+            </div>
+        </section>
+
+        <section id="ressources">
+            <h2>Ressources et prochaines étapes</h2>
+            
+            <h3>Documentation et tutoriels</h3>
+            <ul class="resource-list">
+                <li><a href="https://expressjs.com/fr/" target="_blank">Documentation officielle d'Express.js</a></li>
+                <li><a href="https://developer.mozilla.org/fr/docs/Web/HTTP" target="_blank">MDN - HTTP</a></li>
+                <li><a href="https://restfulapi.net/" target="_blank">RESTful API Design</a></li>
+                <li><a href="https://swagger.io/resources/articles/best-practices-in-api-design/" target="_blank">Meilleures pratiques en conception d'API</a></li>
+            </ul>
+            
+            <h3>Outils utiles</h3>
+            <ul class="resource-list">
+                <li><a href="https://www.postman.com/" target="_blank">Postman</a> - Tests et documentation d'API</li>
+                <li><a href="https://insomnia.rest/" target="_blank">Insomnia</a> - Alternative à Postman</li>
+                <li><a href="https://swagger.io/tools/swagger-ui/" target="_blank">Swagger UI</a> - Documentation interactive d'API</li>
+                <li><a href="https://jsonplaceholder.typicode.com/" target="_blank">JSONPlaceholder</a> - API REST fictive pour tester</li>
+            </ul>
+            
+            <h3>Prochaines étapes</h3>
+            <p>Pour approfondir vos connaissances sur les API, vous pourriez explorer :</p>
+            <ul>
+                <li>L'authentification et l'autorisation (JWT, OAuth)</li>
+                <li>Les tests automatisés d'API (Mocha, Jest)</li>
+                <li>Les bases de données (MongoDB, PostgreSQL)</li>
+                <li>GraphQL comme alternative à REST</li>
+                <li>Les microservices et l'architecture orientée API</li>
+                <li>La documentation automatique d'API avec Swagger/OpenAPI</li>
+            </ul>
+        </section>
+    </div>

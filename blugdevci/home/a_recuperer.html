@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learnica - Plateforme d'Apprentissage Moderne</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Particles Background Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 255, 136, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            animation: logoGlow 3s ease-in-out infinite alternate;
+            text-decoration: none;
+        }
+
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 5px rgba(0, 255, 136, 0.3)); }
+            to { filter: drop-shadow(0 0 15px rgba(0, 255, 136, 0.6)); }
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 300% 300%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #000;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+            margin: 0 0.5rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 255, 136, 0.4);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: #00ff88;
+            border: 2px solid #00ff88;
+        }
+
+        .cta-secondary:hover {
+            background: #00ff88;
+            color: #000;
+        }
+
+        /* Sections */
+        .features, .articles, .download-section, .complements-section, .why-documentation-section {
+            padding: 5rem 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Feature Cards */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3);
+            border-color: rgba(0, 255, 136, 0.4);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .feature-card p {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        /* Articles Section */
+        .articles {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .article-card {
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3);
+            border-color: rgba(0, 255, 136, 0.4);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .article-content {
+            padding: 2rem;
+        }
+
+        .article-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .article-card p {
+            color: #b0b0b0;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .read-more {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #000;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .read-more:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        /* Why Documentation Section */
+        .why-documentation-section {
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0a0a0a 100%);
+        }
+
+        .why-doc-intro {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .why-doc-subtitle {
+            font-size: 1.3rem;
+            color: #b0b0b0;
+            font-style: italic;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .why-doc-benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .why-doc-benefit-card {
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .why-doc-benefit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .why-doc-benefit-card:hover::before {
+            left: 100%;
+        }
+
+        .why-doc-benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 255, 136, 0.3);
+            border-color: rgba(0, 255, 136, 0.4);
+        }
+
+        .why-doc-benefit-icon {
+            font-size: 2.5rem;
+            color: #00ff88;
+            margin-bottom: 1rem;
+        }
+
+        .why-doc-benefit-card h4 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .why-doc-benefit-card p {
+            color: #b0b0b0;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Download Section */
+        .download-section {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .download-card {
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .download-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+            border-radius: 20px 20px 0 0;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .download-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.4);
+            border-color: rgba(0, 255, 136, 0.4);
+        }
+
+        .imagedocument {
+            width: 100% !important;
+            height: 200px !important;
+            border-radius: 12px !important;
+            object-fit: cover;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .download-card:hover .imagedocument {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+            border-color: rgba(0, 255, 136, 0.6);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .card-description {
+            color: #b0b0b0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding: 15px 0;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .card-stats span {
+            font-size: 0.85rem;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .download-btn {
+            display: inline-block;
+            width: 100%;
+            padding: 15px 25px;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            color: #000;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-size: 1rem;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
+        }
+
+        /* Community Stats */
+        .community-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 255, 136, 0.3);
+            border-color: rgba(0, 255, 136, 0.4);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #b0b0b0;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(145deg, #1e1e1e, #0a0a0a);
+            padding: 3rem 0;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .footer-content p {
+            color: #b0b0b0;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: #b0b0b0;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #00ff88;
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .features-grid,
+            .articles-grid,
+            .download-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-button {
+                display: block;
+                margin: 0.5rem auto;
+                max-width: 300px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">🎓 Learnica</a>
+            <ul class="nav-links">
+                <li><a href="#home">Accueil</a></li>
+                <li><a href="#features">Fonctionnalités</a></li>
+                <li><a href="#articles">Articles</a></li>
+                <li><a href="#downloads">Téléchargements</a></li>
+                <li><a href="#about">À propos</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Boostez Vos Compétences IT</h1>
+            <p>Découvrez +500 documents gratuits, formations et une communauté de développeurs passionnés pour propulser votre carrière dans l'informatique.</p>
+            <div>
+                <a href="#downloads" class="cta-button">
+                    <i class="fas fa-rocket"></i> Commencer maintenant
+                </a>
+                <a href="#features" class="cta-button cta-secondary">
+                    <i class="fas fa-play"></i> Voir les formations
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Pourquoi Choisir Learnica ?</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Informatique</h3>
+                    <p>Passionné(e) de l'Informatique ? Cette plateforme est faite pour vous ! Découvrez des documents PDF gratuits sur tous les sujets tech.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Marketing Digital</h3>
+                    <p>Vous souhaitez gagner en compétence marketing digital ? Découvrez des documents PDF gratuits pour booster vos connaissances.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Documents Scolaires</h3>
+                    <p>Vous êtes élève ou étudiant ? Découvrez des documents PDF gratuits pour améliorer vos performances académiques.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Langues</h3>
+                    <p>+500 documents PDF en Anglais, Espagnol et Français pour apprendre à mieux s'exprimer et communiquer.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Community Stats -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Rejoignez Notre Communauté</h2>
+            <div class="community-stats">
+                <div class="stat-card fade-in">
+                    <span class="stat-number">5000+</span>
+                    <span class="stat-label">Membres Actifs</span>
+                </div>
+                <div class="stat-card fade-in">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Documents Gratuits</span>
+                </div>
+                <div class="stat-card fade-in">
+                    <span class="stat-number">12k+</span>
+                    <span class="stat-label">Téléchargements</span>
+                </div>
+                <div class="stat-card fade-in">
+                    <span class="stat-number">98%</span>
+                    <span class="stat-label">Satisfaction</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Articles Section -->
+    <section class="articles" id="articles">
+        <div class="container">
+            <h2 class="section-title">Derniers Articles & Tutoriels</h2>
+            <div class="articles-grid">
+                <article class="article-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=200&fit=crop" alt="CRUD PHP" class="article-image">
+                    <div class="article-content">
+                        <h3>Guide Complet : Créer un CRUD en PHP et MySQL</h3>
+                        <p>Apprenez à créer, lire, modifier et supprimer des données avec PHP et MySQL. Un tutoriel step-by-step pour débutants.</p>
+                        <a href="#" class="read-more">Lire l'article</a>
+                    </div>
+                </article>
+                <article class="article-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1593720213428-28a5b9e94613?w=400&h=200&fit=crop" alt="JavaScript" class="article-image">
+                    <div class="article-content">
+                        <h3>Les Nouveautés ES6 que tout développeur devrait connaître</h3>
+                        <p>Découvrez les fonctionnalités les plus importantes d'ES6 : arrow functions, destructuring, async/await et bien plus.</p>
+                        <a href="#" class="read-more">Lire l'article</a>
+                    </div>
+                </article>
+                <article class="article-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=400&h=200&fit=crop" alt="Mobile Dev" class="article-image">
+                    <div class="article-content">
+                        <h3>Développement Mobile : React Native vs Flutter</h3>
+                        <p>Comparaison complète entre React Native et Flutter pour choisir la meilleure technologie pour votre projet mobile.</p>
+                        <a href="#" class="read-more">Lire l'article</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Documentation Section -->
+    <section class="why-documentation-section">
+        <div class="container">
+            <h2 class="section-title">Pourquoi la Documentation est Cruciale ?</h2>
+            <div class="why-doc-intro">
+                <p class="why-doc-subtitle">
+                    "La documentation, c'est une lettre d'amour que vous écrivez à votre futur vous." - Damian Conway
+                </p>
+            </div>
+            <div class="why-doc-benefits-grid">
+                <div class="why-doc-benefit-card fade-in">
+                    <div class="why-doc-benefit-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h4>Accélère l'Apprentissage</h4>
+                    <p>Une bonne documentation vous fait gagner des heures de recherche et vous permet de comprendre rapidement les concepts.</p>
+                </div>
+                <div class="why-doc-benefit-card fade-in">
+                    <div class="why-doc-benefit-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>Facilite la Collaboration</h4>
+                    <p>Partagez vos connaissances avec votre équipe et permettez à tous de monter en compétences ensemble.</p>
+                </div>
+                <div class="why-doc-benefit-card fade-in">
+                    <div class="why-doc-benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Évite les Erreurs</h4>
+                    <p>Une documentation claire et à jour prévient les bugs et les incompréhensions qui coûtent cher.</p>
+                </div>
+                <div class="why-doc-benefit-card fade-in">
+                    <div class="why-doc-benefit-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>Booste la Productivité</h4>
+                    <p>Moins de temps perdu en questions répétitives, plus de temps pour créer et innover.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section class="download-section" id="downloads">
+        <div class="container">
+            <h2 class="section-title">Documents Gratuits Populaires</h2>
+            <div class="download-grid">
+                <div class="download-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=300&h=200&fit=crop" alt="Guide PHP" class="imagedocument">
+                    <h3 class="card-title">Guide Complet PHP pour Débutants</h3>
+                    <p class="card-description">Un guide détaillé pour apprendre PHP depuis les bases jusqu'aux concepts avancés avec des exemples pratiques.</p>
+                    <div class="card-stats">
+                        <span><i class="fas fa-download"></i> 2,450 téléchargements</span>
+                        <span><i class="fas fa-star"></i> 4.8/5</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Télécharger Gratuitement
+                    </a>
+                </div>
+
+                <div class="download-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=300&h=200&fit=crop" alt="JavaScript ES6" class="imagedocument">
+                    <h3 class="card-title">JavaScript ES6+ Cheat Sheet</h3>
+                    <p class="card-description">Toutes les nouveautés ES6, ES7, ES8 dans un seul document PDF avec des exemples de code pratiques.</p>
+                    <div class="card-stats">
+                        <span><i class="fas fa-download"></i> 3,120 téléchargements</span>
+                        <span><i class="fas fa-star"></i> 4.9/5</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Télécharger Gratuitement
+                    </a>
+                </div>
+
+                <div class="download-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?w=300&h=200&fit=crop" alt="React Guide" class="imagedocument">
+                    <h3 class="card-title">React.js - Guide Pratique</h3>
+                    <p class="card-description">Maîtrisez React.js avec ce guide pratique incluant hooks, context API, et les meilleures pratiques 2024.</p>
+                    <div class="card-stats">
+                        <span><i class="fas fa-download"></i> 1,890 téléchargements</span>
+                        <span><i class="fas fa-star"></i> 4.7/5</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Télécharger Gratuitement
+                    </a>
+                </div>
+
+                <div class="download-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=300&h=200&fit=crop" alt="Git Guide" class="imagedocument">
+                    <h3 class="card-title">Git & GitHub - Commandes Essentielles</h3>
+                    <p class="card-description">Toutes les commandes Git importantes avec des exemples concrets pour gérer vos projets efficacement.</p>
+                    <div class="card-stats">
+                        <span><i class="fas fa-download"></i> 2,780 téléchargements</span>
+                        <span><i class="fas fa-star"></i> 4.8/5</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Télécharger Gratuitement
+                    </a>
+                </div>
+
+                <div class="download-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=300&h=200&fit=crop" alt="CSS Grid" class="imagedocument">
+                    <h3 class="card-title">CSS Grid & Flexbox - Layouts Modernes</h3>
+                    <p class="card-description">Créez des layouts responsives parfaits avec CSS Grid et Flexbox. Guide visual avec exemples interactifs.</p>
+                    <div class="card-stats">
+                        <span><i class="fas fa-download"></i> 2,340 téléchargements</span>
+                        <span><i class="fas fa-star"></i> 4.9/5</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Télécharger Gratuitement
+                    </a>
+                </div>
+
+                <div class="download-card fade-in">
+                    <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=300&h=200&fit=crop" alt="API REST" class="imagedocument">
+                    <h3 class="card-title">APIs REST - Guide Complet</h3>
+                    <p class="card-description">Apprenez à créer et consommer des APIs REST avec les meilleures pratiques et standards de l'industrie.</p>
+                    <div class="card-stats">
+                        <span><i class="fas fa-download"></i> 1,650 téléchargements</span>
+                        <span><i class="fas fa-star"></i> 4.6/5</span>
+                    </div>
+                    <a href="#" class="download-btn">
+                        <i class="fas fa-download"></i> Télécharger Gratuitement
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 Learnica. Fait avec <span style="color: #00ff88;">❤️</span> en Côte d'Ivoire</p>
+            <p>Votre succès en informatique commence ici</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animations au scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observer tous les éléments avec la classe fade-in
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Animation des compteurs
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    element.textContent = target.toString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toString();
+                }
+            }, 20);
+        }
+
+        // Observer pour les compteurs
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const numberEl = entry.target.querySelector('.stat-number');
+                    const target = parseInt(numberEl.textContent);
+                    if (!numberEl.classList.contains('animated')) {
+                        numberEl.classList.add('animated');
+                        animateCounter(numberEl, target);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.stat-card').forEach(card => {
+            counterObserver.observe(card);
+        });
+
+        // Navigation fluide
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Effet de parallax léger
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero');
+            const speed = scrolled * 0.5;
+            parallax.style.transform = `translateY(${speed}px)`;
+        });
+    </script>
+</body>
+</html>

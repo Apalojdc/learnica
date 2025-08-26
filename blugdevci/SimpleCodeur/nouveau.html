@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlugDev - Blog de Développeur</title>
+  <link rel="stylesheet" href="Styles.css">
+</head>
+<body>
+  <header>
+    <div class="logo">⟨ BlugDev /⟩</div>
+    <nav class="nav">
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#accueil">Accueil</a></li>
+        <li><a href="#apropos">À propos</a></li>
+        <li><a href="#articles">Articles</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#apropos">À propos</a></li>
+        <li><a href="#articles">Articles</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="menu-toggle" id="menuToggle">☰</div>
+    </nav>
+  </header>
+
+  <section class="hero" id="accueil">
+    <h1>Bienvenue sur <span>BlugDev</span></h1>
+    <p>Le repère des développeurs passionnés et curieux. Boostez vos compétences ici !</p>
+    <a href="#articles" class="btn">Découvrir les articles</a>
+  </section>
+
+  <section class="about" id="apropos">
+    <h2>À propos de BlugDev</h2>
+    <p>BlugDev est un espace dédié aux développeurs, passionnés de tech et curieux du code. On y partage des astuces, des projets, des réflexions sur le métier et bien plus encore.</p>
+  </section>
+
+  <div class="articless" id="articless">
+    <h2>Derniers Articles</h2>
+    <div class="card-container">
+      <div class="card">
+        <h3>🚀 Apprendre Laravel pas à pas</h3>
+        <p>Un guide simple pour débuter avec Laravel.</p>
+        <a href="#">Lire l'article</a>
+      </div>
+      <div class="card">
+        <h3>🧠 Comprendre les API REST</h3>
+        <p>Les bases des API expliquées simplement.</p>
+        <a href="#">Lire l'article</a>
+      </div>
+      <div class="card">
+        <h3>🎨 Créer une interface responsive</h3>
+        <p>Design moderne et adapté à tous les écrans.</p>
+        <a href="#">Lire l'article</a>
+      </div>
+    </div>
+  </div>
+
+  <section class="articles">
+    <article class="blog-article"  data-aos="fade-right">
+        <img src="react1.png" alt="React">
+        <h2>Comprendre React en 2024</h2>
+        <p>Découvrez les nouveautés et les meilleures pratiques pour utiliser React dans vos projets modernes.</p>
+        <a href="React.php">Lire plus</a>
+    </article>
+    <article class="blog-article"  data-aos="fade-down">
+        <img src="27801979.webp" alt="React">
+        <h2>10 Astuces pour Optimiser vos API REST</h2>
+        <p>Un guide rapide pour améliorer la vitesse et la fiabilité de vos API.</p>
+        <a href="AstuceOptimisation.php">Lire plus</a>
+    </article>
+</section>
+ <!-- Presentation de front-end et autre -->
+<aside class="sidebar">
+    <div class="categories"  data-aos="fade-left">
+        <h3>Catégories Populaires</h3>
+        <ul>
+            <li><a href="frontEnd.php">Frontend</a></li>
+            <li><a href="BackEnd.php">Backend</a></li>
+            <li><a href="MachineLearning.php">Machine Learning</a></li>
+        </ul>
+    </div>
+    <div class="trending-tags">
+        <h3>Tags Tendances</h3>
+        <div class="tags">
+            <a href="#">#React</a>
+            <a href="#">#NodeJS</a>
+            <a href="#">#Docker</a>
+        </div>
+    </div>
+</aside>
+
+<div class="dashboard-grid">
+<!-- Activity Chart -->
+<div class="dashboard-card span-2">
+<div class="card-header" data-aos="zoom-out-up">
+    <h3>Activité de la semaine</h3>
+    <div class="card-actions">
+        <button class="btn-icon"><i data-lucide="download"></i></button>
+        <button class="btn-icon"><i data-lucide="more-vertical"></i></button>
+    </div>
+</div>
+<canvas id="activityChart"></canvas>
+</div>
+
+<!-- Recent Posts -->
+<div class="dashboard-card">
+<div class="card-header">
+    <h3>Posts Récents</h3>
+    <button class="view-all-btn">Voir tout</button>
+</div>
+<div class="recent-posts" data-aos="zoom-out-down">
+    <div class="post-item">
+        <div class="post-meta">
+            <h4>Debug React Performance</h4>
+            <span class="post-stats">
+                <i data-lucide="eye"></i> 1.2k vues
+            </span>
+        </div>
+        <span class="post-date">Il y a 2h</span>
+    </div>
+    <div class="post-item">
+        <div class="post-meta">
+            <h4>API REST avec Node.js</h4>
+            <span class="post-stats">
+                <i data-lucide="eye"></i> 856 vues
+            </span>
+        </div>
+        <span class="post-date">Il y a 5h</span>
+    </div>
+</div>
+</div>
+
+<!-- Technologies Trending -->
+<div class="dashboard-card"  data-aos="fade-down" data-aos-easing="linear" data-aos-duration="1500">
+<div class="card-header">
+    <h3 id="tech">Technologies Tendances</h3>
+</div>
+<div class="trending-tech">
+    <div class="tech-item">
+        <img src="react1.png" alt="React">
+        <span class="tech-name">React</span>
+        <span class="trend-up"><i data-lucide="trending-up"></i> 12%</span>
+    </div>
+    <div class="tech-item">
+        <img src="imagespython.jpeg" alt="Python">
+        <span class="tech-name">Python</span>
+        <span class="trend-up"><i data-lucide="trending-up"></i> 8%</span>
+    </div>
+    <div class="tech-item">
+        <img src="imagestype.jpeg" alt="TypeScript">
+        <span class="tech-name">TypeScript</span>
+        <span class="trend-up"><i data-lucide="trending-up"></i> 15%</span>
+    </div>
+</div>
+</div>
+</div>
+
+<!-- Community Section -->
+<section class="community-section">
+<div class="dashboard-card">
+<div class="card-header">
+    <h3>Questions Populaires</h3>
+    <button class="view-all-btn">Voir tout</button>
+</div>
+<div class="questions-list">
+    <div class="question-item">
+        <div class="question-votes">
+            <span class="votes">23</span>
+            <span class="votes-label">votes</span>
+        </div>
+        <div class="question-content">
+            <h4>Comment gérer l'état global dans React sans Redux?</h4>
+            <div class="question-meta">
+                <span class="tag">react</span>
+                <span class="tag">state-management</span>
+                <span class="responses">12 réponses</span>
+            </div>
+        </div>
+    </div>
+    <div class="question-item">
+        <div class="question-votes">
+            <span class="votes">18</span>
+            <span class="votes-label">votes</span>
+        </div>
+        <div class="question-content">
+            <h4>Meilleures pratiques pour le déploiement Docker</h4>
+            <div class="question-meta">
+                <span class="tag">docker</span>
+                <span class="tag">devops</span>
+                <span class="responses">8 réponses</span>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</section>
+</div>
+<div class="notifications-panel" id="notificationsPanel">
+<div class="panel-header">
+<h3>Notifications</h3>
+<button class="close-panel"><i data-lucide="x"></i></button>
+</div>
+<div class="notifications-list">
+<div class="notification-item unread">
+<div class="notification-icon"><i data-lucide="message-circle"></i></div>
+<div class="notification-content">
+    <p>Marie a commenté votre article sur React</p>
+    <span class="notification-time">Il y a 5 min</span>
+</div>
+</div>
+<div class="notification-item">
+<div class="notification-icon"><i data-lucide="heart"></i></div>
+<div class="notification-content">
+    <p>Votre article a reçu 50 likes!</p>
+    <span class="notification-time">Il y a 2h</span>
+</div>
+</div>
+
+</div>  
+</div>
+<div class="CoursAsuivre">
+<h1>Cours</h1>
+<ul>
+<li>Algorithme: <a href="CoursAlgo.php">Voir</a></li>
+<li>React: <a href="React.php">Voir</a></li>
+<li>Le model OSI: <a href="React.php">Voir le cours</a></li>
+</ul>
+</div>
+
+<div class="doc">
+    <h1 class="titleDoc">Documents present</h1>
+    <?php
+        $requete = $pdo->query('SELECT * FROM documentpdf');
+        $compte = 1;
+        while($data = $requete->fetch()){
+            echo '<section class="telechargement-section">
+                <div class="telechargement-box">'.
+            '<img src="'. $data['cheminimage'].'" alt="Image document" class="imagedocument">'.
+            '<p class= "contenutexte" >' . $compte++ . "- " . $data['NomPDF'] .'<br/>'.
+                    '<a href="'.$data['Contenue'].'">' . '      Télécharger ' . '</a> <br/> ' 
+                .'</p>'.
+            '</div>  </section>';
+
+            if($compte == 10){
+                echo '<div class="BoutonVoirPlus">' . 'Voir plus' .'</div>';
+                break;
+            }
+        }
+
+    ?>
+</div>
+<section class="telechargement-section">
+    <div class="telechargement-box">
+      <h2>Télécharger le Guide du Développeur</h2>
+      <p>Un guide complet pour booster tes compétences en développement. Gratuit et pratique !</p>
+      <a href="GuideDev.pdf" download class="btn-telecharger">📥 Télécharger maintenant</a>
+    </div>
+  </section>
+  
+  <footer id="contact">
+    <p>&copy; 2025 BlugDev. Tous droits réservés.</p>
+  </footer>
+
+</script>
+<script>
+    AOS.init();
+</script>
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+
+menuToggle.addEventListener("click", () => {
+  navLinks.classList.toggle("show");
+});
+
+  </script>
+</body>
+</html>

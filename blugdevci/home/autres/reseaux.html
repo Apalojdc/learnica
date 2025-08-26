@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modèle OSI – Les 7 couches</title>
+  <style>
+    /* --- Global Styles --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', 'Arial', sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fa;
+      color: #333;
+      font-size: 1rem;
+      transition: all 0.4s ease;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      color: white;
+      border-radius: 0 0 30px 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    header p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto;
+      opacity: 0.9;
+    }
+
+    /* --- Theme Button --- */
+    .theme-controls {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .theme-button {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    }
+
+    .theme-button:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    #light-theme {
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    #dark-theme {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+    }
+
+    #fun-theme {
+      background: linear-gradient(135deg, #ff9a8b 0%, #ff6a88 55%, #ff99ac 100%);
+      color: white;
+    }
+
+    /* --- Section explicative --- */
+    .osi-explanation {
+      margin: 40px auto;
+      padding: 35px;
+      border-radius: 15px;
+      max-width: 90%;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      background-color: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .osi-explanation h2 {
+      font-size: 2rem;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      font-weight: 600;
+      text-align: center;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .osi-explanation h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #6a11cb, #2575fc);
+      border-radius: 2px;
+    }
+
+    .osi-explanation p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #34495e;
+      margin-bottom: 25px;
+    }
+
+    .osi-explanation h3 {
+      font-size: 1.5rem;
+      color: #2980b9;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .osi-explanation ul {
+      list-style-type: none;
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    .osi-explanation li {
+      font-size: 1.1rem;
+      color: #546e7a;
+      margin-bottom: 15px;
+      line-height: 1.6;
+      position: relative;
+      padding-left: 25px;
+    }
+
+    .osi-explanation ul li::before {
+      content: "•";
+      color: #3498db;
+      font-size: 1.8rem;
+      position: absolute;
+      left: 0;
+      top: -5px;
+    }
+
+    .osi-explanation strong {
+      font-weight: 700;
+      color: #16a085;
+    }
+
+    /* --- OSI Layers --- */
+    .osi-container {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      margin: 40px auto;
+      max-width: 900px;
+    }
+
+    .osi-layer {
+      padding: 30px;
+      border-radius: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .osi-layer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 10px;
+      height: 100%;
+      background: linear-gradient(to bottom, #6a11cb, #2575fc);
+    }
+
+    .osi-layer h2 {
+      display: flex;
+      align-items: center;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: #2c3e50;
+    }
+
+    .osi-layer p {
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      padding-left: 10px;
+      border-left: 3px solid #e0e0e0;
+    }
+
+    .osi-layer span {
+      display: inline-block;
+      font-size: 0.95rem;
+      background-color: rgba(52, 152, 219, 0.1);
+      padding: 8px 15px;
+      border-radius: 30px;
+      color: #3498db;
+      font-weight: 500;
+      margin-top: 10px;
+    }
+
+    /* --- Light Theme (Default) --- */
+    .light {
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    .light .osi-explanation {
+      background-color: #fff;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    }
+
+    .light .osi-layer {
+      background-color: #fff;
+      border: 1px solid #eaeaea;
+    }
+
+    .light .osi-layer h2 {
+      color: #2c3e50;
+    }
+
+    .light .osi-layer p {
+      color: #546e7a;
+    }
+
+    /* --- Dark Theme --- */
+    .dark {
+      background-color: #1a1d21;
+      color: #ecf0f1;
+    }
+
+    .dark header {
+      background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+    }
+
+    .dark .osi-explanation {
+      background-color: #2c3440;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .dark .osi-explanation h2 {
+      color: #e0e0e0;
+    }
+
+    .dark .osi-explanation h2::after {
+      background: linear-gradient(90deg, #4b6cb7, #182848);
+    }
+
+    .dark .osi-explanation p, .dark .TextExplique {
+      color: #b3bac5;
+    }
+
+    .dark .osi-explanation h3 {
+      color: #64b5f6;
+    }
+
+    .dark .osi-explanation li {
+      color: #b0bec5;
+    }
+
+    .dark .osi-explanation strong {
+      color: #4db6ac;
+    }
+
+    .dark .osi-layer {
+      background-color: #2c3440;
+      border: 1px solid #3d4852;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .dark .osi-layer::before {
+      background: linear-gradient(to bottom, #4b6cb7, #182848);
+    }
+
+    .dark .osi-layer h2 {
+      color: #ecf0f1;
+    }
+
+    .dark .osi-layer p {
+      color: #b0bec5;
+      border-left: 3px solid #3d4852;
+    }
+
+    .dark .osi-layer span {
+      background-color: rgba(100, 181, 246, 0.1);
+      color: #64b5f6;
+    }
+
+    /* --- Fun Theme --- */
+    .fun {
+      background-color: #fff9c4;
+      color: #6a1b9a;
+    }
+
+    .fun header {
+      background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+    }
+
+    .fun .osi-explanation {
+      background-color: #fff;
+      box-shadow: 0 10px 25px rgba(255, 121, 165, 0.2);
+      border: 2px dashed #ff79a5;
+    }
+
+    .fun .osi-explanation h2 {
+      color: #e91e63;
+    }
+
+    .fun .osi-explanation h2::after {
+      background: linear-gradient(90deg, #ff758c, #ff7eb3);
+    }
+
+    .fun .osi-explanation p, .fun .TextExplique {
+      color: #7b1fa2;
+    }
+
+    .fun .osi-explanation h3 {
+      color: #f06292;
+    }
+
+    .fun .osi-explanation li {
+      color: #7b1fa2;
+    }
+
+    .fun .osi-explanation strong {
+      color: #ff4081;
+    }
+
+    .fun .osi-explanation ul li::before {
+      color: #ff4081;
+    }
+
+    .fun .osi-layer {
+      background-color: #fff;
+      border: 3px solid #ffccbc;
+      box-shadow: 0 8px 20px rgba(255, 153, 153, 0.2);
+    }
+
+    .fun .osi-layer::before {
+      background: linear-gradient(to bottom, #ff758c, #ff7eb3);
+    }
+
+    .fun .osi-layer h2 {
+      color: #d81b60;
+    }
+
+    .fun .osi-layer p {
+      color: #7b1fa2;
+      border-left: 3px solid #ffccbc;
+    }
+
+    .fun .osi-layer span {
+      background-color: rgba(255, 64, 129, 0.1);
+      color: #ff4081;
+    }
+
+    /* --- Icons for layers --- */
+    .layer-icon {
+      background-color: rgba(52, 152, 219, 0.1);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .fun .layer-icon {
+      background-color: rgba(255, 64, 129, 0.1);
+      box-shadow: 0 4px 10px rgba(255, 64, 129, 0.2);
+    }
+    
+    .dark .layer-icon {
+      background-color: rgba(100, 181, 246, 0.1);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* --- Footer --- */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      margin-top: 60px;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      color: white;
+      border-radius: 30px 30px 0 0;
+    }
+
+    .dark footer {
+      background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+    }
+
+    .fun footer {
+      background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+    }
+
+    footer p {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    /* --- Responsive Design --- */
+    @media (max-width: 768px) {
+      header {
+        padding: 30px 15px;
+      }
+      
+      header h1 {
+        font-size: 2rem;
+      }
+      
+      .osi-explanation {
+        padding: 25px;
+        max-width: 95%;
+      }
+      
+      .osi-layer {
+        padding: 20px;
+      }
+      
+      .theme-button {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+      }
+    }
+
+  </style>
+</head>
+<body class="light">
+  <div class="theme-controls">
+    <button id="light-theme" class="theme-button" title="Thème clair">☀️</button>
+    <button id="dark-theme" class="theme-button" title="Thème sombre">🌙</button>
+    <button id="fun-theme" class="theme-button" title="Thème fun">🎨</button>
+  </div>
+
+  <header>
+    <div class="container">
+      <h1>Modèle OSI : Les 7 Couches</h1>
+      <p>Une représentation claire et structurée du modèle OSI pour mieux comprendre le fonctionnement des réseaux informatiques.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="osi-explanation">
+      <h2>Qu'est-ce que le modèle OSI ?</h2>
+      <p class="TextExplique">
+        Le <strong>modèle OSI</strong> (Open Systems Interconnection) est un modèle conceptuel qui standardise la communication entre les systèmes informatiques. Il est divisé en 7 couches, chacune ayant une fonction spécifique pour permettre l'échange de données sur un réseau. Le but du modèle OSI est de simplifier la compréhension du fonctionnement des réseaux en offrant une référence structurée pour l'échange d'informations.
+      </p>
+    
+      <h3>Les 7 couches du modèle OSI :</h3>
+      <ul>
+        <li>Couche 1 : Physique</li>
+        <li>Couche 2 : Liaison de données</li>
+        <li>Couche 3 : Réseau</li>
+        <li>Couche 4 : Transport</li>
+        <li>Couche 5 : Session</li>
+        <li>Couche 6 : Présentation</li>
+        <li>Couche 7 : Application</li>
+      </ul>
+    
+      <h2>Différence entre le modèle OSI et TCP/IP</h2>
+      <p class="TextExplique">
+        Le <strong>modèle TCP/IP</strong> (Transmission Control Protocol / Internet Protocol) est un autre modèle de communication réseau largement utilisé dans l'Internet. Bien que les deux modèles aient des objectifs similaires, à savoir fournir une structure pour les communications réseau, ils diffèrent par leur conception et leur structure.
+      </p>
+    
+      <h3>Les principales différences :</h3>
+      <ul>
+        <li>
+          <strong>Le nombre de couches :</strong> 
+          Le modèle OSI est divisé en 7 couches, tandis que TCP/IP en utilise seulement 4 : 
+          <ul>
+            <li>Couche 1 : Accès au réseau</li>
+            <li>Couche 2 : Internet</li>
+            <li>Couche 3 : Transport</li>
+            <li>Couche 4 : Application</li>
+          </ul>
+        </li>
+        <li>
+          <strong>Abstraction :</strong> 
+          Le modèle OSI est plus abstrait et théorique, tandis que TCP/IP est un modèle plus pragmatique, basé sur des protocoles réels utilisés dans le réseau.
+        </li>
+        <li>
+          <strong>Flexibilité :</strong>
+          Le modèle TCP/IP est plus flexible et plus simple pour implémenter des réseaux de grande échelle (comme Internet), tandis que le modèle OSI est plus détaillé et précis, utilisé principalement pour la conception théorique des réseaux.
+        </li>
+        <li>
+          <strong>Adoption :</strong>
+          Le modèle TCP/IP est largement adopté dans la pratique, en particulier pour Internet, alors que le modèle OSI est principalement utilisé à des fins pédagogiques et théoriques.
+        </li>
+      </ul>
+    </section>
+
+    <div class="osi-container">
+      <section class="osi-layer">
+        <h2><div class="layer-icon">7️⃣</div> Couche Application</h2>
+        <p>Interface directe entre l'utilisateur et le réseau (navigateur, mail, etc.).</p>
+        <span>Exemples : HTTP, FTP, SMTP, DNS</span>
+      </section>
+
+      <section class="osi-layer">
+        <h2><div class="layer-icon">6️⃣</div> Couche Présentation</h2>
+        <p>Traduit, crypte ou compresse les données pour les rendre compatibles entre systèmes.</p>
+        <span>Exemples : SSL/TLS, JPEG, MP4, UTF-8</span>
+      </section>
+
+      <section class="osi-layer">
+        <h2><div class="layer-icon">5️⃣</div> Couche Session</h2>
+        <p>Gère les sessions de communication, leur ouverture et leur fermeture.</p>
+        <span>Exemples : NetBIOS, RPC, SQL</span>
+      </section>
+
+      <section class="osi-layer">
+        <h2><div class="layer-icon">4️⃣</div> Couche Transport</h2>
+        <p>Assure le transport fiable des données avec gestion des erreurs et du flux.</p>
+        <span>Exemples : TCP, UDP</span>
+      </section>
+
+      <section class="osi-layer">
+        <h2><div class="layer-icon">3️⃣</div> Couche Réseau</h2>
+        <p>Fait le routage des paquets d'un réseau à un autre via les adresses IP.</p>
+        <span>Exemples : IP, ICMP</span>
+      </section>
+
+      <section class="osi-layer">
+        <h2><div class="layer-icon">2️⃣</div> Couche Liaison de données</h2>
+        <p>Assure la transmission correcte entre deux machines reliées physiquement.</p>
+        <span>Exemples : Ethernet, Wi-Fi, PPP</span>
+      </section>
+
+      <section class="osi-layer">
+        <h2><div class="layer-icon">1️⃣</div> Couche Physique</h2>
+        <p>Transmet les bits sous forme de signaux électriques ou optiques.</p>
+        <span>Exemples : Câbles, signaux, fibre optique</span>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>By Simple Coder 💻 | Projet OSI en HTML & CSS | 2025</p>
+    </div>
+  </footer>
+
+  <script>
+    // Theme switcher
+    document.getElementById("light-theme").addEventListener("click", function() {
+      document.body.className = "light";
+    });
+    
+    document.getElementById("dark-theme").addEventListener("click", function() {
+      document.body.className = "dark";
+    });
+    
+    document.getElementById("fun-theme").addEventListener("click", function() {
+      document.body.className = "fun";
+    });
+  </script>
+</body>
+</html>

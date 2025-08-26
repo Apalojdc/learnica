@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merci pour votre achat - Formation PHP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Effets de brillance verte */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Particules brillantes */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: sparkle 3s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .sparkle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: 60%; left: 80%; animation-delay: 1s; }
+        .sparkle:nth-child(3) { top: 80%; left: 20%; animation-delay: 2s; }
+        .sparkle:nth-child(4) { top: 30%; left: 70%; animation-delay: 0.5s; }
+        .sparkle:nth-child(5) { top: 70%; left: 50%; animation-delay: 1.5s; }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ffffff, #00ff88, #ffffff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #cccccc;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 40px;
+            background: linear-gradient(135deg, #00ff88, #00cc66);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #000;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(0, 255, 136, 0.5); }
+            50% { transform: scale(1.05); box-shadow: 0 0 60px rgba(0, 255, 136, 0.8); }
+        }
+
+        .message {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px 0;
+            backdrop-filter: blur(10px);
+            animation: slideUp 1s ease-out 0.8s both;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message h2 {
+            color: #00ff88;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .message p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .contact-section {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            animation: slideUp 1s ease-out 1.2s both;
+        }
+
+        .contact-title {
+            color: #00ff88;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(0, 255, 136, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .contact-item svg {
+            width: 24px;
+            height: 24px;
+            fill: #00ff88;
+            margin-right: 15px;
+        }
+
+        .contact-item a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            color: #00ff88;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            animation: fadeIn 1s ease-out 1.5s both;
+        }
+
+        .footer p {
+            color: #888888;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .message {
+                padding: 25px;
+            }
+            
+            .contact-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .contact-item svg {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">💻 InnovaCode</div>
+            <h1 class="title">Félicitations !</h1>
+            <p class="subtitle">Votre formation PHP vous attend</p>
+        </div>
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <div class="message">
+            <h2>Merci pour votre confiance !</h2>
+            <p>Vous venez d'acquérir un package de formation PHP complet qui va transformer votre parcours de développeur.</p>
+            <p><strong>Ce que vous allez découvrir :</strong></p>
+            <p>• Un cours d'introduction complet avec exercices pratiques</p>
+            <p>• Un projet e-commerce complet de A à Z</p>
+            <p>• Packadge XAMPP</p>
+            <p>• Toutes les ressources nécessaires pour maîtriser PHP</p>
+            <p><strong>Votre aventure dans le développement web commence maintenant !</strong></p>
+        </div>
+
+        <div class="contact-section">
+            <h3 class="contact-title">Restons en contact</h3>
+            
+            <div class="contact-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.99-.623-.148-.623-.148s-.729-.624-.729-1a10.29 10.29 0 0 1 .146-1.64c.114-.496.238-.964.43-1.37C15.646 8.312 16.795 8 17.352 8c.557 0 1.706.312 2.686 1.257.192.406.316.874.43 1.37.113.498.145 1.078.145 1.64 0 1.376-.729 1-.729 1s-.35.851-.623.148c-.272.1-1.733.818-2.03.967-.297.149-.623.594-.623.594s-.326-.445-.623-.594z"/>
+                    <path d="M12.001 2C6.477 2 2.001 6.477 2.001 12c0 1.89.525 3.66 1.438 5.168L2.001 22l4.832-1.438A9.96 9.96 0 0 0 12.001 22c5.524 0 9.999-4.477 9.999-10S17.525 2 12.001 2z"/>
+                </svg>
+                <a href="https://wa.me/2250506938224">WhatsApp: +225 05 06 93 82 24</a>
+            </div>
+
+            <div class="contact-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                </svg>
+                <a href="mailto:simplecoeur5@gmail.com">simplecoeur5@gmail.com</a>
+            </div>
+
+            <div class="contact-item">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.5 6L12 10.5 8.5 8 12 5.5 15.5 8zM8.5 16L12 13.5 15.5 16 12 18.5 8.5 16z"/>
+                </svg>
+                <a href="https://simplecodeurdevblug-ci.wuaze.com/simplecodeur" target="_blank">Voir mon portfolio</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 InnovaCode - Développement Web • Mobile • Design Graphique</p>
+            <p>Merci de faire partie de notre communauté de développeurs !</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canva Pro Gratuit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #080808 0%, #0e015c 50%, #000000 100%);
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 25px;
+            padding: 25px;
+            overflow-x: hidden;
+        }
+
+        /* Animation d'arrière-plan */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 80%, #ff1744 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, #00e676 0%, transparent 50%),
+                        radial-gradient(circle at 40% 40%, #ff9100 0%, transparent 50%);
+            opacity: 0.1;
+            animation: float 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        aside {
+            background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            height: fit-content;
+            position: sticky;
+            top: 25px;
+            border: 3px solid #ff6b35;
+        }
+
+        aside h1 {
+            color: #ffd23f;
+            font-size: 28px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-links {
+            list-style: none;
+        }
+
+        .nav-link {
+            margin-bottom: 15px;
+            transform: translateX(0);
+            transition: all 0.3s ease;
+        }
+
+        
+        .nav-link:hover {
+            transform: translateX(10px) scale(1.05);
+        }
+
+        .nav-link a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #ff1744, #ff6b35);
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 16px rgba(255, 23, 68, 0.3);
+        }
+
+        .nav-link a:hover {
+            background: linear-gradient(135deg, #00e676, #4caf50);
+            box-shadow: 0 12px 24px rgba(0, 230, 118, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            border-radius: 50%;
+            background: #ffd23f;
+        }
+
+        main {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 25px;
+            padding: 50px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .canvapro-image {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .canvapro-image img {
+            max-width: 400px;
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .canvapro-image img:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .canvapro-decouverte h1 {
+            font-size: 48px;
+            background: linear-gradient(135deg, #ff1744, #ff6b35, #ffd23f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 30px;
+            animation: textGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes textGlow {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(255, 23, 68, 0.5)); }
+            50% { filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.8)); }
+        }
+
+        .canvapro-decouverte > p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: #333;
+            text-align: justify;
+        }
+
+        .decouverte-gratuit-contenu h2 {
+            color: #ff1744;
+            font-size: 32px;
+            margin: 40px 0 20px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .decouverte-gratuit-contenu > p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .decouverte-gratuit-contenu ul {
+            margin-left: 30px;
+            margin-bottom: 30px;
+        }
+
+        .decouverte-gratuit-contenu ul li {
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #444;
+        }
+
+        .decouverte-gratuit-contenu ul li h1 {
+            color: #00e676;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .methode2 {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: white;
+            padding: 45px;
+            border-radius: 25px;
+            margin-top: 50px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 3px solid #00e676;
+        }
+
+        .methode2 h1 {
+            color: #00e676;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .methode2 h3 {
+            color: #ffd23f;
+            font-size: 20px;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .methode2 > p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #ddd;
+        }
+
+        .etape-itemes {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+        }
+
+        .etape-iteme {
+            counter-increment: step-counter;
+            margin-bottom: 35px;
+            padding: 25px 25px 25px 35px;
+            background: linear-gradient(135deg, #ff6b35, #ff9100);
+            border-radius: 15px;
+            position: relative;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .etape-iteme:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .etape-iteme::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: #00e676;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 230, 118, 0.4);
+        }
+
+        .etape-iteme + p {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            color: #f0f0f0;
+            font-weight: normal;
+            font-style: italic;
+            font-size: 16px;
+            line-height: 1.6;
+            border-left: 4px solid #ffd23f;
+        }
+
+        .image-navigateur-chrome,
+        .imagerecherche,
+        .image-download,
+        .image-alex-xander {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .image-navigateur-chrome img,
+        .imagerecherche img,
+        .image-download img,
+        .image-alex-xander img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .image-navigateur-chrome img:hover,
+        .imagerecherche img:hover,
+        .image-download img:hover,
+        .image-alex-xander img:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        a {
+            color: #ff1744;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        a:hover {
+            color: #000000;
+            text-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
+        }
+
+        a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #ff1744, #00e676);
+            transition: width 0.3s ease;
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        .etapes p:not(.image-navigateur-chrome):not(.imagerecherche):not(.image-download):not(.image-alex-xander) {
+            color: #f0f0f0 !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            padding: 18px !important;
+            border-radius: 12px !important;
+            margin: 18px 0 !important;
+            font-size: 16px !important;
+            line-height: 1.6 !important;
+            border-left: 4px solid #ffd23f !important;
+        }
+
+        strong {
+           color: #000;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(8, 97, 156, 0.5);
+            font-size: 1.2rem;
+        }
+
+        /* Fix pour les liens dans la section méthode2 */
+        .methode2 a {
+            color: #ffd23f !important;
+            font-weight: bold;
+        }
+
+        .methode2 a:hover {
+            color: #00e676 !important;
+            text-shadow: 0 0 10px rgba(0, 230, 118, 0.8);
+        }
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                padding: 10px;
+            }
+            
+            aside {
+                position: relative;
+                top: 0;
+            }
+            
+            .canvapro-decouverte h1 {
+                font-size: 36px;
+            }
+            
+            main {
+                padding: 20px;
+            }
+            
+            .methode2 {
+                padding: 20px;
+            }
+            
+            .etape-iteme::before {
+                left: -10px;
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+            }
+        }
+
+        /* Animations d'entrée */
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        aside {
+            animation: slideInLeft 1s ease;
+        }
+
+        main {
+            animation: slideInRight 1s ease;
+        }
+    </style>
+</head>
+<body>
+    <aside>
+        <h1>Questions populaires</h1>
+        <div class="questions-faq">
+            <ul class="nav-links">
+                <li class="nav-link">
+                    <a href="https://www.canva.com/fr_fr/faq/">
+                        <span class="icon icon-faq"></span>
+                        <span class="text">Comment créer un compte Canva ?</span>
+                    </a>
+                </li>
+                <li class="nav-link">
+                    <a href="https://www.canva.com/fr_fr/faq/">
+                        <span class="icon icon-questions"></span>
+                        <span class="text">Comment créer un design pro avec CANVA ?</span>
+                    </a>
+                </li>
+                <li class="nav-link">
+                    <a href="https://www.canva.com/fr_fr/faq/">
+                        <span class="icon icon-questions"></span>
+                        <span class="text">Comment générer des designs avec l'IA de CANVA ?</span>
+                    </a>
+                </li>
+                <li class="nav-link">
+                    <a href="https://www.canva.com/fr_fr/faq/">
+                        <span class="icon icon-questions"></span>
+                        <span class="text">Est-ce que Canva est gratuit ?</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </aside>
+    <main>
+        <div class="canvapro-image">
+            <img src="https://5.imimg.com/data5/SELLER/Default/2025/1/483342275/ZM/IJ/RO/233734855/canva-pro-lifetime-access-selar-co-65b6705f9cd19-jpeg-500x500.jpeg" alt="">
+        </div>
+        <div class="canvapro-decouverte">
+            <h1>Canva Pro Gratuit</h1>
+            <p>Canva Pro est un outil de conception graphique en ligne qui offre une multitude de fonctionnalités avancées pour les utilisateurs professionnels. Il permet de créer des designs de haute qualité pour les réseaux sociaux, les présentations, les affiches et bien plus encore.</p>
+            <p>Pour bénéficier de Canva Pro gratuitement, vous pouvez profiter d'une période d'essai gratuite ou vérifier si vous êtes éligible à des offres spéciales ou des promotions.</p>
+            <p>Pour plus d'informations, visitez le site officiel de Canva.</p>
+            <div class="decouverte-gratuit-contenu">
+                <h2>Comment obtenir Canva Pro gratuitement ?</h2>
+                <p>Il existe plusieurs façons d'accéder à Canva Pro sans frais :</p>
+                <ul>
+                    <li><h1>Méthode1: Utiliser un compte éducatif</h1></li>
+                    <li>Profitez de l'essai gratuit de 30 jours proposé par Canva.</li>
+                    <li>Recherchez des promotions ou des offres spéciales sur le site officiel.</li>
+                    <li>Vérifiez si votre établissement scolaire ou votre entreprise propose un accès gratuit à Canva Pro.</li>
+                </ul>
+                <div class="methode2">
+                    <h1>Méthode2: Utiliser des liens pour joindre des groupes</h1>
+                    <h3>En fait, c'est cette méthode que je préfère. Elle est simple et facile à mettre en œuvre.</h3>
+                    <p>Pour rejoindre des groupes qui offrent Canva Pro gratuitement, vous pouvez suivre ces étapes :</p>
+                    <div class="etapes">
+                        <ol class="etape-itemes">
+                            <li class="etape-iteme">Assurez vous d'avoir un compte Canva</li>
+                            <p>Si vous n'avez pas de compte Canva, vous pouvez en créer un gratuitement sur le site officiel en cliquant <span><a href="https://www.canva.com/fr_fr/">ici</a></span> pour vous créer un compte canva gratuitement.</p>
+                            <li class="etape-iteme">Vous allez vous rendre sur votre navigateur préféré</li>
+                            <p class="image-navigateur-chrome">
+                                <img src="https://www.google.com/chrome/static/images/chrome-logo.svg" alt="">
+                            </p>
+                            <p>Assurez vous d'avoir une connexion internet, choisissez un navigateur tel que: Google Chrome, Mozilla Firefox, ou Safari.</p>
+                            <li class="etape-iteme">Vous allez rechercher un outil appelé <strong>BingoTingo conva</strong></li>
+                            <li class="etape-iteme">Ensuite, cliquez sur le prémier lien qui s'affiche. Vous allez être redirigé vers le site de BingoTingo.</li>
+                            <p class="imagerecherche">
+                                <img src="https://www.bingotingo.com/images/logo.png" alt="">
+                            </p>
+                            <li class="etape-iteme">Ensuite, Scrollez jusqu'à la section <strong>Comment devenir célèbre sur Reddit.</strong></li>
+                            <li class="etape-iteme">Cliquez sur le bouton télécharger en bas en orange.</li>
+                            <p class="image-download">
+                                <img src="https://www.bingotingo.com/images/download.png" alt="">
+                            </p>
+                            <li class="etape-iteme">Vous allez être redirigé vers une page appelée <strong>Alex Xander</strong>.</li>
+                            <p class="image-alex-xander">
+                                <img src="https://www.bingotingo.com/images/alex-xander.png" alt="">
+                            </p>
+                            <li class="etape-iteme">Enfin, terminez en cliquant sur le bouton animé <strong>Venez ici</strong>.</li>
+                            <p> Vous serez redirigé vers votre compte Canva que vous avez créé ou auquel vous vous êtes connecté avant de débuter.</p>
+                            <p>Profitez de votre accès gratuit à Canva Pro pendant tout un mois!</p>
+                            <p>Si vous rencontrez des problèmes, n'hésitez pas à consulter la section d'aide de Canva. en cliquant <span><a href="https://www.canva.com/fr_fr/">contacter le service</a></span>.</p>
+                            <p>Bonne création! Et invitez vos amis à profiter de cette offre en faisant un tour sur notre <span><a href="https://www.bingotingo.com/">site</a></span>!</p>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+</body>
+</html>

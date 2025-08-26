@@ -1,0 +1,2888 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learnica - Plateforme d'apprentissage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+     /* ==========================================================================
+   CSS VARIABLES ET BASE
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    /* Gradients */
+    --primary-gradient: linear-gradient(135deg, #01041180 0%, #04c8e280 100%);
+    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --accent-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --success-gradient: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    --warning-gradient: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    --danger-gradient: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    
+    /* Colors */
+    --dark-bg: #0f0f23;
+    --dark-secondary: #1a1a35;
+    --dark-tertiary: #252547;
+    --dark-card: #2a2a4a;
+    
+    --text-primary: #ffffff;
+    --text-secondary: #e2e8f0;
+    --text-muted: #94a3b8;
+    --text-accent: #667eea;
+    
+    --border-primary: rgba(255, 255, 255, 0.1);
+    --border-secondary: rgba(255, 255, 255, 0.05);
+    --surface-primary: rgba(255, 255, 255, 0.05);
+    --surface-secondary: rgba(255, 255, 255, 0.02);
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.2);
+    --shadow-xl: 0 15px 35px rgba(0, 0, 0, 0.25);
+    
+    /* Border Radius */
+    --border-radius: 16px;
+    --border-radius-sm: 8px;
+    --border-radius-lg: 24px;
+    
+    /* Transitions */
+    --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Layout */
+    --sidebar-width: 320px;
+    --sidebar-collapsed-width: 80px;
+    --container-max-width: 1200px;
+    --grid-gap: clamp(1rem, 3vw, 2rem);
+}
+
+/* ==========================================================================
+   RESET ET BASE
+   ========================================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--dark-bg);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--dark-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-gradient);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gradient);
+}
+
+/* ==========================================================================
+   CLASSES UTILITAIRES
+   ========================================================================== */
+
+.container {
+    width: min(100% - 2rem, var(--container-max-width));
+    margin-inline: auto;
+}
+
+.hover-lift {
+    transition: all var(--transition-normal);
+}
+
+.hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--text-accent);
+}
+
+.text-gradient {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.grid-responsive {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: var(--grid-gap);
+}
+
+.grid-3-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--grid-gap);
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.btn-primary:hover {
+    background: var(--accent-gradient);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 2px solid var(--border-primary);
+    padding: 1rem 2rem;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    background: var(--surface-primary);
+    color: var(--text-accent);
+    border-color: var(--text-accent);
+}
+
+/* ==========================================================================
+   LAYOUT PRINCIPAL
+   ========================================================================== */
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--dark-secondary);
+    position: fixed;
+    height: 100vh;
+    z-index: 1000;
+    overflow-y: auto;
+    transition: all var(--transition-normal);
+    border-right: 1px solid var(--border-primary);
+    backdrop-filter: blur(20px);
+}
+
+.sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+}
+
+.sidebar-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--border-primary);
+    position: relative;
+}
+
+.sidebar-toggle {
+    position: absolute;
+    top: 24px;
+    right: 5px;
+    width: 36px;
+    height: 36px;
+    background: var(--surface-primary);
+    border: 1px solid var(--border-primary);
+    border-radius: var(--border-radius-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-normal);
+    z-index: 1001;
+}
+
+.sidebar-toggle:hover {
+    background: var(--surface-secondary);
+    color: var(--text-accent);
+    transform: scale(1.05);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    transition: all var(--transition-normal);
+}
+
+.logo-icon {
+    width: 48px;
+    height: 48px;
+    background: green;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-normal);
+}
+
+.logo-text {
+    background: white;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    white-space: nowrap;
+    transition: all var(--transition-normal);
+}
+
+.sidebar.collapsed .logo-text {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+/* Admin Info */
+.admin-info {
+    margin-top: 24px;
+    padding: 20px;
+    background: var(--surface-primary);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-primary);
+    transition: all var(--transition-normal);
+}
+
+.sidebar.collapsed .admin-info {
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.admin-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
+}
+
+/* Navigation */
+.sidebar-nav {
+    padding: 24px 0;
+}
+
+.nav-section {
+    margin-bottom: 32px;
+}
+
+.nav-section-title {
+    padding: 0 24px 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all var(--transition-normal);
+}
+
+.sidebar.collapsed .nav-section-title {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.nav-item {
+    margin: 4px 16px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 16px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-link:hover {
+    background: var(--surface-primary);
+    color: var(--text-primary);
+    transform: translateX(8px);
+}
+
+.nav-link.active {
+    background: rgba(102, 126, 234, 0.1);
+    color: var(--text-accent);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.nav-icon {
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+    transition: all var(--transition-normal);
+}
+
+.nav-text {
+    font-weight: 500;
+    white-space: nowrap;
+    transition: all var(--transition-normal);
+}
+
+.sidebar.collapsed .nav-text {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+/* Mobile Menu */
+.mobile-menu-btn {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 2001;
+    width: 44px;
+    height: 44px;
+    background: var(--primary-gradient);
+    border: none;
+    border-radius: var(--border-radius);
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-lg);
+    transition: all var(--transition-normal);
+}
+
+.mobile-menu-btn:hover {
+    transform: scale(1.05);
+}
+
+.mobile-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+}
+
+.mobile-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ==========================================================================
+   MAIN CONTENT
+   ========================================================================== */
+
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    transition: margin-left var(--transition-normal);
+    min-height: 100vh;
+    background: var(--dark-bg);
+}
+
+.sidebar.collapsed + .main-content {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+/* Header */
+.dashboard-header {
+    background: var(--dark-secondary);
+    padding: 24px 32px;
+    border-bottom: 1px solid var(--border-primary);
+    backdrop-filter: blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+}
+
+.header-left h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+}
+
+.content-wrapper {
+    padding: 32px;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   SECTIONS COMMUNES
+   ========================================================================== */
+
+.section-container {
+    width: 100%;
+    margin-bottom: 4rem;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.section-subtitle {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   CARDS COMMUNES
+   ========================================================================== */
+
+.card-base {
+    background: var(--dark-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-primary);
+    transition: all var(--transition-normal);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1.5rem;
+    background: var(--surface-primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.card-content {
+    padding: 1.5rem;
+}
+
+.card-footer {
+    padding: 1rem 1.5rem;
+    background: var(--surface-primary);
+    border-top: 1px solid var(--border-primary);
+}
+
+/* ==========================================================================
+   FILTRES
+   ========================================================================== */
+
+.filters-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 2rem 0;
+}
+
+.filter-button {
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--border-primary);
+    background: var(--surface-primary);
+    color: var(--text-secondary);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    font-weight: 500;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.filter-button:hover,
+.filter-button.active {
+    color: white;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    background: var(--accent-gradient);
+}
+
+/* ==========================================================================
+   BLOG SECTION
+   ========================================================================== */
+
+.blog-section {
+    background: var(--dark-bg);
+    padding: 5rem 0;
+}
+
+.blog-system-container {
+    font-family: 'Inter', sans-serif;
+    background: var(--dark-bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.blog-system-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.blog-system-card {
+    background: var(--dark-secondary);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    border: 1px solid var(--border-primary);
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-md);
+}
+
+.blog-system-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--text-accent);
+    box-shadow: var(--shadow-xl);
+}
+
+.blog-system-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.blog-system-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-normal);
+}
+
+.blog-system-card:hover .blog-system-img {
+    transform: scale(1.05);
+}
+
+.blog-system-badges {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.blog-system-badge {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    border: 1px solid var(--border-primary);
+}
+
+.blog-system-badge-featured {
+    background: var(--warning-gradient);
+    color: #1e293b;
+    border-color: transparent;
+}
+
+.blog-system-content {
+    padding: 1.5rem;
+}
+
+.blog-system-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+}
+
+.blog-system-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+.blog-system-excerpt {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.blog-system-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.blog-system-author {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.blog-system-author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+}
+
+.blog-system-read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all var(--transition-normal);
+}
+
+.blog-system-read-more:hover {
+    color: var(--text-primary);
+    transform: translateX(5px);
+}
+
+/* ==========================================================================
+   DOCUMENTS SECTION
+   ========================================================================== */
+
+.documents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.document-card {
+    background: var(--dark-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-primary);
+    transition: all var(--transition-normal);
+    overflow: hidden;
+}
+
+.document-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--text-accent);
+}
+
+.document-header {
+    padding: 1.5rem;
+    background: var(--surface-primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.document-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.document-icon.pdf { background: var(--danger-gradient); }
+.document-icon.doc { background: var(--accent-gradient); }
+.document-icon.form { background: var(--success-gradient); }
+.document-icon.certificate { background: var(--warning-gradient); }
+
+.document-content {
+    padding: 1.5rem;
+}
+
+.document-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.document-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.document-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+/* ==========================================================================
+   PROGRAMMING SECTION
+   ========================================================================== */
+
+.programming-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.programming-card {
+    background: var(--dark-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-primary);
+    transition: all var(--transition-normal);
+    overflow: hidden;
+}
+
+.programming-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--text-accent);
+}
+
+.programming-header {
+    padding: 1.5rem;
+    background: var(--dark-card);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.language-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: white;
+}
+
+.language-badge.javascript {
+    background: linear-gradient(135deg, #f7df1e 0%, #e6c200 100%);
+    color: #1e293b;
+}
+
+.language-badge.python {
+    background: linear-gradient(135deg, #3776ab 0%, #2d5a8c 100%);
+}
+
+.language-badge.php {
+    background: linear-gradient(135deg, #777bb4 0%, #5e6b9d 100%);
+}
+
+.language-badge.react {
+    background: linear-gradient(135deg, #61dafb 0%, #21a1c4 100%);
+    color: #1e293b;
+}
+
+.programming-content {
+    padding: 1.5rem;
+}
+
+.programming-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.programming-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.programming-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.programming-tags .tag {
+    background: var(--surface-primary);
+    color: var(--text-secondary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid var(--border-primary);
+}
+
+/* ==========================================================================
+   COURSE CONTENT
+   ========================================================================== */
+
+.course-content-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.course-content {
+    background: var(--dark-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 32px;
+    border: 1px solid var(--border-primary);
+}
+
+.course-sidebar {
+    background: var(--dark-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 24px;
+    border: 1px solid var(--border-primary);
+    position: sticky;
+    top: 120px;
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+}
+
+/* ==========================================================================
+   TESTIMONIAL CAROUSEL
+   ========================================================================== */
+
+.carousel-container {
+    position: relative;
+    max-width: 100%;
+    background: var(--dark-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 2rem;
+    margin-bottom: 3rem;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-primary);
+    overflow: hidden;
+}
+
+.testimonial-slide {
+    display: none;
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.testimonial-slide.active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.social-proof-testimonial-content {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+    text-align: center;
+    font-style: italic;
+}
+
+.social-proof-testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--surface-primary);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-primary);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   ANIMATIONS
+   ========================================================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Focus visible */
+:focus-visible {
+    outline: 2px solid var(--text-accent);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+/* Tablets et petits laptops */
+@media (max-width: 1024px) {
+    :root {
+        --sidebar-width: 280px;
+        --grid-gap: 1.5rem;
+    }
+    
+    .course-content-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .course-sidebar {
+        position: static;
+        max-height: none;
+        order: 2;
+    }
+    
+    .course-content {
+        order: 1;
+    }
+    
+    .documents-grid,
+    .programming-grid,
+    .blog-system-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .content-wrapper {
+        padding: 24px;
+    }
+}
+
+/* Tablettes */
+@media (max-width: 768px) {
+    /* Layout */
+    .sidebar {
+        transform: translateX(-100%);
+        z-index: 2000;
+        width: 280px;
+    }
+    
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .sidebar.collapsed + .main-content {
+        margin-left: 0;
+    }
+    
+    /* Mobile menu */
+    .mobile-menu-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Header */
+    .dashboard-header {
+        padding: 16px 20px;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    
+    .header-left h1 {
+        font-size: 1.5rem;
+    }
+    
+    /* Content */
+    .content-wrapper {
+        padding: 20px;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    /* Grids */
+    .documents-grid,
+    .programming-grid,
+    .blog-system-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .grid-3-cols,
+    .grid-responsive {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    /* Cards */
+    .card-header,
+    .document-header,
+    .programming-header {
+        padding: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .card-content,
+    .document-content,
+    .programming-content {
+        padding: 1rem;
+    }
+    
+    /* Filters */
+    .filters-container {
+        gap: 0.5rem;
+    }
+    
+    .filter-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;
+    }
+    
+    /* Actions */
+    .document-actions,
+    .programming-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    /* Blog */
+    .blog-system-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .blog-system-footer {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    
+    /* Carousel */
+    .carousel-container {
+        padding: 1.5rem;
+    }
+    
+    .social-proof-testimonial-author {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding: 1rem;
+    }
+}
+
+/* Mobile phones */
+@media (max-width: 480px) {
+    :root {
+        --grid-gap: 1rem;
+        --border-radius: 12px;
+        --border-radius-lg: 16px;
+    }
+    
+    .container {
+        width: min(100% - 1rem, var(--container-max-width));
+    }
+    
+    .section-header {
+        margin-bottom: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .card-content,
+    .document-content,
+    .programming-content {
+        padding: 1rem;
+    }
+    
+    .blog-system-content {
+        padding: 1rem;
+    }
+    
+    .blog-system-title {
+        font-size: 1.1rem;
+    }
+    
+    .programming-tags {
+        gap: 0.25rem;
+    }
+    
+    .programming-tags .tag {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .mobile-menu-btn {
+        width: 40px;
+        height: 40px;
+        top: 15px;
+        left: 15px;
+    }
+    
+    .sidebar {
+        width: 100vw;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Sidebar Header -->
+            <div class="sidebar-header">
+                <button class="sidebar-toggle" id="sidebarToggle" data-tooltip="Réduire le menu">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <span class="logo-text">Learnica</span>
+                </div>
+                
+                <div class="admin-info">
+                    <div class="admin-profile">
+                        <div class="admin-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="admin-details">
+                            <h4>Apalo Coulibaly</h4>
+                            <span class="admin-role">Utilisateur</span>
+                        </div>
+                    </div>
+                    <div class="admin-actions">
+                        <a href="#" class="admin-btn">
+                            <i class="fas fa-cog"></i>
+                            <span>Profil</span>
+                        </a>
+                        <a href="#" class="admin-btn">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Sortie</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title">Principal</div>
+                    <div class="nav-item">
+                        <a href="#dashboard" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <span class="nav-text">Tableau de bord</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#dashboard" class="nav-link active">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <span class="nav-text">Home</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#course" class="nav-link">
+                            <i class="nav-icon fas fa-graduation-cap"></i>
+                            <span class="nav-text">Cours</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#performances" class="nav-link">
+                            <i class="nav-icon fas fa-chart-line"></i>
+                            <span class="nav-text">Mes performances</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="/monblug/simplecodeur" class="nav-link">
+                            📝
+                            <span class="nav-text">Examens & QCM</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Contenu</div>
+                    <div class="nav-item">
+                        <a href="#articles" class="nav-link">
+                            <i class="nav-icon fas fa-file-alt"></i>
+                            <span class="nav-text">Articles</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#articles" class="nav-link">
+                            <span class="dp-icon">🎓</span> Tutoriels pratiques
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#documents" class="nav-link">
+                            <i class="nav-icon fas fa-folder-open"></i>
+                            <span class="nav-text">Documents</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#programming" class="nav-link">
+                            <i class="nav-icon fas fa-code"></i>
+                            <span class="nav-text">Programmation</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#categories" class="nav-link">
+                            <i class="nav-icon fas fa-folder"></i>
+                            <span class="nav-text">Catégories</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#comments" class="nav-link">
+                            <i class="nav-icon fas fa-comments"></i>
+                            <span class="nav-text">Commentaires</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Système</div>
+                    <div class="nav-item">
+                        <a href="#settings" class="nav-link">
+                            <i class="nav-icon fas fa-cog"></i>
+                            <span class="nav-text">Paramètres</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#analytics" class="nav-link">
+                            <i class="nav-icon fas fa-analytics"></i>
+                            <span class="nav-text">Analytics</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
+                        <a href="#help" class="nav-link">
+                            <i class="nav-icon fas fa-question-circle"></i>
+                            <span class="nav-text">Aide</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-container">
+                    <div class="hero-badge">
+                        🔥 Plus de 10,000 téléchargements ce mois
+                    </div>
+                    
+                    <h1 class="hero-title">
+                        Boostez Vos Compétences IT avec +500 Documents gratuits
+                    </h1>
+                    
+                    <p class="hero-subtitle">
+                        Documents, formations et communauté de développeurs. 
+                        Économisez des heures avec nos ressources prêtes à l'emploi et rejoignez +5000 développeurs qui nous font confiance.
+                    </p>
+                    
+                    <div class="hero-cta-container">
+                        <a href="#documents" class="hero-btn-primary">
+                            <i class="fas fa-rocket"></i>
+                            Documents pdf gratuits
+                        </a>
+                        <a href="#programming" class="hero-btn-secondary">
+                            <i class="fas fa-play"></i>
+                            Voir les Formations
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials Carousel Section -->
+            <section class="testimonials-section">
+                <div class="carousel-container" aria-label="Témoignages et citations">
+                    <!-- Flèches -->
+                    <div class="carousel-arrow left" role="button" aria-label="Précédent">&#10094;</div>
+                    <div class="carousel-arrow right" role="button" aria-label="Suivant">&#10095;</div>
+                
+                    <!-- Slide 1 -->
+                    <div class="testimonial-slide active">
+                        <div class="social-proof-testimonial-content">
+                            "Un lecteur vit mille vies avant de mourir. Celui qui ne lit jamais n'en vit qu'une."
+                        </div>
+                        <div class="social-proof-testimonial-author">
+                            <div class="social-proof-author-avatar">SK</div>
+                            <div class="social-proof-author-info">
+                                <h4>— George R.R. Martin</h4>
+                                <span class="social-proof-author-role">Étudiante en Génie Logiciel</span>
+                            </div>
+                            <div class="social-proof-rating">
+                                <span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2 -->
+                    <div class="testimonial-slide">
+                        <div class="social-proof-testimonial-content">
+                            "Celui qui ne lit pas n'a aucun avantage sur celui qui ne sait pas lire."
+                        </div>
+                        <div class="social-proof-testimonial-author">
+                            <div class="social-proof-author-avatar">IA</div>
+                            <div class="social-proof-author-info">
+                                <h4>— Mark Twain</h4>
+                                <span class="social-proof-author-role">Développeur Mobile cross plateforme</span>
+                            </div>
+                            <div class="social-proof-rating">
+                                <span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3 -->
+                    <div class="testimonial-slide">
+                        <div class="social-proof-testimonial-content">
+                            "La documentation, c'est une lettre d'amour que vous écrivez à votre futur vous."
+                        </div>
+                        <div class="social-proof-testimonial-author">
+                            <div class="social-proof-author-avatar">DC</div>
+                            <div class="social-proof-author-info">
+                                <h4>— Damian Conway</h4>
+                                <span class="social-proof-author-role">Développeur & Conférencier</span>
+                            </div>
+                            <div class="social-proof-rating">
+                                <span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4 -->
+                    <div class="testimonial-slide">
+                        <div class="social-proof-testimonial-content">
+                            "Les meilleurs programmeurs sont ceux qui n'arrêtent jamais d'apprendre. Ils lisent du code, des livres, et de la documentation tous les jours."
+                        </div>
+                        <div class="social-proof-testimonial-author">
+                            <div class="social-proof-author-avatar">JC</div>
+                            <div class="social-proof-author-info">
+                                <h4>— John Carmack</h4>
+                                <span class="social-proof-author-role">Ingénieur logiciel & créateur de Doom</span>
+                            </div>
+                            <div class="social-proof-rating">
+                                <span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 5 -->
+                    <div class="testimonial-slide">
+                        <div class="social-proof-testimonial-content">
+                            "Les bons programmeurs écrivent du code que les humains peuvent comprendre."
+                        </div>
+                        <div class="social-proof-testimonial-author">
+                            <div class="social-proof-author-avatar">MF</div>
+                            <div class="social-proof-author-info">
+                                <h4>— Martin Fowler</h4>
+                                <span class="social-proof-author-role">Auteur & Expert en architecture logicielle</span>
+                            </div>
+                            <div class="social-proof-rating">
+                                <span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Slide 6 -->
+                    <div class="testimonial-slide">
+                        <div class="social-proof-testimonial-content">
+                            "Lire de la documentation, ce n'est pas perdre du temps, c'est en gagner sur tous les projets à venir."
+                        </div>
+                        <div class="social-proof-testimonial-author">
+                            <div class="social-proof-author-avatar">AN</div>
+                            <div class="social-proof-author-info">
+                                <h4>— Anonyme</h4>
+                                <span class="social-proof-author-role">Développeur autodidacte</span>
+                            </div>
+                            <div class="social-proof-rating">
+                                <span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span><span class="social-proof-star">★</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Indicateurs -->
+                    <div class="carousel-indicators">
+                        <div class="indicator active" data-slide="0"></div>
+                        <div class="indicator" data-slide="1"></div>
+                        <div class="indicator" data-slide="2"></div>
+                        <div class="indicator" data-slide="3"></div>
+                        <div class="indicator" data-slide="4"></div>
+                        <div class="indicator" data-slide="5"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Content Wrapper -->
+            <div class="content-wrapper">
+                <!-- Social Proof Section -->
+                <section class="social-proof-section">
+                    <div class="social-proof-container">
+                        <div class="social-proof-header">
+                            <section class="social-proof-section">
+                                <div class="container">
+                                    <div class="social-proof-intros">
+                                        <h2>🎯 Confiance prouvée, savoir partagé</h2>
+                                        <p>
+                                            Chez <strong>Learnica</strong>, nous ne nous contentons pas de former — nous accompagnons chaque développeur et étudiant dans sa progression.
+                                        </p>
+                                        <p>
+                                            Plus de <strong>5000 passionnés</strong> nous font confiance :
+                                        </p>
+                                        <ul>
+                                            <li>✅ Un apprentissage clair</li>
+                                            <li>✅ Des documents <strong>gratuits</strong> accessibles à tous</li>
+                                            <li>✅ Des ressources pensées <strong>par et pour les développeurs</strong></li>
+                                        </ul>
+                                        <p class="bottom-line">
+                                            💬 Ils nous font confiance — découvrez pourquoi Learnica est devenue la référence pour apprendre, progresser et réussir.
+                                        </p>
+                                    </div>
+
+                                    <div class="social-proof-header">
+                                        <h2>💡<span class="social-proof-title">Ils nous font confiance</span></h2>
+                                        <p class="social-proof-subtitle">🚀 Rejoignez une communauté de plus de 5000 développeurs et étudiants qui ont choisi Learnica pour apprendre à leur rythme et propulser leurs compétences vers l'excellence.</p>
+                                        <p class="social-proof-subtitle">📚 Découvrez également toute une panoplie de documents gratuits pour vous accompagner tout au long de votre apprentissage.</p>
+                                    </div>
+                                    
+                                    <h2>💡<span class="social-proof-title"> Ce qu'ils disent de Learnica?</span></h2>
+                                    <div class="testimonial-carousel-wrapper">
+                                        <button class="carousel-nav prev">&#10094;</button>
+                                        <div class="testimonial-carousel">
+                                            <div class="testimonial active">
+                                                <p>"Grâce à Learnica, j'ai enfin compris les bases du développement web."</p>
+                                                <span>— Fatou, étudiante en informatique</span>
+                                            </div>
+                                            <div class="testimonial">
+                                                <p>"Les documents gratuits m'ont vraiment aidé à progresser sans dépenser un centime."</p>
+                                                <span>— Idriss, développeur junior</span>
+                                            </div>
+                                            <div class="testimonial">
+                                                <p>"Une plateforme claire, simple et motivante. Je recommande Learnica à 100%."</p>
+                                                <span>— Mariam, freelance développeuse</span>
+                                            </div>
+                                        </div>
+                                        <button class="carousel-nav next">&#10095;</button>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        
+                        <!-- Trust Indicators -->
+                        <h3>📂<span class="social-proof-title"> Ce que vous pouvez apprendre et télécharger sur Learnica</span></h3><br>
+                        <div class="social-proof-trust">
+                            <div class="social-proof-trust-item">
+                                <div class="social-proof-trust-icon security">
+                                    <i class="fas fa-laptop-code"></i>
+                                </div>
+                                <h4 class="social-proof-trust-title">Informatique</h4>
+                                <p class="social-proof-trust-desc">Passionné(e) de l'Informatique ? Cette plateforme est faite pour vous ! Découvrez des documents PDF gratuits sur le sujet.</p>
+                            </div>
+                            
+                            <div class="social-proof-trust-item">
+                                <div class="social-proof-trust-icon support">
+                                    <i class="fas fa-tags"></i>
+                                </div>
+                                <h4 class="social-proof-trust-title">Markéting </h4>
+                                <p class="social-proof-trust-desc">Vous souhaitez gagner en competence marketing digital ? Cette plateforme est faite pour vous ! Découvrez des documents PDF gratuits sur le sujet.</p>
+                            </div>
+                            
+                            <div class="social-proof-trust-item">
+                                <div class="social-proof-trust-icon updates">
+                                    🖥️
+                                </div>
+                                <h4 class="social-proof-trust-title">Document scolaire</h4>
+                                <p class="social-proof-trust-desc">Vous etes élève ou étudiant ? Cette plateforme est faite pour vous ! Découvrez des documents PDF gratuits pour booster vos connaissances.</p>
+                            </div>
+                            
+                            <div class="social-proof-trust-item">
+                                <div class="social-proof-trust-icon community">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h4 class="social-proof-trust-title">Langue</h4>
+                                <p class="social-proof-trust-desc">+500 documents pdf en Anglais, espagnol et français pour apprendre à mieux s'exprimer.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Company Logos -->
+                        <div class="social-proof-companies">
+                            <p class="social-proof-companies-title">Qu'est-ce que vous trouverrai sur Learnica?</p>
+                            <div class="social-proof-logos">
+                                <a href="#" class="social-proof-logo">🏢 Documents pdf gratuits</a>
+                                <a href="#" class="social-proof-logo">🏛️ Astuces informatique et digital</a>
+                                <a href="#" class="social-proof-logo">💼 Formation payante en programmation</a>
+                                <a href="#" class="social-proof-logo">🎓Packs de tutoriels payant et gratuit</a>
+                                <a href="#" class="social-proof-logo">🏢 Packs de logiciel payant</a>
+                                <a href="#programming-section" class="hero-btn-secondary"> <i class="fas fa-chevron-down"></i> Aller à la section des documents</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Blog Section -->
+                <section class="blog-section">
+                    <div class="blog-container">
+                        <div class="blog-header">
+                            <h2 class="blog-title">
+                                <i class="fas fa-newspaper"></i>
+                                Derniers Articles & Astuces
+                            </h2>
+                            <p class="blog-subtitle">
+                                Restez à jour avec nos derniers tutoriels, astuces et actualités tech. 
+                                Nouveau contenu chaque semaine pour booster vos compétences.
+                            </p>
+                            
+                            <!-- Blog Categories Filter -->
+                            <div class="blog-categories">
+                                <button class="blog-category-btn active" data-category="all">
+                                    <i class="fas fa-th-large"></i>
+                                    Tous les articles
+                                </button>
+                                <button class="blog-category-btn" data-category="astuces">
+                                    💡 Astuces
+                                </button>
+                                <button class="blog-category-btn" data-category="tutoriels">
+                                    🎓 Tutoriels
+                                </button>
+                                <button class="blog-category-btn" data-category="actualites">
+                                    📰 Actualités
+                                </button>
+                                <button class="blog-category-btn" data-category="outils">
+                                    🛠️ Outils
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Regular Articles Grid -->
+                        <div class="blog-grid">
+                            <!-- Articles will be inserted here by JavaScript -->
+                        </div>
+
+                        <!-- Blog System Container -->
+                        <div class="blog-system-container">
+                            <div class="blog-system-main">
+                                <div class="blog-system-grid">
+                                    <article class="blog-system-card" data-category="tutoriels">
+                                        <div class="blog-system-image">
+                                            <img class="blog-system-img" src="" alt="CRUD PHP MySQL">
+                                            <div class="blog-system-badges">
+                                                <span class="blog-system-badge blog-system-badge-featured">⭐ Featured</span>
+                                                <span class="blog-system-badge blog-system-badge-category">Tutoriel</span>
+                                            </div>
+                                        </div>
+                                        <div class="blog-system-content">
+                                            <div class="blog-system-meta">
+                                                <span class="blog-system-date">
+                                                    <i class="fas fa-calendar"></i>
+                                                    16 Juillet 2025
+                                                </span>
+                                                <span class="blog-system-reading-time">
+                                                    <i class="fas fa-clock"></i>
+                                                    8 min de lecture
+                                                </span>
+                                                <span class="blog-system-views">
+                                                    <i class="fas fa-eye"></i>
+                                                    2.3k vues
+                                                </span>
+                                            </div>
+                                            
+                                            <h3 class="blog-system-title">
+                                                Guide Complet : Créer un CRUD Complet en PHP et MYSQL
+                                            </h3>
+                                            
+                                            <p class="blog-system-excerpt">
+                                                Apprenez à ajouter, modifier et supprimer les données d'une base de données en PHP. Ce tutoriel step-by-step couvre le Create(Créer), Update(Modifier) et Delete(Supprimer) les données de la base de données.
+                                            </p>
+                                            
+                                            <div class="blog-system-footer">
+                                                <div class="blog-system-author">
+                                                    <div class="blog-system-author-avatar">
+                                                        <span>AC</span>
+                                                    </div>
+                                                    <div class="blog-system-author-info">
+                                                        <span class="blog-system-author-name">Apalo Coulibaly</span>
+                                                        <span class="blog-system-author-role">Lead Developer</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="blog-system-engagement">
+                                                    <button class="blog-system-like-btn" onclick="blogSystemToggleLike(this)">
+                                                        <i class="fas fa-heart"></i>
+                                                        <span>127</span>
+                                                    </button>
+                                                    <button class="blog-system-share-btn" onclick="blogSystemShareArticle()">
+                                                        <i class="fas fa-share"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+                                            <a href="#" class="blog-system-read-more">
+                                                Lire l'article complet
+                                                <i class="fas fa-arrow-right"></i>
+                                            </a>
+                                        </div>
+
+                                        <!-- Section Commentaires -->
+                                        <div class="blog-system-comments">
+                                            <div class="blog-system-comments-header" onclick="blogSystemToggleComments(this)">
+                                                <div class="blog-system-comments-title">
+                                                    <i class="fas fa-comments"></i>
+                                                    Commentaires (3)
+                                                </div>
+                                                <i class="fas fa-chevron-down blog-system-comments-toggle"></i>
+                                            </div>
+                                            
+                                            <div class="blog-system-comments-content">
+                                                <!-- Formulaire de commentaire -->
+                                                <div class="blog-system-comment-form">
+                                                    <div class="blog-system-comment-input-group">
+                                                        <div class="blog-system-comment-avatar-input">
+                                                            <span id="blog-system-user-avatar">?</span>
+                                                        </div>
+                                                        <textarea class="blog-system-comment-input" placeholder="Écrivez votre commentaire..." id="blog-system-comment-text"></textarea>
+                                                    </div>
+                                                    <div class="blog-system-comment-form-footer">
+                                                        <button class="blog-system-comment-submit" onclick="blogSystemSubmitComment()">
+                                                            <i class="fas fa-paper-plane"></i>
+                                                            Publier
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Liste des commentaires -->
+                                                <div class="blog-system-comments-list" id="blog-system-comments-list">
+                                                    <div class="blog-system-comment">
+                                                        <div class="blog-system-comment-author-avatar">
+                                                            <span>JD</span>
+                                                        </div>
+                                                        <div class="blog-system-comment-content">
+                                                            <div class="blog-system-comment-header">
+                                                                <span class="blog-system-comment-author">Jean Dupont</span>
+                                                                <span class="blog-system-comment-date">Il y a 2 heures</span>
+                                                            </div>
+                                                            <div class="blog-system-comment-text">
+                                                                Excellent tutoriel ! Très bien expliqué et facile à suivre. Merci pour ce partage.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="blog-system-comment">
+                                                        <div class="blog-system-comment-author-avatar">
+                                                            <span>MK</span>
+                                                        </div>
+                                                        <div class="blog-system-comment-content">
+                                                            <div class="blog-system-comment-header">
+                                                                <span class="blog-system-comment-author">Marie Koffi</span>
+                                                                <span class="blog-system-comment-date">Il y a 1 jour</span>
+                                                            </div>
+                                                            <div class="blog-system-comment-text">
+                                                                J'ai suivi ce tutoriel et j'ai réussi à créer mon premier CRUD ! Les explications sont claires et les exemples pratiques.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="blog-system-comment">
+                                                        <div class="blog-system-comment-author-avatar">
+                                                            <span>TN</span>
+                                                        </div>
+                                                        <div class="blog-system-comment-content">
+                                                            <div class="blog-system-comment-header">
+                                                                <span class="blog-system-comment-author">Thomas N'Guessan</span>
+                                                                <span class="blog-system-comment-date">Il y a 3 jours</span>
+                                                            </div>
+                                                            <div class="blog-system-comment-text">
+                                                                Parfait pour débuter avec PHP et MySQL. Pouvez-vous faire un tutoriel sur la sécurité des requêtes SQL ?
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+
+                                    <!-- Deuxième article exemple -->
+                                    <article class="blog-system-card" data-category="javascript">
+                                        <div class="blog-system-image">
+                                            <img class="blog-system-img" src="" alt="JavaScript ES6">
+                                            <div class="blog-system-badges">
+                                                <span class="blog-system-badge blog-system-badge-category">JavaScript</span>
+                                            </div>
+                                        </div>
+                                        <div class="blog-system-content">
+                                            <div class="blog-system-meta">
+                                                <span class="blog-system-date">
+                                                    <i class="fas fa-calendar"></i>
+                                                    14 Juillet 2025
+                                                </span>
+                                                <span class="blog-system-reading-time">
+                                                    <i class="fas fa-clock"></i>
+                                                    5 min de lecture
+                                                </span>
+                                                <span class="blog-system-views">
+                                                    <i class="fas fa-eye"></i>
+                                                    1.8k vues
+                                                </span>
+                                            </div>
+                                            
+                                            <h3 class="blog-system-title">
+                                                Les Nouveautés ES6 que tout développeur devrait connaître
+                                            </h3>
+                                            
+                                            <p class="blog-system-excerpt">
+                                                Découvrez les fonctionnalités les plus importantes d'ES6 : arrow functions, destructuring, async/await et bien plus encore.
+                                            </p>
+                                            
+                                            <div class="blog-system-footer">
+                                                <div class="blog-system-author">
+                                                    <div class="blog-system-author-avatar">
+                                                        <span>AC</span>
+                                                    </div>
+                                                    <div class="blog-system-author-info">
+                                                        <span class="blog-system-author-name">Apalo Coulibaly</span>
+                                                        <span class="blog-system-author-role">Lead Developer</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="blog-system-engagement">
+                                                    <button class="blog-system-like-btn" onclick="blogSystemToggleLike(this)">
+                                                        <i class="fas fa-heart"></i>
+                                                        <span>89</span>
+                                                    </button>
+                                                    <button class="blog-system-share-btn" onclick="blogSystemShareArticle()">
+                                                        <i class="fas fa-share"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            
+                                            <a href="#" class="blog-system-read-more">
+                                                Lire l'article complet
+                                                <i class="fas fa-arrow-right"></i>
+                                            </a>
+                                        </div>
+
+                                        <!-- Section Commentaires -->
+                                        <div class="blog-system-comments">
+                                            <div class="blog-system-comments-header" onclick="blogSystemToggleComments(this)">
+                                                <div class="blog-system-comments-title">
+                                                    <i class="fas fa-comments"></i>
+                                                    Commentaires (0)
+                                                </div>
+                                                <i class="fas fa-chevron-down blog-system-comments-toggle"></i>
+                                            </div>
+                                            
+                                            <div class="blog-system-comments-content">
+                                                <div class="blog-system-comment-form">
+                                                    <div class="blog-system-comment-input-group">
+                                                        <div class="blog-system-comment-avatar-input">
+                                                            <span>?</span>
+                                                        </div>
+                                                        <textarea class="blog-system-comment-input" placeholder="Soyez le premier à commenter..."></textarea>
+                                                    </div>
+                                                    <div class="blog-system-comment-form-footer">
+                                                        <button class="blog-system-comment-submit" onclick="blogSystemSubmitComment()">
+                                                            <i class="fas fa-paper-plane"></i>
+                                                            Publier
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="blog-system-comments-list">
+                                                    <div class="blog-system-no-comments">
+                                                        Aucun commentaire pour le moment. Soyez le premier à donner votre avis !
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Blog CTA -->
+                        <div class="blog-cta">
+                            <div class="blog-cta-content">
+                                <h3 class="blog-cta-title">Envie de Plus d'Articles ?</h3>
+                                <p class="blog-cta-desc">
+                                    Découvrez tous nos articles, tutoriels et astuces sur notre blog. 
+                                    Plus de 200 articles pour vous aider à progresser !
+                                </p>
+                                <div class="blog-cta-actions">
+                                    <a href="#" class="blog-cta-btn primary">
+                                        <i class="fas fa-blog"></i>
+                                        Voir Tous les Articles
+                                    </a>
+                                    <a href="#" class="blog-cta-btn secondary">
+                                        <i class="fas fa-rss"></i>
+                                        S'abonner au Blog
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Community Section -->
+                <section class="community-section">
+                    <div class="community-container">
+                        <div class="community-header">
+                            <h2 class="community-title">
+                                <i class="fas fa-users"></i>
+                                Rejoignez Notre Communauté
+                            </h2>
+                            <p class="community-subtitle">
+                                +5000 développeurs s'entraident, partagent leurs expériences et progressent ensemble. 
+                                Posez vos questions, trouvez des solutions et créez des connexions !
+                            </p>
+                        </div>
+                        
+                        <!-- Community Stats -->
+                        <div class="community-stats">
+                            <div class="community-stat-card">
+                                <div class="community-stat-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="community-stat-content">
+                                    <span class="community-stat-number" data-counter="5247">0</span>
+                                    <span class="community-stat-label">Membres Actifs</span>
+                                </div>
+                            </div>
+                            
+                            <div class="community-stat-card">
+                                <div class="community-stat-icon">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <div class="community-stat-content">
+                                    <span class="community-stat-number" data-counter="12893">0</span>
+                                    <span class="community-stat-label">Discussions</span>
+                                </div>
+                            </div>
+                            
+                            <div class="community-stat-card">
+                                <div class="community-stat-icon">
+                                    <i class="fas fa-question-circle"></i>
+                                </div>
+                                <div class="community-stat-content">
+                                    <span class="community-stat-number" data-counter="8456">0</span>
+                                    <span class="community-stat-label">Questions Résolues</span>
+                                </div>
+                            </div>
+                            
+                            <div class="community-stat-card">
+                                <div class="community-stat-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="community-stat-content">
+                                    <span class="community-stat-number">< 2h</span>
+                                    <span class="community-stat-label">Temps de Réponse</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Community CTA -->
+                        <div class="community-cta">
+                            <div class="community-cta-content">
+                                <div class="community-cta-text">
+                                    <h3 class="community-cta-title">Prêt à Rejoindre la Communauté ?</h3>
+                                    <p class="community-cta-desc">
+                                        Créez votre compte gratuit et commencez à échanger avec +5000 développeurs passionnés ! 
+                                        Posez vos questions, partagez vos connaissances et progressez ensemble.
+                                    </p>
+                                    <div class="community-cta-features">
+                                        <div class="community-feature">
+                                            <i class="fas fa-check"></i>
+                                            <span>Accès gratuit à vie</span>
+                                        </div>
+                                        <div class="community-feature">
+                                            <i class="fas fa-check"></i>
+                                            <span>Support prioritaire</span>
+                                        </div>
+                                        <div class="community-feature">
+                                            <i class="fas fa-check"></i>
+                                            <span>Notifications en temps réel</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="community-cta-actions">
+                                    <button class="community-cta-btn primary">
+                                        <i class="fas fa-user-plus"></i>
+                                        Créer mon Compte
+                                    </button>
+                                    <button class="community-cta-btn secondary">
+                                        <i class="fas fa-eye"></i>
+                                        Explorer en Guest
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Online Members -->
+                            <div class="community-online-members">
+                                <h4 class="community-online-title">
+                                    <span class="community-pulse-green"></span>
+                                    127 membres en ligne
+                                </h4>
+                                <div class="community-online-avatars">
+                                    <div class="community-online-avatar" title="Kouadio Serge - En ligne">KS</div>
+                                    <div class="community-online-avatar" title="Marie Adjoua - En ligne">MA</div>
+                                    <div class="community-online-avatar" title="Ibrahim Bakayoko - En ligne">IB</div>
+                                    <div class="community-online-avatar" title="Fatou Keita - En ligne">FK</div>
+                                    <div class="community-online-avatar" title="Youssouf Traoré - En ligne">YT</div>
+                                    <div class="community-online-avatar" title="Aminata Diallo - En ligne">AD</div>
+                                    <div class="community-online-more">+121</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- FAQ Section -->
+                <section class="faq-section">
+                    <div class="faq-container">
+                        <div class="faq-header">
+                            <h2 class="faq-title">
+                                <i class="fas fa-question-circle"></i>
+                                Questions Fréquentes
+                            </h2>
+                            <p class="faq-subtitle">
+                                Toutes les réponses à vos questions ! Si vous ne trouvez pas ce que vous cherchez, 
+                                notre équipe support répond en moins de 2h.
+                            </p>
+                            
+                            <!-- FAQ Search -->
+                            <div class="faq-search-container">
+                                <div class="faq-search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" class="faq-search-input" placeholder="Rechercher dans les FAQ..." />
+                                    <div class="faq-search-suggestions">
+                                        <span class="faq-suggestion" data-keyword="prix">Prix</span>
+                                        <span class="faq-suggestion" data-keyword="gratuit">Gratuit</span>
+                                        <span class="faq-suggestion" data-keyword="support">Support</span>
+                                        <span class="faq-suggestion" data-keyword="téléchargement">Téléchargement</span>
+                                    </div>
+                                </div>
+                                <div class="faq-search-results">
+                                    <span class="faq-results-count">0 résultat trouvé</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Newsletter Success Modal -->
+                        <div class="newsletter-success-modal" id="successModal">
+                            <div class="newsletter-success-content">
+                                <div class="newsletter-success-header">
+                                    <div class="newsletter-success-icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <h3 class="newsletter-success-title">🎉 Félicitations !</h3>
+                                    <p class="newsletter-success-message">
+                                        Votre pack de 5 documents premium vous attend dans votre boîte email !
+                                    </p>
+                                </div>
+                                
+                                <div class="newsletter-success-bonus">
+                                    <div class="newsletter-bonus-card">
+                                        <h4>🎁 BONUS SURPRISE !</h4>
+                                        <p>Vous recevrez aussi notre <strong>Mini-Cours Gratuit</strong> "10 Astuces pour Coder 2x Plus Vite" (valeur 99€)</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="newsletter-success-actions">
+                                    <button class="newsletter-success-btn primary" onclick="closeSuccessModal()">
+                                        <i class="fas fa-envelope"></i>
+                                        Vérifier mes Emails
+                                    </button>
+                                    <button class="newsletter-success-btn secondary" onclick="closeSuccessModal()">
+                                        <i class="fas fa-share"></i>
+                                        Partager avec des Amis
+                                    </button>
+                                </div>
+                                
+                                <div class="newsletter-success-next">
+                                    <p>📧 <strong>Prochaine étape :</strong> Vérifiez votre email (regardez aussi dans les spams) et cliquez sur le lien de confirmation pour recevoir vos documents !</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Newsletter Overlay -->
+                        <div class="newsletter-overlay" id="modalOverlay"></div>
+                    </div>
+                </section>
+
+                <!-- Documents Gratuits Section -->
+                <section class="section-container" id="programming-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-code"></i>
+                            Documents gratuits
+                        </h2>
+                        <p class="section-subtitle">Découvrez des packs de tutoriels, de document pdf et guides sur les langages de programmation dans toutes les plateformes (Mobile, web et desktop).</p>
+                    </div>
+                  
+                    <div class="blog-system-container">
+                        <div class="blog-system-main">
+                            <div class="blog-system-grid">
+                                <!-- Répétition des articles documents - simplifié pour éviter la redondance -->
+                                <article class="blog-system-card" data-category="tutoriels">
+                                    <div class="blog-system-image">
+                                        <img class="blog-system-img" src="" alt="Document gratuit">
+                                        <div class="blog-system-badges">
+                                            <span class="blog-system-badge blog-system-badge-featured">⭐ Featured</span>
+                                            <span class="blog-system-badge blog-system-badge-category">Document</span>
+                                        </div>
+                                    </div>
+                                    <div class="blog-system-content">
+                                        <h3 class="blog-system-title">
+                                            Guide Complet : Document d'apprentissage
+                                        </h3>
+                                        
+                                        <p class="blog-system-excerpt">
+                                            Description du document d'apprentissage avec toutes les informations nécessaires.
+                                        </p>
+                                        
+                                        <div class="blog-system-footer">
+                                            <div class="blog-system-engagement">
+                                                <button class="blog-system-like-btn" onclick="blogSystemToggleLike(this)">
+                                                    <i class="fas fa-heart"></i>
+                                                    <span>127</span>
+                                                </button>
+                                                <button class="blog-system-share-btn" onclick="blogSystemShareArticle()">
+                                                    <i class="fas fa-share"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="document-actions">
+                                            <button class="btn-primary">
+                                                <i class="fas fa-download"></i> Télécharger
+                                            </button>
+                                            <button class="btn-secondary">
+                                                <i class="fas fa-edit"></i> Éditer en ligne
+                                            </button>
+                                        </div>
+                                    </div>
+                                </article>
+                                
+                                <!-- Répéter les autres articles de documents ici... -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <a href="/documents" class="blog-cta-btn primary">
+                            <span>🚀 Voir tous les documents </span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Cours Section -->
+                <section class="section-container" id="course-section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="fas fa-graduation-cap"></i>
+                            Cours d'Informatique
+                        </h2>
+                        <p class="section-subtitle">Apprenez les bases de l'informatique avec notre cours complet</p>
+                    </div>
+                    
+                    <div class="course-content-grid">
+                        <aside class="course-sidebar animate-slide-in">
+                            <h3>📚 Sommaire du cours</h3>
+                            <nav class="course-nav">
+                                <ul>
+                                    <li>
+                                        <a href="#module1">🖥️ 1. Introduction à l'informatique</a>
+                                        <ul>
+                                            <li><a href="#m1-1">Qu'est-ce que l'informatique ?</a></li>
+                                            <li><a href="#m1-2">Histoire brève</a></li>
+                                            <li><a href="#m1-3">Domaines d'application</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#module2">💻 2. L'ordinateur et ses composants</a>
+                                        <ul>
+                                            <li><a href="#m2-1">Types d'ordinateurs</a></li>
+                                            <li><a href="#m2-2">Matériel (hardware)</a></li>
+                                            <li><a href="#m2-3">Logiciel (software)</a></li>
+                                        </ul>
+                                    </li>
+                                    <!-- Autres modules... -->
+                                </ul>
+                            </nav>
+                        </aside>
+
+                        <div class="course-content">
+                            <div class="generalite">
+                                <h3 class="titre">Généralité sur l'informatique</h3>
+                                <ol>
+                                    <li>Définition de l'informatique</li>
+                                    <li>Histoire et évolution</li>
+                                    <li>Impact sur la société moderne</li>
+                                    <li>Perspectives d'avenir</li>
+                                </ol>
+                                
+                                <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
+                                    <button class="btn-primary">
+                                        <i class="fas fa-play"></i>
+                                        Commencer le cours
+                                    </button>
+                                    <button class="btn-secondary">
+                                        <i class="fas fa-bookmark"></i>
+                                        Sauvegarder
+                                    </button>
+                                    <button class="btn-secondary">
+                                        <i class="fas fa-share"></i>
+                                        Partager
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer-section">
+                <div class="footer-container">
+                    <!-- Footer Main Content -->
+                    <div class="footer-content">
+                        <!-- Footer Brand -->
+                        <div class="footer-brand">
+                            <div class="footer-logo">
+                                <div class="footer-logo-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <span class="footer-logo-text">Learnica</span>
+                            </div>
+                            <p class="footer-brand-desc">
+                                La plateforme de référence pour les développeurs francophones. 
+                                Formations, documents et communauté pour booster vos compétences IT.
+                            </p>
+                            <div class="footer-social">
+                                <a href="#" class="footer-social-link" data-platform="facebook">
+                                    <i class="fab fa-facebook-f"></i>
+                                    <span>Facebook</span>
+                                </a>
+                                <a href="#" class="footer-social-link" data-platform="twitter">
+                                    <i class="fab fa-twitter"></i>
+                                    <span>Twitter</span>
+                                </a>
+                                <a href="#" class="footer-social-link" data-platform="linkedin">
+                                    <i class="fab fa-linkedin-in"></i>
+                                    <span>LinkedIn</span>
+                                </a>
+                                <a href="#" class="footer-social-link" data-platform="youtube">
+                                    <i class="fab fa-youtube"></i>
+                                    <span>YouTube</span>
+                                </a>
+                                <a href="#" class="footer-social-link" data-platform="github">
+                                    <i class="fab fa-github"></i>
+                                    <span>GitHub</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <!-- Footer Links -->
+                        <div class="footer-links">
+                            <!-- Formations -->
+                            <div class="footer-column">
+                                <h4 class="footer-column-title">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    Formations
+                                </h4>
+                                <ul class="footer-column-list">
+                                    <li><a href="#" class="footer-link">Développement Web</a></li>
+                                    <li><a href="#" class="footer-link">Développement Mobile</a></li>
+                                    <li><a href="#" class="footer-link">Développement Desktop</a></li>
+                                    <li><a href="#" class="footer-link">Base de Données</a></li>
+                                    <li><a href="#" class="footer-link">DevOps & Cloud</a></li>
+                                    <li><a href="#" class="footer-link">Intelligence Artificielle</a></li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Ressources -->
+                            <div class="footer-column">
+                                <h4 class="footer-column-title">
+                                    <i class="fas fa-folder-open"></i>
+                                    Ressources
+                                </h4>
+                                <ul class="footer-column-list">
+                                    <li><a href="#" class="footer-link">Documents PDF</a></li>
+                                    <li><a href="#" class="footer-link">Templates Code</a></li>
+                                    <li><a href="#" class="footer-link">Checklists</a></li>
+                                    <li><a href="#" class="footer-link">Articles Blog</a></li>
+                                    <li><a href="#" class="footer-link">Tutoriels Vidéo</a></li>
+                                    <li><a href="#" class="footer-link">Forum Communauté</a></li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Entreprise -->
+                            <div class="footer-column">
+                                <h4 class="footer-column-title">
+                                    <i class="fas fa-building"></i>
+                                    Entreprise
+                                </h4>
+                                <ul class="footer-column-list">
+                                    <li><a href="#" class="footer-link">À Propos</a></li>
+                                    <li><a href="#" class="footer-link">Notre Équipe</a></li>
+                                    <li><a href="#" class="footer-link">Carrières</a></li>
+                                    <li><a href="#" class="footer-link">Partenaires</a></li>
+                                    <li><a href="#" class="footer-link">Témoignages</a></li>
+                                    <li><a href="#" class="footer-link">Presse</a></li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Support -->
+                            <div class="footer-column">
+                                <h4 class="footer-column-title">
+                                    <i class="fas fa-headset"></i>
+                                    Support
+                                </h4>
+                                <ul class="footer-column-list">
+                                    <li><a href="#" class="footer-link">Centre d'Aide</a></li>
+                                    <li><a href="#" class="footer-link">FAQ</a></li>
+                                    <li><a href="#" class="footer-link">Contact</a></li>
+                                    <li><a href="#" class="footer-link">Chat Support</a></li>
+                                    <li><a href="#" class="footer-link">Status Serveurs</a></li>
+                                    <li><a href="#" class="footer-link">Signaler un Bug</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Footer Newsletter Mini -->
+                        <div class="footer-newsletter">
+                            <div class="footer-newsletter-card">
+                                <h4 class="footer-newsletter-title">
+                                    <span class="footer-newsletter-icon">📧</span>
+                                    Restez Informé !
+                                </h4>
+                                <p class="footer-newsletter-desc">
+                                    Recevez nos dernières actualités et offres exclusives
+                                </p>
+                                <form class="footer-newsletter-form">
+                                    <div class="footer-newsletter-input-group">
+                                        <input 
+                                            type="email" 
+                                            class="footer-newsletter-input" 
+                                            placeholder="votre@email.com"
+                                            required
+                                        />
+                                        <button type="submit" class="footer-newsletter-btn">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                                <div class="footer-newsletter-stats">
+                                    <span class="footer-stats-number">12,450+</span>
+                                    <span class="footer-stats-text">abonnés nous font confiance</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer Bottom -->
+                    <div class="footer-bottom">
+                        <div class="footer-bottom-content">
+                            <!-- Copyright -->
+                            <div class="footer-copyright">
+                                <span>© 2025 Learnica. Tous droits réservés.</span>
+                                <span class="footer-made-with">
+                                    Fait avec <i class="fas fa-heart footer-heart"></i> en Côte d'Ivoire
+                                </span>
+                            </div>
+                            
+                            <!-- Legal Links -->
+                            <div class="footer-legal">
+                                <a href="#" class="footer-legal-link">Mentions Légales</a>
+                                <a href="#" class="footer-legal-link">Conditions d'Utilisation</a>
+                                <a href="#" class="footer-legal-link">Politique de Confidentialité</a>
+                                <a href="#" class="footer-legal-link">Cookies</a>
+                                <a href="#" class="footer-legal-link">RGPD</a>
+                            </div>
+                            
+                            <!-- Quick Contact -->
+                            <div class="footer-contact">
+                                <div class="footer-contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    <a href="mailto:contact@learnica.com">contact@learnica.com</a>
+                                </div>
+                                <div class="footer-contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    <a href="tel:+225070012345">+225 07 00 12 345</a>
+                                </div>
+                                <div class="footer-contact-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Abidjan, Côte d'Ivoire</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer Certifications -->
+                    <div class="footer-certifications">
+                        <div class="footer-cert-title">Certifié & Sécurisé :</div>
+                        <div class="footer-cert-badges">
+                            <div class="footer-cert-badge">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>SSL</span>
+                            </div>
+                            <div class="footer-cert-badge">
+                                <i class="fas fa-lock"></i>
+                                <span>RGPD</span>
+                            </div>
+                            <div class="footer-cert-badge">
+                                <i class="fas fa-certificate"></i>
+                                <span>ISO 27001</span>
+                            </div>
+                            <div class="footer-cert-badge">
+                                <i class="fas fa-award"></i>
+                                <span>Quality+</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Back to Top -->
+                    <div class="footer-back-to-top" id="backToTop">
+                        <i class="fas fa-chevron-up"></i>
+                        <span>Haut de page</span>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Fonctions JavaScript pour l'interactivité
+    // JavaScript optimisé et nettoyé pour Learnica
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // ===== GESTION DE LA SIDEBAR =====
+    const appState = {
+        sidebarCollapsed: false,
+        mobileMenuOpen: false
+    };
+
+    const elements = {
+        sidebar: document.getElementById('sidebar'),
+        sidebarToggle: document.getElementById('sidebarToggle'),
+        mobileMenuBtn: document.getElementById('mobileMenuBtn'),
+        mobileOverlay: document.getElementById('mobileOverlay')
+    };
+
+    // Toggle sidebar desktop
+    function toggleSidebar() {
+        appState.sidebarCollapsed = !appState.sidebarCollapsed;
+        elements.sidebar?.classList.toggle('collapsed', appState.sidebarCollapsed);
+        
+        const icon = elements.sidebarToggle?.querySelector('i');
+        if (icon) {
+            icon.className = appState.sidebarCollapsed ? 'fas fa-chevron-right' : 'fas fa-chevron-left';
+        }
+    }
+
+    // Toggle menu mobile
+    function toggleMobileMenu() {
+        appState.mobileMenuOpen = !appState.mobileMenuOpen;
+        elements.sidebar?.classList.toggle('mobile-open', appState.mobileMenuOpen);
+        elements.mobileOverlay?.classList.toggle('active', appState.mobileMenuOpen);
+        
+        document.body.style.overflow = appState.mobileMenuOpen ? 'hidden' : '';
+        
+        const icon = elements.mobileMenuBtn?.querySelector('i');
+        if (icon) {
+            icon.className = appState.mobileMenuOpen ? 'fas fa-times' : 'fas fa-bars';
+        }
+    }
+
+    // Fermer menu mobile
+    function closeMobileMenu() {
+        if (appState.mobileMenuOpen) {
+            appState.mobileMenuOpen = false;
+            elements.sidebar?.classList.remove('mobile-open');
+            elements.mobileOverlay?.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            const icon = elements.mobileMenuBtn?.querySelector('i');
+            if (icon) {
+                icon.className = 'fas fa-bars';
+            }
+        }
+    }
+
+    // Event listeners sidebar
+    elements.sidebarToggle?.addEventListener('click', toggleSidebar);
+    elements.mobileMenuBtn?.addEventListener('click', toggleMobileMenu);
+    elements.mobileOverlay?.addEventListener('click', closeMobileMenu);
+
+    // ===== NAVIGATION =====
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            
+            // Retirer la classe active de tous les liens
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            
+            closeMobileMenu();
+            
+            const targetPage = this.getAttribute('href')?.substring(1);
+            if (targetPage) {
+                const section = document.getElementById(targetPage + '-section');
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    });
+
+    // ===== CARROUSEL DE TÉMOIGNAGES =====
+    class TestimonialCarousel {
+        constructor() {
+            this.slides = document.querySelectorAll('.testimonial-slide');
+            this.indicators = document.querySelectorAll('.indicator');
+            this.leftArrow = document.querySelector('.carousel-arrow.left');
+            this.rightArrow = document.querySelector('.carousel-arrow.right');
+            this.currentSlide = 0;
+            this.autoPlayInterval = null;
+            
+            if (this.slides.length > 0) {
+                this.init();
+            }
+        }
+
+        init() {
+            this.bindEvents();
+            this.startAutoPlay();
+        }
+
+        bindEvents() {
+            this.leftArrow?.addEventListener('click', () => this.previousSlide());
+            this.rightArrow?.addEventListener('click', () => this.nextSlide());
+
+            this.indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => this.goToSlide(index));
+            });
+
+            // Pause au survol
+            const container = document.querySelector('.carousel-container');
+            container?.addEventListener('mouseenter', () => this.stopAutoPlay());
+            container?.addEventListener('mouseleave', () => this.startAutoPlay());
+        }
+
+        showSlide(index) {
+            this.slides.forEach(slide => slide.classList.remove('active'));
+            this.indicators.forEach(indicator => indicator.classList.remove('active'));
+
+            this.slides[index]?.classList.add('active');
+            this.indicators[index]?.classList.add('active');
+            
+            this.currentSlide = index;
+        }
+
+        nextSlide() {
+            const nextIndex = (this.currentSlide + 1) % this.slides.length;
+            this.showSlide(nextIndex);
+        }
+
+        previousSlide() {
+            const prevIndex = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
+            this.showSlide(prevIndex);
+        }
+
+        goToSlide(index) {
+            this.showSlide(index);
+        }
+
+        startAutoPlay() {
+            this.autoPlayInterval = setInterval(() => {
+                this.nextSlide();
+            }, 5000);
+        }
+
+        stopAutoPlay() {
+            if (this.autoPlayInterval) {
+                clearInterval(this.autoPlayInterval);
+                this.autoPlayInterval = null;
+            }
+        }
+    }
+
+    // Initialiser le carrousel
+    new TestimonialCarousel();
+
+    // ===== SYSTÈME DE NOTIFICATIONS =====
+    function showNotification(message, type = 'info', duration = 4000) {
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        
+        const icons = {
+            success: 'fas fa-check-circle',
+            error: 'fas fa-exclamation-circle',
+            warning: 'fas fa-exclamation-triangle',
+            info: 'fas fa-info-circle'
+        };
+        
+        const colors = {
+            success: '#10b981',
+            error: '#ef4444',
+            warning: '#f59e0b',
+            info: '#3b82f6'
+        };
+        
+        notification.innerHTML = `
+            <i class="${icons[type]}"></i>
+            <span>${message}</span>
+        `;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            padding: 16px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: ${colors[type]};
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            max-width: 400px;
+        `;
+
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        setTimeout(() => {
+            notification.style.transform = 'translateX(400px)';
+            setTimeout(() => notification.remove(), 300);
+        }, duration);
+    }
+
+    // ===== FONCTIONS BLOG =====
+    window.blogSystemToggleComments = function(header) {
+        const content = header.nextElementSibling;
+        const toggle = header.querySelector('.blog-system-comments-toggle');
+        
+        if (content.style.display === 'none' || content.style.display === '') {
+            content.style.display = 'block';
+            toggle.style.transform = 'rotate(180deg)';
+        } else {
+            content.style.display = 'none';
+            toggle.style.transform = 'rotate(0deg)';
+        }
+    };
+
+    window.blogSystemToggleLike = function(button) {
+        const heartIcon = button.querySelector('i');
+        const countSpan = button.querySelector('span');
+        let count = parseInt(countSpan.textContent);
+        
+        if (heartIcon.classList.contains('fas')) {
+            heartIcon.classList.remove('fas');
+            heartIcon.classList.add('far');
+            count--;
+            button.style.color = '#64748b';
+        } else {
+            heartIcon.classList.remove('far');
+            heartIcon.classList.add('fas');
+            count++;
+            button.style.color = '#ef4444';
+        }
+        
+        countSpan.textContent = count;
+    };
+
+    window.blogSystemShareArticle = function() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Article Learnica',
+                text: 'Découvrez cet article intéressant sur Learnica',
+                url: window.location.href
+            });
+        } else {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                showNotification('Lien copié dans le presse-papiers !', 'success');
+            });
+        }
+    };
+
+    window.blogSystemSubmitComment = function() {
+        const commentText = document.getElementById('blog-system-comment-text');
+        if (commentText && commentText.value.trim()) {
+            showNotification('Commentaire publié avec succès !', 'success');
+            commentText.value = '';
+        } else {
+            showNotification('Veuillez écrire un commentaire avant de publier.', 'warning');
+        }
+    };
+
+    // ===== BOUTON RETOUR EN HAUT =====
+    const backToTop = document.getElementById('backToTop');
+    if (backToTop) {
+        backToTop.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showNotification('Retour en haut !', 'info');
+        });
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTop.style.display = 'flex';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+    }
+
+    // ===== NEWSLETTER FOOTER =====
+    const footerNewsletterForm = document.querySelector('.footer-newsletter-form');
+    if (footerNewsletterForm) {
+        footerNewsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const input = this.querySelector('.footer-newsletter-input');
+            const email = input.value.trim();
+            
+            if (!email) {
+                showNotification('Veuillez entrer votre email', 'warning');
+                return;
+            }
+            
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showNotification('Format d\'email invalide', 'error');
+                return;
+            }
+            
+            const button = this.querySelector('.footer-newsletter-btn');
+            const originalHTML = button.innerHTML;
+            
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.innerHTML = '<i class="fas fa-check"></i>';
+                button.style.background = '#10b981';
+                showNotification('Inscription réussie ! Merci de nous rejoindre', 'success');
+                input.value = '';
+                
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.background = '';
+                    button.disabled = false;
+                }, 2000);
+            }, 1500);
+        });
+    }
+
+    // ===== GESTION DES TÉLÉCHARGEMENTS =====
+    document.querySelectorAll('.btn-primary').forEach(btn => {
+        if (btn.textContent.includes('Télécharger')) {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Téléchargement...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-check"></i> Téléchargé !';
+                    this.style.background = '#10b981';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.disabled = false;
+                        this.style.background = '';
+                    }, 2000);
+                }, 1500);
+                
+                showNotification('Téléchargement démarré !', 'success');
+            });
+        }
+    });
+
+    // ===== RACCOURCIS CLAVIER =====
+    document.addEventListener('keydown', function(event) {
+        // Échap pour fermer le menu mobile
+        if (event.key === 'Escape') {
+            closeMobileMenu();
+        }
+        
+        // Ctrl+B pour toggle la sidebar (desktop uniquement)
+        if (event.ctrlKey && event.key === 'b' && window.innerWidth > 768) {
+            event.preventDefault();
+            toggleSidebar();
+        }
+    });
+
+    // ===== REDIMENSIONNEMENT =====
+    window.addEventListener('resize', function() {
+        const isMobile = window.innerWidth <= 768;
+        if (!isMobile && appState.mobileMenuOpen) {
+            closeMobileMenu();
+        }
+    });
+
+    // ===== MODAL NEWSLETTER (si présente) =====
+    window.closeSuccessModal = function() {
+        const modal = document.getElementById('successModal');
+        const overlay = document.getElementById('modalOverlay');
+        if (modal) modal.style.display = 'none';
+        if (overlay) overlay.style.display = 'none';
+        document.body.style.overflow = '';
+    };
+
+    // ===== LIENS SOCIAUX =====
+    document.querySelectorAll('.footer-social-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const platform = this.dataset.platform || 'réseau social';
+            showNotification(`Redirection vers ${platform}`, 'info');
+        });
+    });
+
+    // ===== MESSAGE DE BIENVENUE =====
+    setTimeout(() => {
+        showNotification('Bienvenue sur Learnica ! 🎉', 'success');
+    }, 1000);
+});
+    </script>
+</body>
+</html>

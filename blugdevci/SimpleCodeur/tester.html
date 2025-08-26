@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevBlog - Blog de Développeur</title>
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2c3e50;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --code-bg: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f8fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--secondary);
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #2980b9 100%);
+            color: white;
+            text-align: center;
+            padding: 5rem 1rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Animation pour le bouton de la section hero */
+        .hero .btn {
+            display: inline-block;
+            background-color: white;
+            color: var(--primary);
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .hero .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        .hero .btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            animation: wave 2s infinite linear;
+        }
+
+        @keyframes wave {
+            0% {
+                left: -100%;
+            }
+            50% {
+                left: 100%;
+            }
+            100% {
+                left: -100%;
+            }
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 2rem auto 0;
+            position: relative;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-container button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--primary);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-container button:hover {
+            background: var(--secondary);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .featured-posts {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .post-content {
+            padding: 1.5rem;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .post-tag {
+            background-color: var(--light);
+            color: var(--dark);
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+        }
+
+        .post-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--secondary);
+        }
+
+        .post-excerpt {
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            display: inline-block;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .read-more:hover {
+            color: var(--secondary);
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .widget {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .widget-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .categories-list {
+            list-style: none;
+        }
+
+        .categories-list li {
+            margin-bottom: 0.8rem;
+        }
+
+        .categories-list a {
+            text-decoration: none;
+            color: #555;
+            display: flex;
+            justify-content: space-between;
+            transition: color 0.3s;
+        }
+
+        .categories-list a:hover {
+            color: var(--primary);
+        }
+
+        .category-count {
+            background-color: var(--light);
+            padding: 0.1rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: var(--dark);
+        }
+
+        .popular-posts-list {
+            list-style: none;
+        }
+
+        .popular-post-item {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .popular-post-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .popular-post-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+
+        .popular-post-content {
+            flex: 1;
+        }
+
+        .popular-post-title {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            text-decoration: none;
+            display: block;
+            transition: color 0.3s;
+        }
+
+        .popular-post-title:hover {
+            color: var(--primary);
+        }
+
+        .popular-post-date {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .newsletter-form input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 600;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+            text-align: center;
+        }
+
+        footer {
+            background-color: var(--secondary);
+            color: white;
+            padding: 3rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--light);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                grid-template-columns: 1fr;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                height: 0;
+                overflow: hidden;
+                transition: height 0.3s;
+            }
+
+            nav.open {
+                height: auto;
+            }
+
+            nav ul {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Code highlighting styles */
+        .code-block {
+            background-color: var(--code-bg);
+            border-radius: 5px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #8e44ad;
+        }
+
+        .code-string {
+            color: #27ae60;
+        }
+
+        .code-comment {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .code-function {
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">Dev<span>Blog</span></div>
+            <button class="mobile-menu-btn">☰</button>
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#">Articles</a></li>
+                    <li><a href="#">Tutoriels</a></li>
+                    <li><a href="#">Ressources</a></li>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>DevBlog</h1>
+        <p>Explorez le monde du développement web avec des tutoriels, des astuces et des bonnes pratiques pour tous les niveaux.</p>
+        <a href="#articles" class="btn">Découvrir les articles</a>
+        <div class="search-container">
+            <input type="text" placeholder="Rechercher un article...">
+            <button>🔍</button>
+        </div>
+    </section>
+
+    <main id="articles">
+        <div class="content">
+            <section class="featured-posts">
+                <h2 class="section-title">Articles à la une</h2>
+                <div class="posts-grid">
+                    <article class="post-card">
+                        <img src="/api/placeholder/600/400" alt="Featured Post" class="post-image">
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span>12 Avril 2025</span>
+                                <span class="post-tag">JavaScript</span>
+                            </div>
+                            <h3 class="post-title">Les nouvelles fonctionnalités de JavaScript ES2025</h3>
+                            <p class="post-excerpt">Découvrez les dernières améliorations du langage JavaScript qui vont révolutionner votre façon de coder.</p>
+                            <a href="#" class="read-more">Lire la suite →</a>
+                        </div>
+                    </article>
+                    <article class="post-card">
+                        <img src="/api/placeholder/600/400" alt="Featured Post" class="post-image">
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span>8 Avril 2025</span>
+                                <span class="post-tag">CSS</span>
+                            </div>
+                            <h3 class="post-title">Maîtriser CSS Grid pour des layouts complexes</h3>
+                            <p class="post-excerpt">Un guide complet pour comprendre et utiliser CSS Grid dans vos projets web modernes.</p>
+                            <a href="#" class="read-more">Lire la suite →</a>
+                        </div>
+                    </article>
+                    <article class="post-card">
+                        <img src="/api/placeholder/600/400" alt="Featured Post" class="post-image">
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span>2 Avril 2025</span>
+                                <span class="post-tag">React</span>
+                            </div>
+                            <h3 class="post-title">Optimiser les performances de votre application React</h3>
+                            <p class="post-excerpt">Techniques avancées pour améliorer la vitesse et l'efficacité de vos applications React.</p>
+                            <a href="#" class="read-more">Lire la suite →</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="recent-posts">
+                <h2 class="section-title">Articles récents</h2>
+                <div class="posts-grid">
+                    <article class="post-card">
+                        <img src="/api/placeholder/600/400" alt="Recent Post" class="post-image">
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span>31 Mars 2025</span>
+                                <span class="post-tag">DevOps</span>
+                            </div>
+                            <h3 class="post-title">Introduction à Docker pour les développeurs web</h3>
+                            <p class="post-excerpt">Apprenez à utiliser Docker pour simplifier votre environnement de développement et améliorer votre workflow.</p>
+                            <a href="#" class="read-more">Lire la suite →</a>
+                        </div>
+                    </article>
+                    <article class="post-card">
+                        <img src="/api/placeholder/600/400" alt="Recent Post" class="post-image">
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span>25 Mars 2025</span>
+                                <span class="post-tag">TypeScript</span>
+                            </div>
+                            <h3 class="post-title">TypeScript 5.5 - Nouvelles fonctionnalités et améliorations</h3>
+                            <p class="post-excerpt">Explorez les dernières mises à jour de TypeScript et comment les utiliser dans vos projets.</p>
+                            <a href="#" class="read-more">Lire la suite →</a>
+                        </div>
+                    </article>
+                    <article class="post-card">
+                        <img src="/api/placeholder/600/400" alt="Recent Post" class="post-image">
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span>18 Mars 2025</span>
+                                <span class="post-tag">Backend</span>
+                            </div>
+                            <h3 class="post-title">API REST vs GraphQL - Comment choisir ?</h3>
+                            <p class="post-excerpt">Comparaison détaillée des deux approches pour vous aider à faire le meilleur choix pour votre projet.</p>
+                            <a href="#" class="read-more">Lire la suite →</a>
+                        </div>
+                    </article>
+                    <article class="post-card">
+                        <img src="/api/placeholder/600/400" alt="Recent Post" class="post-image">
+                        <div class="post-content">
+                            <div class="post-meta">
+                                <span>10 Mars 2025</span>
+                                <span class="post-tag">Sécurité</span>
+                            </div>
+                            <h3 class="post-title">Sécuriser votre application web - Guide complet</h3>
+                            <p class="post-excerpt">Protégez votre application web contre les attaques les plus courantes avec ces bonnes pratiques.</p>
+                            <a href="#" class="read-more">Lire la suite →</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </div>
+
+        <aside class="sidebar">
+            <div class="widget">
+                <h3 class="widget-title">À propos de l'auteur</h3>
+                <div style="text-align: center; margin-bottom: 1rem;">
+                    <img src="/api/placeholder/150/150" alt="Author" style="border-radius: 50%; width: 100px; height: 100px;">
+                </div>
+                <p>Développeur web passionné avec plus de 10 ans d'expérience. J'aime partager mes connaissances et aider d'autres développeurs à progresser.</p>
+                <div style="margin-top: 1rem;">
+                    <a href="#" class="btn">Voir mon portfolio</a>
+                </div>
+            </div>
+
+            <div class="widget">
+                <h3 class="widget-title">Catégories</h3>
+                <ul class="categories-list">
+                    <li><a href="#">JavaScript <span class="category-count">24</span></a></li>
+                    <li><a href="#">CSS <span class="category-count">18</span></a></li>
+                    <li><a href="#">React <span class="category-count">15</span></a></li>
+                    <li><a href="#">Node.js <span class="category-count">12</span></a></li>
+                    <li><a href="#">TypeScript <span class="category-count">8</span></a></li>
+                    <li><a href="#">Vue.js <span class="category-count">7</span></a></li>
+                    <li><a href="#">DevOps <span class="category-count">6</span></a></li>
+                </ul>
+            </div>
+
+            <div class="widget">
+                <h3 class="widget-title">Articles populaires</h3>
+                <ul class="popular-posts-list">
+                    <li class="popular-post-item">
+                        <img src="/api/placeholder/100/100" alt="Popular Post" class="popular-post-img">
+                        <div class="popular-post-content">
+                            <a href="#" class="popular-post-title">Les bases de React Hooks expliquées simplement</a>
+                            <span class="popular-post-date">15 Mars 2025</span>
+                        </div>
+                    </li>
+                    <li class="popular-post-item">
+                        <img src="/api/placeholder/100/100" alt="Popular Post" class="popular-post-img">
+                        <div class="popular-post-content">
+                            <a href="#" class="popular-post-title">10 astuces CSS que vous ne connaissez pas</a>
+                            <span class="popular-post-date">2 Mars 2025</span>
+                        </div>
+                    </li>
+                    <li class="popular-post-item">
+                        <img src="/api/placeholder/100/100" alt="Popular Post" class="popular-post-img">
+                        <div class="popular-post-content">
+                            <a href="#" class="popular-post-title">Comment débuter avec Next.js</a>
+                            <span class="popular-post-date">20 Février 2025</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="widget">
+                <h3 class="widget-title">Newsletter</h3>
+                <p>Recevez les derniers articles et tutoriels directement dans votre boîte mail.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Votre adresse email" required>
+                    <button type="submit" class="btn btn-block">S'abonner</button>
+                </form>
+            </div>
+        </aside>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>À propos</h3>
+                <p>DevBlog est un blog dédié aux développeurs web passionnés. Nous partageons des tutoriels, des astuces et des bonnes pratiques pour vous aider à progresser.</p>
+                <div class="social-links">
+                    <a href="#">F</a>
+                    <a href="#">T</a>
+                    <a href="#">G</a>
+                    <a href="#">L</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Liens rapides</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#">Articles</a></li>
+                    <li><a href="#">Tutoriels</a></li>
+                    <li><a href="#">Ressources</a></li>
+                    <li><a href="#">À propos</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Catégories populaires</h3>
+                <ul class="footer-links">
+                    <li><a href="#">JavaScript</a></li>
+                    <li><a href="#">CSS</a></li>
+                    <li><a href="#">React</a></li>
+                    <li><a href="#">Node.js</a></li>
+                    <li><a href="#">TypeScript</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul class="footer-links">
+                    <li>Email: contact@devblog.fr</li>
+                    <li>Téléphone: +33 1 23 45 67 89</li>
+                    <li>Adresse: Paris, France</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 DevBlog. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mainNav = document.getElementById('main-nav');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('open');
+        });
+
+        // Search animation
+        const searchInput = document.querySelector('.search-container input');
+        
+        searchInput.addEventListener('focus', () => {
+            searchInput.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)';
+        });
+        
+        searchInput.addEventListener('blur', () => {
+            searchInput.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.1)';
+        });
+
+        // Scroll animation for header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.boxShadow = '0 2px 15px rgba(0, 0, 0, 0.15)';
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+                header.style.background = 'white';
+            }
+        });
+
+        // Newsletter form submission
+        const newsletterForm = document.querySelector('.newsletter-form');
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const emailInput = newsletterForm.querySelector('input[type="email"]');
+            if (emailInput.value) {
+                alert('Merci de vous être abonné à notre newsletter !');
+                emailInput.value = '';
+            }
+        });
+
+        // Simulate content loading animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const postCards = document.querySelectorAll('.post-card');
+            postCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        card.style.transition = 'opacity 0.5s, transform 0.5s';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 150);
+            });
+        });
+    </script>
+</body>
+</html>

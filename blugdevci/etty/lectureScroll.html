@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
+    <style>
+        .maDiv{
+            padding: 10px;
+            border: 2px solid skyblue;
+            width: 15%;
+        }
+
+        .tester{
+            padding: 10px;
+            border: 2px solid skyblue;
+            width: 15%;
+            display: none;
+            position: relative;
+            top:10%;
+        }
+
+        .Code{
+            margin:0;
+            padding: 0;
+        }
+        .image:hover .tester{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="Codeur" class="Code">Simple Codeur</h1>
+    <div class="maDiv">
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
+        Rem alias magni assumenda provident nam vel veniam dicta, suscipit sequi
+         reiciendis necessitatibus eveniet? Labore eveniet a autem atque illo laudantium veniam.
+    </div>
+    <div class="essaiImg">
+        <div >
+            <img src="calculatrice.png" alt="" class="image">
+        </div>
+        <div class="tester">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laudantium, dolorem. Dolores quis accusantium earum temporibus. Eligendi
+             ipsa odit quo quis ipsam. Quibusdam consectetur eius, unde odio vel deleniti! Quaerat, doloremque!
+        </div>
+    </div>
+    <script>
+        let Codeur = document.getElementById("Codeur")
+        let texte = document.querySelector(".maDiv")
+
+        window.addEventListener("scroll", function() {
+            if(window.scrollY >= 20){
+            texte.style.display = "none"
+        }else{
+            texte.style.display = "flex"
+        }
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const typed = new Typed(".Code", {
+                strings: ["Developpeur full stack", "InfoGraphie", "Gestion d'entreprise"],
+                typeSpeed: 50,
+                backSpeed: 50,
+                backDelayStart: 200,
+                backDelay: 200,
+                cursorShow: true,
+                loop: true
+            });
+        });
+    </script>
+</body>
+</html>

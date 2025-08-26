@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithmique Avancée - Techniques et Implémentations</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --accent-color: #e74c3c;
+            --background-color: #f4f6f9;
+            --text-color: #2c3e50;
+            --card-color: #ffffff;
+            --code-bg: #f8f9fa;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary-color), #3d5afe);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        nav {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .content {
+            padding: 3rem 0;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            margin: 1.5rem 0 1rem;
+        }
+
+        h4 {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin: 1rem 0 0.8rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            background-color: var(--card-color);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .example {
+            background-color: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary-color);
+            margin: 1.5rem 0;
+            font-family: monospace;
+            overflow-x: auto;
+            line-height: 1.4;
+        }
+
+        .important {
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 6px;
+        }
+
+        .note {
+            background-color: rgba(41, 128, 185, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 6px;
+        }
+
+        .tip {
+            background-color: rgba(39, 174, 96, 0.1);
+            border-left: 4px solid var(--success-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 6px;
+        }
+
+        .warning {
+            background-color: rgba(243, 156, 18, 0.1);
+            border-left: 4px solid var(--warning-color);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 6px;
+        }
+
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .grid-item {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .steps-list {
+            counter-reset: steps;
+            list-style-type: none;
+            margin: 1.5rem 0;
+        }
+
+        .steps-list li {
+            counter-increment: steps;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .steps-list li:before {
+            content: counter(steps);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 25px;
+            height: 25px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .advantages-list li, .application-list li {
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .advantages-list li:before, .application-list li:before {
+            content: "→";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary {
+            background-color: var(--text-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #1a2530;
+        }
+
+        .code-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .code-comparison .column {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .code-comparison .code-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px 6px 0 0;
+            font-weight: bold;
+        }
+
+        .code-comparison .good .code-header {
+            background-color: var(--success-color);
+        }
+
+        .code-comparison .bad .code-header {
+            background-color: var(--accent-color);
+        }
+
+        .code-comparison .example {
+            margin-top: 0;
+            border-radius: 0 0 6px 6px;
+        }
+
+        .tabs {
+            margin: 2rem 0;
+        }
+
+        .tab-nav {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            border-radius: 6px 6px 0 0;
+            overflow: hidden;
+        }
+
+        .tab-nav li {
+            margin: 0;
+            flex: 1;
+            text-align: center;
+        }
+
+        .tab-nav li a {
+            display: block;
+            padding: 0.8rem;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .tab-nav li a:hover, .tab-nav li a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .tab-content {
+            background-color: white;
+            border-radius: 0 0 6px 6px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: var(--primary-color);
+            text-align: center;
+            line-height: 20px;
+            color: white;
+            font-weight: bold;
+            transition: width 0.3s ease;
+        }
+
+        footer {
+            background-color: var(--text-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .footer-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-left: 1.5rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .complexity-chart {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+        }
+        
+        .complexity-line {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            height: 2px;
+            width: calc(100% - 80px);
+            background-color: #333;
+        }
+        
+        .complexity-line:after {
+            content: "";
+            position: absolute;
+            right: -10px;
+            top: -4px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid #333;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+        
+        .complexity-line-vertical {
+            position: absolute;
+            bottom: 40px;
+            left: 60px;
+            width: 2px;
+            height: calc(100% - 80px);
+            background-color: #333;
+        }
+        
+        .complexity-line-vertical:after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: -4px;
+            width: 0;
+            height: 0;
+            border-bottom: 10px solid #333;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+        }
+        
+        .complexity-curve {
+            position: absolute;
+            bottom: 42px;
+            left: 62px;
+        }
+        
+        .complexity-curve.constant {
+            width: calc(100% - 82px);
+            height: 2px;
+            background-color: #27ae60;
+        }
+        
+        .complexity-curve.logarithmic {
+            width: calc(100% - 82px);
+            height: 40px;
+            border-bottom: 2px solid #2ecc71;
+            border-radius: 100% 0 0 0;
+        }
+        
+        .complexity-curve.linear {
+            width: calc(100% - 82px);
+            height: calc(100% - 82px);
+            border-left: 2px solid #3498db;
+            transform-origin: bottom left;
+            transform: rotate(-45deg);
+        }
+        
+        .complexity-curve.quadratic {
+            width: calc(100% - 82px);
+            height: calc(100% - 82px);
+            border: 2px solid #f39c12;
+            border-top: none;
+            border-right: none;
+            border-bottom-left-radius: 100%;
+        }
+        
+        .complexity-curve.exponential {
+            width: calc(100% - 82px);
+            height: calc(100% - 82px);
+            border: 2px solid #e74c3c;
+            border-top: none;
+            border-right: none;
+            transform: scale(1, 2);
+            transform-origin: bottom left;
+        }
+        
+        .complexity-label {
+            position: absolute;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .complexity-label.x {
+            bottom: 10px;
+            right: 10px;
+        }
+        
+        .complexity-label.y {
+            top: 10px;
+            left: 10px;
+            transform: rotate(-90deg);
+            transform-origin: top left;
+        }
+        
+        .complexity-label.constant {
+            bottom: 45px;
+            right: 10px;
+            color: #27ae60;
+        }
+        
+        .complexity-label.logarithmic {
+            bottom: 85px;
+            right: 10px;
+            color: #2ecc71;
+        }
+        
+        .complexity-label.linear {
+            top: 45px;
+            right: 10px;
+            color: #3498db;
+        }
+        
+        .complexity-label.quadratic {
+            top: 25px;
+            right: 10px;
+            color: #f39c12;
+        }
+        
+        .complexity-label.exponential {
+            top: 10px;
+            right: 10px;
+            color: #e74c3c;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .nav-links li {
+                margin: 0.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .grid {
+                flex-direction: column;
+            }
+
+            .code-comparison {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                margin-top: 1rem;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .footer-links li {
+                margin: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="hero">
+                <h1>Algorithmique Avancée</h1>
+                <p>Techniques d'optimisation, paradigmes de conception et implémentations pratiques</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">AlgoLearn</div>
+            <ul class="nav-links">
+                <li><a href="#optimisation">Optimisation</a></li>
+                <li><a href="#paradigmes">Paradigmes</a></li>
+                <li><a href="#structures">Structures de données</a></li>
+                <li><a href="#implementation">Implémentation</a></li>
+                <li><a href="#problemes">Problèmes classiques</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="content">
+        <div class="container">
+            <section id="optimisation" class="section">
+                <h2>Techniques d'optimisation algorithmique</h2>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <div class="card-icon">1</div>
+                        <h3>Analyse et amélioration de la complexité</h3>
+                    </div>
+                    
+                    <p>L'optimisation d'un algorithme vise à améliorer ses performances en termes de temps d'exécution et/ou d'utilisation mémoire. Voici les techniques courantes :</p>
+                    
+                    <div class="complexity-chart">
+                        <div class="complexity-line"></div>
+                        <div class="complexity-line-vertical"></div>
+                        <div class="complexity-curve constant"></div>
+                        <div class="complexity-curve logarithmic"></div>
+                        <div class="complexity-curve linear"></div>
+                        <div class="complexity-curve quadratic"></div>
+                        <div class="complexity-curve exponential"></div>
+                        <div class="complexity-label x">Taille des données (n)</div>
+                        <div class="complexity-label y">Temps d'exécution</div>
+                        <div class="complexity-label constant">O(1)</div>
+                        <div class="complexity-label logarithmic">O(log n)</div>
+                        <div class="complexity-label linear">O(n)</div>
+                        <div class="complexity-label quadratic">O(n²)</div>
+                        <div class="complexity-label exponential">O(2^n)</div>
+                    </div>
+                    
+                    <h4>Stratégies d'optimisation</h4>
+                    <ul>
+                        <li><strong>Éviter les calculs redondants</strong> : mémorisation, précalculs, etc.</li>
+                        <li><strong>Choisir les structures de données adaptées</strong> : tableaux, listes chaînées, arbres, tables de hachage, etc.</li>
+                        <li><strong>Simplifier les expressions mathématiques</strong> : factorisation, réduction, etc.</li>
+                        <li><strong>Optimiser les boucles</strong> : déroulement, fusion, etc.</li>
+                        <li><strong>Éliminer les calculs inutiles</strong> : arrêt anticipé, filtrage préalable, etc.</li>
+                    </ul>
+                </div>
+                
+                <div class="grid">
+                    <div class="grid-item card">
+                        <h3>Compromis temps-espace</h3>
+                        <p>L'optimisation d'un algorithme implique souvent un compromis entre le temps d'exécution et l'espace mémoire utilisé.</p>
+                        
+                        <div class="important">
+                            <p>Principe de base du compromis temps-espace :</p>
+                            <ul>
+                                <li>Gagner du temps en utilisant plus de mémoire (ex : mémorisation)</li>
+                                <li>Économiser de la mémoire au prix d'un temps d'exécution plus long</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="example">
+                            <strong>Exemple : Calcul du n-ième nombre de Fibonacci</strong><br><br>
+                            // Approche récursive (économe en espace mais lente)<br>
+                            fonction fib_recursif(n)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;si n ≤ 1 alors retourner n<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;sinon retourner fib_recursif(n-1) + fib_recursif(n-2)<br>
+                            fin fonction<br><br>
+                            
+                            // Approche dynamique (plus rapide mais utilise plus de mémoire)<br>
+                            fonction fib_dynamique(n)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;tableau memo[0..n]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;memo[0] ← 0<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;memo[1] ← 1<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;pour i de 2 à n faire<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memo[i] ← memo[i-1] + memo[i-2]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;fin pour<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;retourner memo[n]<br>
+                            fin fonction
+                        </div>
+                    </div>
+                    
+                    <div class="grid-item card">
+                        <h3>Profiling et benchmarking</h3>
+                        <p>Pour optimiser efficacement un algorithme, il est essentiel de mesurer ses performances et d'identifier les goulots d'étranglement.</p>
+                        
+                        <h4>Méthodes d'évaluation</h4>
+                        <ul>
+                            <li><strong>Profiling</strong> : analyse détaillée de l'exécution d'un programme pour identifier les parties les plus coûteuses</li>
+                            <li><strong>Benchmarking</strong> : comparaison des performances de différentes implémentations</li>
+                            <li><strong>Analyse asymptotique</strong> : étude théorique du comportement de l'algorithme pour de grandes entrées</li>
+                        </ul>
+                        
+                        <div class="tip">
+                            <p>Règle d'optimisation pragmatique :</p>
+                            <ol>
+                                <li>Faites fonctionner l'algorithme correctement</li>
+                                <li>Mesurez ses performances</li>
+                                <li>Optimisez uniquement les parties critiques</li>
+                            </ol>
+                            <p>Ne tombez pas dans le piège de l'optimisation prématurée !</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="paradigmes" class="section">
+                <h2>Paradigmes de conception algorithmique</h2>
+                
+                <div class="card">
+                    <p>Les paradigmes de conception algorithmique sont des approches générales pour résoudre des problèmes. Ils fournissent un cadre méthodologique pour élaborer des solutions efficaces.</p>
+                </div>
+                
+                <div class="grid">
+                    <div class="grid-item card">
+                        <h3>Diviser pour régner</h3>
+                        <p>Ce paradigme consiste à décomposer un problème en sous-problèmes plus petits, à résoudre ces sous-problèmes, puis à combiner leurs solutions pour résoudre le problème initial.</p>
+                        
+                        <div class="example">
+                            <strong>Exemple : Tri fusion (Merge Sort)</strong><br><br>
+                            fonction tri_fusion(tableau)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;si longueur(tableau) ≤ 1 alors<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;retourner tableau<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;fin si<br><br>
+                            
+                            &nbsp;&nbsp;&nbsp;&nbsp;// Diviser<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;milieu ← longueur(tableau) / 2<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;gauche ← tableau[0..milieu-1]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;droite ← tableau[milieu..fin]<br><br>
+                            
+                            &nbsp;&nbsp;&nbsp;&nbsp;// Régner (appels récursifs)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;gauche_triée ← tri_fusion(gauche)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;droite_triée ← tri_fusion(droite)<br><br>
+                            
+                            &nbsp;&nbsp;&nbsp;&nbsp;// Combiner<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;retourner fusion(gauche_triée, droite_triée)<br>
+                            fin fonction
+                        </div>
+                        
+                        <div class="note">
+                            <p>Complexité du tri fusion :</p>
+                            <ul>
+                                <li>Temps : O(n log n)</li>
+                                <li>Espace : O(n)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="grid-item card">
+                        <h3>Programmation dynamique</h3>
+                        <p>Cette approche consiste à résoudre des problèmes complexes en les décomposant en sous-problèmes plus simples et en stockant les résultats intermédiaires pour éviter les calculs redondants.</p>
+                        
+                        <div class="steps-list">
+                            <h4>Étapes de la programmation dynamique :</h4>
+                            <li>Identifier si le problème peut être décomposé en sous-problèmes qui se chevauchent</li>
+                            <li>Définir une relation de récurrence entre les sous-problèmes</li>
+                            <li>Stocker les résultats des sous-problèmes (mémorisation)</li>
+                            <li>Construire la solution finale à partir des résultats stockés</li>
+                        </div>
+                        
+                        <div class="example">
+                            <strong>Exemple : Problème du sac à dos (Knapsack Problem)</strong><br><br>
+                            fonction knapsack(poids[], valeurs[], n, capacité)<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;dp[0..n][0..capacité] ← tableau de zéros<br><br>
+                            
+                            &nbsp;&nbsp;&nbsp;&nbsp;pour i de 1 à n faire<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pour w de 1 à capacité faire<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;si poids[i-1] ≤ w alors<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dp[i][w] ← max(valeurs[i-1] + dp[i-1][w-poids[i-1]], dp[i-1][w])<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sinon<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dp[i][w] ← dp[i-1][w]<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fin si<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fin pour<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;fin pour<br><br>
+                            
+                            &nbsp;&nbsp;&nbsp;&nbsp;retourner dp[n][capacité]<br>
+                            fin fonction
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid">
+                    <div class="grid-item card">
+                        <h3>Algorithmes gloutons</h3>
+                        <p>Les algorithmes gloutons font, à chaque étape, le choix localement optimal dans l'espoir d'aboutir à une solution globalement optimale.</p>
+                        
+                        <div class="warning">
+                            <p>Attention : Les algorithmes gloutons ne garantissent pas toujours la solution optimale globale. Ils sont efficaces pour certains problèmes spécifiques où le choix local optimal mène effectivement à l'optimum
