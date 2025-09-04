@@ -72,7 +72,7 @@ if (isset($_POST['envoyer'])) {
 
                     // Stocker les données dans la session
                     $_SESSION['user'] = [
-                        'id_User' => $userData['Id_User'],
+                        'id_user' => $userData['Id_User'],
                         'nom_complet' => $userData['Nom_complet'],
                         'mel' => $userData['mel'],
                         'specialite' => $userData['specialite'],

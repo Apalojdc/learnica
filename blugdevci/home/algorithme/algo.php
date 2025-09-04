@@ -21,7 +21,7 @@ if (isset($_POST['ajouter'])) {
 
                      // Préparation de la requête d'insertion
                 $sql = $pdo->prepare("
-                INSERT INTO traitement (idusers, idtestalgo, travailetudiant, temps) 
+                INSERT INTO traitement (id_auteur, id_exo_concerne, travailetudiant, temps) 
                 VALUES (:idusers, :idtestalgo, :travailetudiant, :temps)
             ");
              // Liaison des paramètres
@@ -369,27 +369,29 @@ if (isset($_POST['ajouter'])) {
 <body>
     <div class="container">
         <div class="testerAlgo">
-        <h1>Test Algorithmique</h1>
-        <p>Résolvez l'exercice et soumettez votre solution ci-dessous.</p>
+            <h1>Test Algorithmique</h1>
+            <p>Résolvez l'exercice et soumettez votre solution ci-dessous.</p>
         </div>
         <main class="main-content">
             <section>
             <?php
 
-// Requête pour récupérer le dernier enregistrement
-$query = $pdo->query("SELECT * FROM exercices_algo ORDER BY id_exercice DESC LIMIT 1");
+                // Requête pour récupérer le dernier enregistrement
+                $query = $pdo->query("SELECT * FROM exercices_algo ORDER BY id_exercice DESC LIMIT 1");
 
-// Récupération des données
-$lastElement = $query->fetch(PDO::FETCH_ASSOC);
+                // Récupération des données
+                $lastElement = $query->fetch(PDO::FETCH_ASSOC);
 
-// Affichage du résultat
-if ($lastElement) {
-    echo '<b class="test">' .$lastElement['titre'].'</b>'; // Affiche les détails du dernier enregistrement
-    echo "<p>".$lastElement['libelle']."</p>";
-} else {
-    echo "Aucun enregistrement trouvé.";
-}
-?>
+                // Affichage du résultat
+                if ($lastElement) {
+                    echo '<b class="test">' .htmlspecialchars_decode($lastElement['titre']).'</b>'; // Affiche les détails du dernier enregistrement
+                    echo "<p>".htmlspecialchars_decode($lastElement['libelle'])."</p>";
+                    $verify = 1;
+                } else {
+                    echo "Aucun enregistrement trouvé.";
+                    $verify = 0;
+                }
+                ?>
             </section>
             
             <!-- Section de Soumission -->
@@ -397,7 +399,13 @@ if ($lastElement) {
                 <h3>Soumettez votre solution</h3>
                 <form action="" method="POST">
                     <textarea id="user-solution" name="travailetudiant" class="solution-input" placeholder="Écrivez votre code ici..."></textarea>
-                    <button id="submit-solution" class="submit-btn" name="ajouter"><span>Envoyer</span></button>
+                    <?php
+                    if($verify == 1){
+                        echo '<button id="submit-solution" class="submit-btn" name="ajouter"><span>Envoyer</span></button>';
+                    }else{
+                        echo '<button id="submit-grise_btn" class="submit-btn" onclick="alert(\'Oups! quelque chose s\'est passez, recommencez s\'il vous plais!\')" style="background-color: grey; cursor: not-allowed;" disabled><span>Envoyer</span></button>';
+                    }
+                    ?>
                 </form>
             </section>
             

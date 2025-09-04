@@ -1,20 +1,3 @@
-<?php
-
-   include(__DIR__."/../../phpqrcode/qrlib.php");
-
-    // Le contenue du QR code
-    $contenu = 'Salut, je suis Coulibaly Apalo, developpeur informatique. n/ Pour me joindre, contactez le +2250506938224';
-    // $contenu_json = json_encode($contenu);
-
-    //Enregistrer le qr code dans un dossier
-    $fichier= __DIR__."/../../code/codeqr.png";
-
-    // Generation du qr code
-
-    QRcode::png($contenu, $fichier, QR_ECLEVEL_L, 2, 2);
-
-    ?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -806,9 +789,7 @@
     <!-- Lernica Style Nav Content Hero Section for Demo -->
     <!-- Lernica Style Nav Content Contact Buttons -->
     <div class="lernica_style_nav_content-contact-buttons">
-        <a href="https://t.me/docspdfgratuit" class="lernica_style_nav_content-contact-btn lernica_style_nav_content-telegram-btn" title="Telegram">
-            <img src="../../code/codeqr.png" alt="QR Code">
-        </a>
+
         <a href="https://t.me/docspdfgratuit" class="lernica_style_nav_content-contact-btn lernica_style_nav_content-telegram-btn" title="Telegram">
             <i class="fab fa-telegram-plane"></i>
         </a>

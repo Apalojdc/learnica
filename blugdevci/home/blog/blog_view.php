@@ -2,10 +2,17 @@
     include(__DIR__.'/../../login/connexion.php');
     session_start();
     if(isset($_GET['num'])){
-        $article_recupe = $pdo->prepare('SELECT * FROM articles WHERE id_article = :num LIMIT 1');
+        // Incrementer les vues pour chaque article
+        $increment_view = $pdo->prepare('UPDATE articles SET article_view = article_view + 1 WHERE id_article = :num');
+        $increment_view->bindValue(':num', htmlspecialchars($_GET['num']));
+        $increment_view->execute();
+
+        $article_recupe = $pdo->prepare('SELECT id_article, titre_article, slug_article, courte_description, contenue_doc, categorie, statut_article, date_ajoute, url_image, articule_likes, article_view, date_pub, nom_complet FROM articles INNER JOIN users ON users.Id_User = articles.user_pub_id WHERE id_article = :num LIMIT 1');
         $article_recupe->bindValue(':num',htmlspecialchars($_GET['num']));
         $article_recupe->execute();
         $article = $article_recupe->fetch(PDO::FETCH_OBJ);
+
+        // echo "<script>alert('".$article->id_article."')</script>";
 
         //recuperation des commentaire de chaque article
         $comment_articles = $pdo->prepare('SELECT id_commentaire, content_commente, date_commente, Nom_complet FROM commentaire INNER JOIN users ON users.Id_User = commentaire.id_user_commente WHERE id_article_commente = :num ORDER BY id_article_commente DESC');
@@ -17,7 +24,7 @@
     // echo "<pre>";
     //     print_r($_SESSION['user']['id_user']);
     // echo "</pre>";
-    if(isset($_POST['send'])){
+    if(isset($_POST['commenter'])){
         $comment_content = htmlspecialchars($_POST['comment_content']);
         $ajout_commentaire = $pdo->prepare('INSERT INTO commentaire(id_user_commente, id_article_commente,content_commente) VALUES(:id_user, :id_article, :contenu)');
         $ajout_commentaire->bindParam(':id_user', $_SESSION['user']['id_user']);
@@ -177,7 +184,7 @@
 
         /* Main Content */
         .main-content {
-            max-width: 900px;
+            /* max-width: 900px; */
             margin: 0 auto;
             padding: 2rem;
             position: relative;
@@ -408,12 +415,14 @@
         /* Article Content */
         .article-content {
             background: linear-gradient(145deg, var(--card-bg), var(--card-hover));
+            /* background-color: #fff; */
             border-radius: 20px;
             padding: 3rem;
             margin-bottom: 4rem;
-            border: 1px solid var(--border-color);
+            /* border: 1px solid var(--border-color); */
             line-height: 1.8;
             font-size: 1.1rem;
+            color: #000;
         }
 
         .article-content h1,
@@ -466,13 +475,14 @@
         }
 
         .article-content pre {
-            background: #0a0a0a;
+            /* background: #fff;
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 2rem;
             overflow-x: auto;
             margin: 2rem 0;
             position: relative;
+            color: #000 */
         }
 
         .article-content pre code {
@@ -792,22 +802,16 @@
 <body>
     <div class="article-container">
         <!-- Header -->
-        <header class="blog-header">
-            <div class="header-content">
-                <a href="#" class="blog-logo">DevBlog</a>
-                <nav class="blog-nav">
-                    <a href="#" class="nav-link">Accueil</a>
-                    <a href="#" class="nav-link active">Articles</a>
-                    <a href="#" class="nav-link">Catégories</a>
-                    <a href="#" class="nav-link">À propos</a>
-                    <a href="#" class="nav-link">Contact</a>
-                </nav>
-                <div class="search-container">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" class="search-input" placeholder="Rechercher...">
-                </div>
-            </div>
-        </header>
+        <?php 
+            // include(__DIR__.'/forum_nav/forum_nav.php')
+        
+            if(empty($_SESSION['user']['id_user'])){
+                include(__DIR__.'/../../navbar/NavBarIndex.php');
+            }else{
+                include(__DIR__.'/../../navbar/NavBarAcceuil.php');
+            }
+        ?>
+
 
         <!-- Main Content -->
         <main class="main-content">
@@ -821,20 +825,20 @@
                 <span>›</span>
                 <span>Guide complet : Maîtriser React 18</span>
             </nav>
-
+            <?php if($article): ?>
             <!-- Article Header -->
             <header class="article-header">
-                <h1 class="article-title"><?= htmlspecialchars($article->titre_article) ?></h1>
+                <h1 class="article-title"><?= htmlspecialchars_decode($article->titre_article) ?></h1>
                 
                 <div class="article-slug">
-                    URL: /articles/guide-complet-maitriser-react-18-nouvelles-fonctionnalites
+                    <b>Slug: </b><?= htmlspecialchars_decode($article->slug_article) ?>
                 </div>
 
                 <div class="article-meta">
                     <div class="article-author">
                         <div class="author-avatar">AL</div>
                         <div class="author-info">
-                            <div class="author-name">Alexandre Dubois</div>
+                            <div class="author-name"><?= htmlspecialchars_decode($article->nom_complet) ?></div>
                             <div class="author-badge">Expert React</div>
                         </div>
                     </div>
@@ -871,18 +875,18 @@
                     <button class="like-btn" onclick="toggleArticleLike(this)">
                         <span>❤️</span>
                         <span>J'aime</span>
-                        <span class="like-count-text">127</span>
+                        <span class="like-count-text"><?= htmlspecialchars($article->articule_likes) ?></span>
                     </button>
-                    <div class="like-count">127 personnes ont aimé cet article</div>
+                    <div class="like-count"><?= htmlspecialchars($article->articule_likes) ?> personnes ont aimé cet article</div>
                 </div>
             </header>
 
             <!-- Article Content -->
             <article class="article-content">
                 <div class="contenue">
-                    <pre>
-                        <?= htmlspecialchars($article->contenue_doc) ?>
-                    </pre>
+                    <!-- <pre> -->
+                        <?= $article->contenue_doc ?>
+                    <!-- </pre> -->
                 </div>
             </article>
 
@@ -904,7 +908,7 @@
                     <form action="#" method="POST">
                         <textarea class="comment-textarea" name="comment_content" placeholder="Partagez votre opinion, votre expérience ou posez une question sur cet article..." required></textarea>
                         <div class="form-actions">
-                            <button type="submit" class="btn-submit" name="send">
+                            <button type="submit" class="btn-submit" name="commenter">
                                 📤 Commenter
                             </button>
                         </div>
@@ -920,14 +924,14 @@
                                 <div class="comment-author">
                                     <div class="comment-avatar">JS</div>
                                     <div class="comment-author-info">
-                                        <div class="comment-author-name"><?= htmlspecialchars($commentaire['Nom_complet']) ?></div>
+                                        <div class="comment-author-name"><?= htmlspecialchars_decode($commentaire['Nom_complet']) ?></div>
                                         <div class="comment-author-badge">Développeur Senior</div>
                                     </div>
                                 </div>
                                 <div class="comment-date">commenté le <?= htmlspecialchars($commentaire['date_commente']) ?></div>
                             </div>
                             <div class="comment-content">
-                                <p><?= htmlspecialchars($commentaire['content_commente']) ?></p>
+                                <p><?= htmlspecialchars_decode($commentaire['content_commente']) ?></p>
                             </div>
                             <div class="comment-actions">
                                 <div class="comment-like">
@@ -942,6 +946,9 @@
 
                     </div>
                 <?php endforeach ?>
+                <?php else: ?>
+                    <h1><i><marquee behavior="scroll" direction="left">Aucun article trouvé.</marquee></i></h1>
+                <?php endif; ?>
             </section>
         </main>
     </div>

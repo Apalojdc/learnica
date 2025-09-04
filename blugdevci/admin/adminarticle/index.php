@@ -1,22 +1,25 @@
 <?php
+session_start();
     include(__DIR__.'/../../login/connexion.php');
 
     if(isset($_POST['ajouter_article'])){
         if(!empty($_POST['titre_article']) && !empty($_POST['categorie']) && !empty($_POST['courte_description']) && !empty($_POST['contenue_doc']) && !empty($_POST['statut'])){
            $titre = htmlspecialchars($_POST['titre_article']);
+           $slug = htmlspecialchars($_POST['slug_article']);
            $categorie = htmlspecialchars($_POST['categorie']);
            $courte_description = htmlspecialchars($_POST['courte_description']);
-           $contenue_doc = htmlspecialchars($_POST['contenue_doc']);
-           $statut = htmlspecialchars($_POST['statut']);
-           $id = 1;
+           $contenue_doc = $_POST['contenue_doc'];
+           $statut_article = htmlspecialchars($_POST['statut']);
+           $id = $_SESSION['user']['id_user'];
 
-           $articleprepared = $pdo->prepare('INSERT INTO articles (titre_article, categorie, courte_description, contenue_doc, statut, user_pub_id) VALUES (:titre, :categorie, :courte_description, :contenue_doc, :statut, :user_pub_id)');
+           $articleprepared = $pdo->prepare('INSERT INTO articles(titre_article, slug_article, categorie, courte_description, contenue_doc, statut_article, user_pub_id) VALUES (:titre, :slug, :categorie, :courte_description, :contenue_doc, :statut_article, :user_pub_id)');
            $articleprepared->bindValue(':titre', $titre);
+           $articleprepared->bindValue(':slug', $slug);
            $articleprepared->bindValue(':categorie', $categorie);
            $articleprepared->bindValue(':courte_description', $courte_description);
            $articleprepared->bindValue(':contenue_doc', $contenue_doc);
-           $articleprepared->bindValue(':statut', $statut);
-           $articleprepared->bindValue(':user_pub_id', $id);
+           $articleprepared->bindValue(':statut_article', $statut_article);
+           $articleprepared->bindValue(':user_pub_id', $_SESSION['user']['id_user']);
            $succes = $articleprepared->execute();
 
            if( $succes ){
@@ -104,10 +107,17 @@
 </head>
 <body>
     <h2>Ajouter un nouvel article</h2>
-    <form id="articleForm" method="POST" enctype="multipart/form-data">
+    <div class="message">
+        <?= isset($message) ? $message['message'] : '' ?>
+    </div>
+    <form id="articleForm" method="POST" enctype="multipart/form-data"  onsubmit="tinymce.triggerSave();">
         <div class="form-group">
             <label for="titre_article">Titre de l'article :</label>
             <input type="text" id="titre_article" name="titre_article" required>
+        </div>
+        <div class="form-group">
+            <label for="slug_article">Slug :</label>
+            <input type="text" id="slug_article" name="slug_article" placeholder="Exp: slug-de-mon-premier-article" required>
         </div>
         <div class="form-group">
             <label for="categorie">Catégorie :</label>
@@ -144,67 +154,90 @@
     </form>
     <div id="message" class="message" style="display: none;"></div>
     <div id="toast" class="toast"></div>
-
+    <script src="https://cdn.jsdelivr.net/npm/tinymce@7.1.2/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
-// generation d'un toast
-     function Voirtoast(message){
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.classList.add('show');
-
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
-     }
-
-
-
-        let urlim = document.getElementById('url_image');
-        let img = document.getElementById('img');
-
-
-        urlim.addEventListener('change', function(){
-            const file = this.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event){
-                    img.src = event.target.result;
-                    img.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
+       (function () {
+        tinymce.init({
+            selector: '#contenue_doc',
+            plugins: 'advlist autolink lists link image charmap preview anchor ' +
+                    'searchreplace visualblocks code fullscreen ' +
+                    'insertdatetime media table code help wordcount',
+            toolbar: 'undo redo | formatselect | ' +
+                    'bold italic forecolor backcolor | alignleft aligncenter ' +
+                    'alignright alignjustify | bullist numlist outdent indent | ' +
+                    'removeformat | help',
+            setup: function (editor) {
+                editor.on('change', function () {
+                    tinymce.triggerSave(); // met à jour le textarea à chaque changement
+                });
             }
         });
+    })();
 
 
-        // document.getElementById('articleForm').addEventListener('submit', async function(e) {
-        //     // e.preventDefault();
+        // generation d'un toast
+        (function(){
+            function Voirtoast(message){
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        })();
+
+        (function(){
+            let urlim = document.getElementById('url_image');
+            let img = document.getElementById('img');
+
+
+            urlim.addEventListener('change', function(){
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event){
+                        img.src = event.target.result;
+                        img.style.display = 'block';
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        })();
+
             
-        //     const formData = new FormData(this);
-        //     const messageDiv = document.getElementById('message');
-            
-        //     try {
-        //         const response = await fetch('add_article.php', {
-        //             method: 'POST',
-        //             body: formData
-        //         });
+
+
+            // document.getElementById('articleForm').addEventListener('submit', async function(e) {
+            //     // e.preventDefault();
                 
-        //         const result = await response.json();
+            //     const formData = new FormData(this);
+            //     const messageDiv = document.getElementById('message');
                 
-        //         messageDiv.style.display = 'block';
-        //         if (result.success) {
-        //             messageDiv.className = 'message success';
-        //             messageDiv.textContent = 'Article ajouté avec succès !';
-        //             this.reset();
-        //         } else {
-        //             messageDiv.className = 'message error';
-        //             messageDiv.textContent = result.message || 'Erreur lors de l\'ajout de l\'article';
-        //         }
-        //     } catch (error) {
-        //         messageDiv.style.display = 'block';
-        //         messageDiv.className = 'message error';
-        //         messageDiv.textContent = 'Erreur de connexion au serveur';
-        //     }
-        // });
+            //     try {
+            //         const response = await fetch('add_article.php', {
+            //             method: 'POST',
+            //             body: formData
+            //         });
+                    
+            //         const result = await response.json();
+                    
+            //         messageDiv.style.display = 'block';
+            //         if (result.success) {
+            //             messageDiv.className = 'message success';
+            //             messageDiv.textContent = 'Article ajouté avec succès !';
+            //             this.reset();
+            //         } else {
+            //             messageDiv.className = 'message error';
+            //             messageDiv.textContent = result.message || 'Erreur lors de l\'ajout de l\'article';
+            //         }
+            //     } catch (error) {
+            //         messageDiv.style.display = 'block';
+            //         messageDiv.className = 'message error';
+            //         messageDiv.textContent = 'Erreur de connexion au serveur';
+            //     }
+            // });
     </script>
 </body>
 </html>

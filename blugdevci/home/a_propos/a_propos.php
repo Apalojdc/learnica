@@ -661,7 +661,7 @@
     <!-- Navigation -->
     <?php
        
-        if(empty($_SESSION['user']['nom_complet'])){
+        if(empty($_SESSION['user']['id_user'])){
             include(__DIR__.'/../../navbar/NavBarIndex.php');
         }else{
              include(__DIR__.'/../../navbar/NavBarAcceuil.php');

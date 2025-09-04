@@ -11,7 +11,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevBlog - Partage d'expériences en développement</title>
+    <title>DevBlog - Articles</title>
     <style>
         * {
             margin: 0;
@@ -716,7 +716,7 @@ session_start();
         <?php 
             // include(__DIR__.'/forum_nav/forum_nav.php')
         
-            if(empty($_SESSION['user']['nom_complet'])){
+            if(empty($_SESSION['user']['id_user'])){
                 include(__DIR__.'/../../navbar/NavBarIndex.php');
             }else{
                 include(__DIR__.'/../../navbar/NavBarAcceuil.php');
@@ -758,7 +758,7 @@ session_start();
                 <article class="featured-article">
                     <div class="featured-image"></div>
                     <div class="featured-content">
-                        <h2 class="featured-title"><?= htmlspecialchars($article->titre_article) ?></h2>
+                        <h2 class="featured-title"><?= htmlspecialchars_decode($article->titre_article, ENT_QUOTES) ?></h2>
                         <div class="article-meta">
                             <div class="meta-item">
                                 <span>📅</span>
@@ -780,9 +780,9 @@ session_start();
                             <span class="tag">Tutorial</span>
                         </div>
                         <p class="featured-excerpt">
-                            <?= htmlspecialchars($article->courte_description) ?>
+                            <?= htmlspecialchars_decode($article->courte_description) ?>
                         </p>
-                        <a href="/monblug/home/blogs/blog_view_page?num=<?= htmlspecialchars($article->id_article) ?>" class="read-more-btn">
+                        <a href="/monblug/home/blogs/blog_view_page?num=<?= htmlspecialchars_decode($article->id_article) ?>" class="read-more-btn">
                             📖 Lire l'article complet
                             <span>→</span>
                         </a>
@@ -796,11 +796,11 @@ session_start();
                     <article class="article-card">
                         <div class="article-image">💻</div>
                         <div class="article-content">
-                            <h3 class="article-title"><?= htmlspecialchars($mon_article['titre_article']) ?></h3>
+                            <h3 class="article-title"><?= htmlspecialchars_decode($mon_article['titre_article']) ?></h3>
                             <div class="article-meta">
                                 <div class="meta-item">
                                     <span>📅</span>
-                                    <span><?= htmlspecialchars($mon_article['date_ajoute']) ?></span>
+                                    <span><?= htmlspecialchars_decode($mon_article['date_ajoute']) ?></span>
                                 </div>
                                 <div class="meta-item">
                                     <span>⏱️</span>
@@ -812,11 +812,11 @@ session_start();
                                 <span class="tag">Performance</span>
                             </div>
                             <p class="article-excerpt">
-                                <?= htmlspecialchars($mon_article['courte_description']) ?>
+                                <?= htmlspecialchars_decode($mon_article['courte_description']) ?>
                             </p>
                             <div class="article-footer">
-                                <span style="color: var(--text-muted); font-size: 0.8rem;"><?= htmlspecialchars($mon_article['article_view']) ?> vues</span>
-                                <a href="/monblug/home/blogs/blog_view_page?num=<?= htmlspecialchars($mon_article['id_article']) ?>" class="read-article-btn">Lire l'article</a>
+                                <span style="color: var(--text-muted); font-size: 0.8rem;"><?= htmlspecialchars_decode($mon_article['article_view']) ?> vues</span>
+                                <a href="/monblug/home/blogs/blog_view_page?num=<?= htmlspecialchars_decode($mon_article['id_article']) ?>" class="read-article-btn">Lire l'article</a>
                             </div>
                         </div>
                     </article>
