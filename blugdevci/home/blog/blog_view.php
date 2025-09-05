@@ -37,13 +37,14 @@
             exit();
         }
     }
+    include (__DIR__.'/like_blog.php');
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guide complet : Maîtriser React 18 et ses nouvelles fonctionnalités - DevBlog</title>
+    <title>Learnica - <?= htmlspecialchars($article->titre_article) ?></title>
     <style>
         * {
             margin: 0;
@@ -858,21 +859,21 @@
                         <span class="stat-label">Min de lecture</span>
                     </div>
                     <div class="stat-item">
-                        <span class="stat-number">18</span>
+                        <span class="stat-number"><?= count($commentaires) ?></span>
                         <span class="stat-label">Commentaires</span>
                     </div>
                 </div>
 
-                <div class="article-tags">
+                <!-- <div class="article-tags">
                     <span class="tag">React</span>
                     <span class="tag">JavaScript</span>
                     <span class="tag">Frontend</span>
                     <span class="tag">Tutorial</span>
                     <span class="tag">React 18</span>
-                </div>
+                </div> -->
 
                 <div class="article-like">
-                    <button class="like-btn" onclick="toggleArticleLike(this)">
+                    <button class="like-btn" onclick="toggleArticleLike(this, <?= $article->id_article ?>)">
                         <span>❤️</span>
                         <span>J'aime</span>
                         <span class="like-count-text"><?= htmlspecialchars($article->articule_likes) ?></span>
@@ -881,6 +882,14 @@
                 </div>
             </header>
 
+            <!-- Article Content -->
+            <article class="article-content">
+                <div class="contenue">
+                    <!-- <pre> -->
+                        <?= htmlspecialchars_decode($article->courte_description) ?>
+                    <!-- </pre> -->
+                </div>
+            </article>
             <!-- Article Content -->
             <article class="article-content">
                 <div class="contenue">
@@ -895,7 +904,7 @@
                 <div class="comments-header">
                     <div>
                         <h2 class="comments-title">💬 Commentaires</h2>
-                        <div class="comments-count">18 commentaires</div>
+                        <div class="comments-count"><?= count($commentaires) ?> commentaires</div>
                     </div>
                 </div>
 
@@ -1020,49 +1029,60 @@
         });
 
         // Fonctions pour les interactions (à connecter avec PHP)
-        function toggleArticleLike(button) {
-            // Animation visuelle
-            const isLiked = button.classList.contains('liked');
-            
-            if (isLiked) {
-                button.classList.remove('liked');
-                // Décrémenter le compte
-                const countElement = button.querySelector('.like-count-text');
-                const currentCount = parseInt(countElement.textContent);
-                countElement.textContent = currentCount - 1;
-            } else {
-                button.classList.add('liked');
-                // Incrémenter le compte
-                const countElement = button.querySelector('.like-count-text');
-                const currentCount = parseInt(countElement.textContent);
-                countElement.textContent = currentCount + 1;
-            }
-            
-            // Ici tu ajouteras l'appel AJAX vers ton PHP
-            console.log(`Article ${isLiked ? 'unliked' : 'liked'}`);
+        function toggleArticleLike(button, articleId) {
+
+            let likeCountElement = button.querySelector('.like-count-text');
+            let currentCount = parseInt(likeCountElement.textContent);
+
+             // Vérifie si déjà liké (optionnel si tu veux un seul sens)
+            let isLiked = button.classList.contains("liked");
+
+            fetch('/monblug/home/blogs/blog_likes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: "articleId=" + articleId + "&action=" + (isLiked ? 'unlike' : 'like')
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.likes){
+                    // Met à jour le compteur et l'état du bouton
+                        if(isLiked){
+                            button.classList.remove('liked');
+                            likeCountElement.textContent = currentCount - 1;
+                        } else {
+                            button.classList.add('liked');
+                            likeCountElement.textContent = currentCount + 1;
+                        }
+                    } else {
+                        alert('Erreur lors de la mise à jour du like');
+                    }
+                })
+                .catch(error => console.error('Erreur:', error));
         }
 
-        function toggleCommentLike(button) {
-            // Animation visuelle
-            const isLiked = button.classList.contains('liked');
+        // function toggleCommentLike(button) {
+        //     // Animation visuelle
+        //     const isLiked = button.classList.contains('liked');
             
-            if (isLiked) {
-                button.classList.remove('liked');
-                // Décrémenter le nombre
-                const countElement = button.querySelector('span:last-child');
-                const currentCount = parseInt(countElement.textContent);
-                countElement.textContent = currentCount - 1;
-            } else {
-                button.classList.add('liked');
-                // Incrémenter le nombre
-                const countElement = button.querySelector('span:last-child');
-                const currentCount = parseInt(countElement.textContent);
-                countElement.textContent = currentCount + 1;
-            }
+        //     if (isLiked) {
+        //         button.classList.remove('liked');
+        //         // Décrémenter le nombre
+        //         const countElement = button.querySelector('span:last-child');
+        //         const currentCount = parseInt(countElement.textContent);
+        //         countElement.textContent = currentCount - 1;
+        //     } else {
+        //         button.classList.add('liked');
+        //         // Incrémenter le nombre
+        //         const countElement = button.querySelector('span:last-child');
+        //         const currentCount = parseInt(countElement.textContent);
+        //         countElement.textContent = currentCount + 1;
+        //     }
             
-            // Ici tu ajouteras l'appel AJAX vers ton PHP
-            console.log(`Comment ${isLiked ? 'unliked' : 'liked'}`);
-        }
+        //     // Ici tu ajouteras l'appel AJAX vers ton PHP
+        //     console.log(`Comment ${isLiked ? 'unliked' : 'liked'}`);
+        // }
     </script>
 </body>
 </html>

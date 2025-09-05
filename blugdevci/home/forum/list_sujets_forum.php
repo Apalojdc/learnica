@@ -2,32 +2,40 @@
 session_start();
     include(__DIR__.'/../../login/connexion.php');
 
-    // Recuperation de tous les sujets par catégorie
-    $id_categorie = isset($_GET['num']) ? (int)$_GET['num'] : 0;
-    $forum_sujets_recupe = $pdo->prepare('SELECT 
-    id_forum,
-    titre_forum,
-    slug_form,
-    description_forum,
-    id_auteur,
-    id_categorie,
-    nbr_vue_forum,
-    nbr_reponse_forum,
-    dernier_post_a,
-    statut_forum,
-    modifie_le,
-    cree_le,
-    Nom_complet
-    FROM forum INNER JOIN users ON forum.id_auteur = users.Id_User WHERE forum.id_categorie = :id_categorie ORDER BY cree_le DESC');
-    $forum_sujets_recupe->bindValue(':id_categorie', $id_categorie, PDO::PARAM_INT);
-    $forum_sujets_recupe->execute();
-    $sujets = $forum_sujets_recupe->fetchAll();
+    if(isset($_GET['num']) && !empty($_GET['num'])){
+        // Recuperation de tous les sujets par catégorie
+        $id_categorie = isset($_GET['num']) ? (int)$_GET['num'] : 0;
 
-    // Recuperation de la categorie du forum selectionnée
-    $categorie_recupe = $pdo->prepare('SELECT * FROM categorie WHERE id_categorie = :id_categorie');
-    $categorie_recupe->bindValue(':id_categorie', $id_categorie, PDO::PARAM_INT);
-    $categorie_recupe->execute();
-    $categorie = $categorie_recupe->fetch();
+        $forum_sujets_recupe = $pdo->prepare('SELECT 
+        id_forum,
+        titre_forum,
+        slug_form,
+        description_forum,
+        id_auteur,
+        id_categorie,
+        nbr_vue_forum,
+        nbr_reponse_forum,
+        dernier_post_a,
+        statut_forum,
+        modifie_le,
+        cree_le,
+        Nom_complet
+        FROM forum INNER JOIN users ON forum.id_auteur = users.Id_User WHERE forum.id_categorie = :id_categorie ORDER BY cree_le DESC');
+        $forum_sujets_recupe->bindValue(':id_categorie', $id_categorie, PDO::PARAM_INT);
+        $forum_sujets_recupe->execute();
+        $sujets = $forum_sujets_recupe->fetchAll();
+
+        // Recuperation de la categorie du forum selectionnée
+        $categorie_recupe = $pdo->prepare('SELECT * FROM categorie WHERE id_categorie = :id_categorie');
+        $categorie_recupe->bindValue(':id_categorie', $id_categorie, PDO::PARAM_INT);
+        $categorie_recupe->execute();
+        $categorie = $categorie_recupe->fetch();
+
+    } else {
+        // Redirection si l'ID de la catégorie n'est pas fourni
+        header('Location: /monblug/home/forums/forum_list_sujets_page');
+        exit;
+    }
 ?>
 
 
@@ -683,7 +691,7 @@ session_start();
          <?php 
             // include(__DIR__.'/forum_nav/forum_nav.php')
         
-            if(empty($_SESSION['user']['nom_complet'])){
+            if(!empty($_SESSION['user']['nom_complet'])){
                 include(__DIR__.'/../../navbar/NavBarIndex.php');
             }else{
                 include(__DIR__.'/../../navbar/NavBarAcceuil.php');
@@ -790,28 +798,12 @@ session_start();
                             <div class="topic-stats-left">
                                 <div class="topic-stat">
                                     <span class="topic-stat-number">
-                                        <?php
-                                            // Compter le nombre de message par sujet
-                                            $requ_count_rep = $pdo->prepare('SELECT COUNT(id_message) FROM message_users INNER JOIN forum ON forum.id_forum=message_users.id_forum WHERE forum.id_forum=:id_forum');
-                                            $requ_count_rep->bindValue(':id_forum', $sujet['id_forum'], PDO::PARAM_INT);
-                                            $nbr = $requ_count_rep->execute();
-                                            $nbr = $requ_count_rep->fetchColumn();
-                                            echo "<p> $nbr </p>";
-                                        ?>
+                                        <?= count($sujets) ?>
                                     </span>
                                     <span class="topic-stat-label">Messages</span>
                                 </div>
                                 <div class="topic-stat">
-                                    <span class="topic-stat-number">
-                                        <?php
-                                            // Compter le nombre de message par sujet
-                                            $requ_count_rep = $pdo->prepare('SELECT COUNT(nbr_likes) FROM message_users INNER JOIN forum ON forum.id_forum=message_users.id_forum WHERE forum.id_forum=:id_forum');
-                                            $requ_count_rep->bindValue(':id_forum', $sujet['id_forum'], PDO::PARAM_INT);
-                                            $nbr = $requ_count_rep->execute();
-                                            $nbr = $requ_count_rep->fetchColumn();
-                                            echo "<p> $nbr </p>";
-                                        ?>
-                                    </span>
+                                    <span class="topic-stat-number"><?= htmlspecialchars($sujet['nbr_vue_forum']) ?></span>
                                     <span class="topic-stat-label">Vues</span>
                                 </div>
                             </div>

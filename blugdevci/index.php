@@ -1087,7 +1087,7 @@ include(__DIR__.'/login/paginate.php');
             </video>
         </div>
         <div class="hero-content-text">
-            <h1>Bienvenue sur Lernica</h1>
+            <h1>Bienvenue sur Learnica</h1>
             <p>
                 Découvrez la plateforme idéale pour vous auto-former et faire évoluer vos
                 compétences à votre rythme. Non seulement vous y trouverez des centaines de 

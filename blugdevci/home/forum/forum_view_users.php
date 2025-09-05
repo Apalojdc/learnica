@@ -33,7 +33,12 @@ if (isset($_GET['id'])) {
     $query->bindValue(':id_forum', $id_forum, PDO::PARAM_INT);
     $query->execute();
     $user_messages = $query->fetchAll(PDO::FETCH_ASSOC);
-   
+
+    // Ajouter les vue de forum
+    $update_vue = $pdo->prepare('UPDATE forum SET nbr_vue_forum = nbr_vue_forum + 1 WHERE id_forum = :id_forum');
+    $update_vue->bindValue(':id_forum', $id_forum, PDO::PARAM_INT);
+    $update_vue->execute();
+
 } else {
     // Redirection si l'ID du forum n'est pas fourni
     header('Location: /monblug/home/forums/forum_page');
@@ -851,7 +856,7 @@ if (isset($_GET['id'])) {
         <?php 
             // include(__DIR__.'/forum_nav/forum_nav.php')
         
-            if(empty($_SESSION['user']['nom_complet'])){
+            if(!empty($_SESSION['user']['nom_complet'])){
                 include(__DIR__.'/../../navbar/NavBarIndex.php');
             }else{
                 include(__DIR__.'/../../navbar/NavBarAcceuil.php');
@@ -960,7 +965,7 @@ if (isset($_GET['id'])) {
                 <form action="#" method="POST">
                     <textarea class="message-textarea" name="reponse_content" placeholder="Écrivez votre réponse ici..." required></textarea>
                     <div class="message-form-actions">
-                        <button type="submit" class="btn-submit" name="envoyer">📤 Publier la réponse</button>
+                        <button type="submit" class="btn-submit" name="envoyer">📤 Envoyer</button>
                     </div>
                 </form>
             </section>
@@ -970,7 +975,7 @@ if (isset($_GET['id'])) {
                 <div class="messages-header">
                     <div>
                         <h2 class="messages-title">💬 Réponses</h2>
-                        <div class="messages-count"><?= htmlspecialchars($sujet['nbr_reponse_forum']) ?> réponses au total</div>
+                        <div class="messages-count"><?= count($user_messages) ?> réponses au total</div>
                     </div>
                     <div class="sort-messages">
                         <label style="color: #888; font-size: 0.9rem;">Trier par:</label>
@@ -1021,37 +1026,6 @@ if (isset($_GET['id'])) {
                                 </div>
                             </form>
                         </div>
-                        
-                        <!-- Nested Reply -->
-                        <!-- <div class="nested-replies">
-                            <div class="nested-reply">
-                                <div class="message-header">
-                                    <div class="message-author">
-                                        <div class="message-author-avatar">DR</div>
-                                        <div class="message-author-info">
-                                            <div class="message-author-name">DevReact92</div>
-                                        </div>
-                                    </div>
-                                    <div class="message-date">Il y a 2 heures</div>
-                                </div>
-                                <div class="message-content">
-                                    <p>Merci @ExpertJS ! Je vais tester React DevTools Profiler tout de suite. Pour react-window, tu l'as déjà utilisé avec des données qui changent dynamiquement ?</p>
-                                </div>
-                                <div class="message-actions">
-                                    <div class="message-reactions">
-                                        <button class="message-reaction-btn" onclick="toggleMessageReaction(this, 'like')">
-                                            👍 <span>2</span>
-                                        </button>
-                                        <button class="message-reaction-btn" onclick="toggleMessageReaction(this, 'dislike')">
-                                            👎 <span>0</span>
-                                        </button>
-                                    </div>
-                                    <button class="reply-btn" onclick="toggleReplyForm(this)">
-                                        💬 Répondre
-                                    </button>
-                                </div>
-                            </div>
-                        </div> -->
                     </article>
                 <?php endforeach; ?>
                 <!-- Message 2 -->

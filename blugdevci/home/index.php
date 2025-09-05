@@ -3563,7 +3563,7 @@ include(__DIR__.'/coursinformatique/commentaire_add_config.php');
                                     </video>
                                 </div>
                                 <div class="lernica_style_nav_content-hero-content">
-                                    <h1>Bienvenue sur votre espace d’apprentissage 👋</h1>
+                                    <h1><?= 'Heureux de vous revoir' .$_SESSION['user']['nom_complet'] ?? 'sur Learnica'; ?></h1>
                                     <!-- <h1></h1> -->
                                      <h2>Learnica c'est djidji 🔥</h2>
                                     <p>Meilleure plateforme pour s'auto-former avec plusieurs documents gratuits pour vous.</p>
@@ -4179,7 +4179,7 @@ include(__DIR__.'/coursinformatique/commentaire_add_config.php');
                                                 </div>
                                                 
                                                 <div class="document-actions">
-                                                    <a class="btn-primary" href="<?= 'files/' . rawurlencode(basename($data['Contenue'])) ?>">
+                                                    <a class="btn-primary" href="/monblug/home/document/telechargement?num=<?= htmlspecialchars($data['IdPDF']) ?>">
                                                         <i class="fas fa-download"></i> Télécharger
                                                     </a>
                                                     <button class="btn-secondary" type="button" onclick="openfile(<?= $data['IdPDF'] ?>)">
@@ -4190,10 +4190,16 @@ include(__DIR__.'/coursinformatique/commentaire_add_config.php');
 
                                             <!-- Section Commentaires -->
                                             <div class="blog-system-comments">
+                                                <?php
+                                                        $recupe_commentes = $pdo->prepare('SELECT id_commentaire, id_user_commente, id_document_commente, content_commente, date_commente, Nom_complet FROM commentaire INNER JOIN users ON users.Id_User = commentaire.id_user_commente WHERE id_document_commente = :id_doc_commente  ORDER BY id_commentaire DESC');
+                                                        $recupe_commentes->bindValue(':id_doc_commente', $data['IdPDF']);
+                                                        $recupe_commentes->execute();
+                                                        $commentaires = $recupe_commentes->fetchAll();
+                                                    ?>
                                                 <div class="blog-system-comments-header" onclick="blogSystemToggleComments(this)">
                                                     <div class="blog-system-comments-title">
                                                         <i class="fas fa-comments"></i>
-                                                        Commentaires (3)
+                                                        Commentaires (<?= count($commentaires) ?>)
                                                     </div>
                                                     <i class="fas fa-chevron-down blog-system-comments-toggle"></i>
                                                 </div>
@@ -4203,7 +4209,7 @@ include(__DIR__.'/coursinformatique/commentaire_add_config.php');
                                                     
                                                     <div class="blog-system-comment-form">
                                                         <h2><?php
-                                                        //  $messages
+                                                         $messages??''
                                                         ?></h2>
                                                         <form onsubmit="ajouterCommentaire(event, <?= $data['IdPDF'] ?>)">
                                                             <input type="number" name="idDoc" value="<?= htmlspecialchars($data['IdPDF'])?>" hidden>
@@ -4224,17 +4230,16 @@ include(__DIR__.'/coursinformatique/commentaire_add_config.php');
                                                     </div>
                                                     
                                                     <!-- Liste des commentaires -->
-                                                    <?php
-                                                        $recupe_commentes = $pdo->prepare('SELECT id_commentaire, id_user_commente, id_document_commente, content_commente, date_commente, Nom_complet FROM commentaire INNER JOIN users ON users.Id_User = commentaire.id_user_commente WHERE id_document_commente = :id_doc_commente  ORDER BY id_commentaire DESC');
-                                                        $recupe_commentes->bindValue(':id_doc_commente', $data['IdPDF']);
-                                                        $recupe_commentes->execute();
-                                                        $commentaires = $recupe_commentes->fetchAll();
-                                                    ?>
                                                     <div class="blog-system-comments-list" id="blog-system-comments-list-<?= $data['IdPDF'] ?>">
                                                         <?php foreach($commentaires as $commente): ?>
                                                             <div class="blog-system-comment">
                                                                 <div class="blog-system-comment-author-avatar">
-                                                                    <span>JD</span>
+                                                                    <span>
+                                                                        <?php
+                                                                        $debut = trim(htmlspecialchars_decode($commente['Nom_complet']));
+                                                                         echo substr($debut, 0, 2);
+                                                                        ?>
+                                                                    </span>
                                                                 </div>
                                                                 <div class="blog-system-comment-content">
                                                                     <div class="blog-system-comment-header">
@@ -4266,137 +4271,6 @@ include(__DIR__.'/coursinformatique/commentaire_add_config.php');
                                 <a href="/monblug/home/telechargers" class="btn-primary">Voir plus de document <i class="fas fa-chevron-right"></i></a>
                             </div>
                 </section>
-
-                <!-- <section class="section-container" id="course-section">
-                    <div class="section-header">
-                        <h2 class="section-title">
-                            <i class="fas fa-graduation-cap"></i>
-                            Cours d'Informatique
-                        </h2>
-                        <p class="section-subtitle">Apprenez les bases de l'informatique avec notre cours complet</p>
-                    </div>
-                    
-                    <div class="course-content-grid">
-                        <aside class="course-sidebar animate-slide-in">
-                            <h3>
-                                📚 Sommaire du cours
-                            </h3>
-                            <nav class="course-nav">
-                                <ul>
-                                    <li>
-                                        <a href="#module1">🖥️ 1. Introduction à l'informatique</a>
-                                        <ul>
-                                            <li><a href="#m1-1">Qu'est-ce que l'informatique ?</a></li>
-                                            <li><a href="#m1-2">Histoire brève</a></li>
-                                            <li><a href="#m1-3">Domaines d'application</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li>
-                                        <a href="#module2">💻 2. L'ordinateur et ses composants</a>
-                                        <ul>
-                                            <li><a href="#m2-1">Types d'ordinateurs</a></li>
-                                            <li><a href="#m2-2">Matériel (hardware)</a></li>
-                                            <li><a href="#m2-3">Logiciel (software)</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li>
-                                        <a href="#module3">🧑‍💻 3. Utilisation de base</a>
-                                        <ul>
-                                            <li><a href="#m3-1">Allumer / Éteindre</a></li>
-                                            <li><a href="#m3-2">Bureau & fenêtres</a></li>
-                                            <li><a href="#m3-3">Clavier & souris</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li>
-                                        <a href="#module4">📄 4. Bureautique</a>
-                                        <ul>
-                                            <li><a href="#m4-1">Word</a></li>
-                                            <li><a href="#m4-2">Excel</a></li>
-                                            <li><a href="#m4-3">PowerPoint</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li>
-                                        <a href="#module5">🌐 5. Internet & Web</a>
-                                        <ul>
-                                            <li><a href="#m5-1">Navigateur</a></li>
-                                            <li><a href="#m5-2">Recherche & e-mail</a></li>
-                                            <li><a href="#m5-3">Télécharger</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li>
-                                        <a href="#module6">🔐 6. Sécurité numérique</a>
-                                        <ul>
-                                            <li><a href="#m6-1">Mots de passe</a></li>
-                                            <li><a href="#m6-2">Antivirus</a></li>
-                                            <li><a href="#m6-3">Arnaques (phishing)</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li>
-                                        <a href="#module7">🛠️ 7. Outils numériques</a>
-                                        <ul>
-                                            <li><a href="#m7-1">WhatsApp Web</a></li>
-                                            <li><a href="#m7-2">Cloud</a></li>
-                                            <li><a href="#m7-3">Scanner / Imprimer</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li>
-                                        <a href="#module8">👨‍🏫 8. Programmation (optionnel)</a>
-                                        <ul>
-                                            <li><a href="#m8-1">Langages</a></li>
-                                            <li><a href="#m8-2">Algorithmes</a></li>
-                                            <li><a href="#m8-3">Scratch / Python</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li>
-                                        <a href="#module9">📊 9. Évaluation</a>
-                                        <ul>
-                                            <li><a href="#m9-1">Mini projet</a></li>
-                                            <li><a href="#m9-2">Exercices</a></li>
-                                            <li><a href="#m9-3">Quiz</a></li>
-                                        </ul>
-                                    </li>
-
-                                    <li><a href="#module10">📈 Bonus : Apprendre +</a></li>
-                                </ul>
-                            </nav>
-                        </aside>
-
-                        <div class="course-content">
-                            <div class="generalite">
-                                <h3 class="titre">Généralité sur l'informatique</h3>
-                                <ol>
-                                    <li>Définition de l'informatique</li>
-                                    <li>Histoire et évolution</li>
-                                    <li>Impact sur la société moderne</li>
-                                    <li>Perspectives d'avenir</li>
-                                </ol>
-                                
-                                <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
-                                    <button class="btn-primary">
-                                        <i class="fas fa-play"></i>
-                                        Commencer le cours
-                                    </button>
-                                    <button class="btn-secondary">
-                                        <i class="fas fa-bookmark"></i>
-                                        Sauvegarder
-                                    </button>
-                                    <button class="btn-secondary">
-                                        <i class="fas fa-share"></i>
-                                        Partager
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section> -->
             <?php include(__DIR__.'/../navbar/footer.php') ?>            
         </main>
         

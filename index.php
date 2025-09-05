@@ -100,6 +100,7 @@ $routes = [
     'home/reseau'   => 'blugdevci/home/reseaux.html',
     'home/admindocument'=> 'blugdevci/home/document/documents.php',
     'home/telechargers'=> 'blugdevci/home/document/document.php',
+    'home/document/telechargement'=> 'blugdevci/home/document/show.php',
     'home/tutoriel'   => 'blugdevci/home/tutoriel.php',
     'home/frontEnd'   => 'blugdevci/home/frontEnd.php',
     'home/backEnd'    => 'blugdevci/home/BackEnd.php',
@@ -119,6 +120,7 @@ $routes = [
     'home/blogs/blog_page'       => 'blugdevci/home/blog/index.php',// Mon blog routing
     'home/blogs/blog_view_page'       => 'blugdevci/home/blog/blog_view.php',// Mon blog routing
     'home/blogs/blog_ajout_script'       => 'blugdevci/home/blog/script_ajout_commentaire.php',// script pour ajouter un commentaire
+    'home/blogs/blog_likes'       => 'blugdevci/home/blog/like_blog.php',// script pour ajouter un like
     //Les routes de mon forum
     'home/forums/forum_page'       => 'blugdevci/home/forum/index.php',// Mon forum routing
     'home/forums/forum_membres_page'       => 'blugdevci/home/forum/membres.php',// Mon forum routing

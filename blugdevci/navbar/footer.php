@@ -4392,8 +4392,8 @@
                 function blogSystemShareArticle() {
                     if (navigator.share) {
                         navigator.share({
-                            title: 'Article intéressant',
-                            text: 'Découvrez cet article intéressant !',
+                            title: 'Document intéressant',
+                            text: 'Découvrez ce document intéressant !',
                             url: window.location.href
                         });
                     } else {

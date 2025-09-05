@@ -937,7 +937,7 @@ session_start();
                     </div>
                     <div class="forum-stat-item">
                         <span class="forum-stat-label">Sujets:</span>
-                        <span class="forum-stat-value" id="topicsCount">15,432</span>
+                        <span class="forum-stat-value" id="topicsCount"><?= count($sujets) ?></span>
                     </div>
                     <div class="forum-stat-item">
                         <span class="forum-stat-label">Messages:</span>
@@ -978,7 +978,7 @@ session_start();
                                             </div>
                                             <div class="forum-subforum-stats">
                                                 <div class="forum-stat-box">
-                                                    <span class="forum-stat-number">1,234</span>
+                                                    <span class="forum-stat-number"><?= count($sujets) ?></span>
                                                     <span class="forum-stat-text">Sujets</span>
                                                 </div>
                                                 <div class="forum-stat-box">
@@ -987,7 +987,7 @@ session_start();
                                                 </div>
                                             </div>
                                             <div class="forum-last-post">
-                                                <div class="forum-last-post-title">React 18 : Nouvelles fonctionnalités</div>
+                                                <div class="forum-last-post-title"><?= htmlspecialchars($sujet['titre_forum']) ?></div>
                                                 <div class="forum-last-post-meta">Par Marie D. - Il y a 2h</div>
                                             </div>
                                         </div>
