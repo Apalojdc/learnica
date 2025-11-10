@@ -155,7 +155,7 @@
         <p class="description">
             Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.
         </p>
-
+    <form action="/monblug/home/identification/identification_code" method="POST">
         <div id="message" class="message"></div>
 
         <div class="form-group">
@@ -163,19 +163,20 @@
             <input 
                 type="email" 
                 id="email" 
-                name="email" 
+                name="username_verify" 
                 placeholder="exemple@email.com"
                 required
             >
         </div>
 
-        <button class="btn" onclick="handleSubmit()">
+        <button class="btn" type="submit" name="verifier">
             Envoyer le lien de réinitialisation
         </button>
 
         <div class="back-link">
-            <a href="#">← Retour à la connexion</a>
+            <a href="/monblug/login">← Retour à la connexion</a>
         </div>
+    </form>
     </div>
 
     <script>

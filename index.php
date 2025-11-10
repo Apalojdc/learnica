@@ -136,6 +136,10 @@ $routes = [
     'home/actionUsers/read_article'       => 'blugdevci/home/actionUsers/read_article.php',
     'home/forum/read_forum'       => 'blugdevci/home/forum/read_forum.php',
 
+    //  Routes pour modifier le mot de passe
+    'home/identification/page'       => 'blugdevci/password_forgot/index.php',
+    'home/update/password/page'       => 'blugdevci/password_forgot/updatepassword.php',
+    'home/identification/identification_code'       => 'blugdevci/password_forgot/identification_code.php',
     // Les routes pour les tutos
 ];
 

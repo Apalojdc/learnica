@@ -758,7 +758,7 @@ if (isset($_POST['envoyer'])) {
                     </div>
                     <div class="mdpoublier">
                         <span>
-                            <a href="#">Mot de passe oublié?</a>
+                            <a href="/monblug/home/identification/page">Mot de passe oublié?</a>
                         </span>
                     </div>
                 </form>
