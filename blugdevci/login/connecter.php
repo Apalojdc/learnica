@@ -19,6 +19,14 @@ if (isset($_POST['connecter'])) {
             $stmt->bindValue(':email', $email);
             $stmt->execute();
 
+            $statut = $pdo->prepare("SELECT * FROM users");
+            $statut->execute();
+            $statut = $statut->fetch(PDO::FETCH_ASSOC);
+
+            if($statut['statut'] == 0){
+                $error = "Compte non activé ou supprimé. Veuillez contacter l'administrateur.";
+            }
+
             // Vérifier si l'utilisateur existe
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($user) {
@@ -26,19 +34,18 @@ if (isset($_POST['connecter'])) {
                 if (password_verify($password, $user['mdp'])) {
                     // Stocker les données utilisateur dans la session
                     $_SESSION['user'] = [
-                        'id_user' => $user['Id_User'],
-                        'nom_complet' => $user['Nom_complet'],
+                        'Id_User' => $user['Id_User'],
+                        'nom_complet' => $user['nom_complet'],
                         'mel' => $user['mel'],
-                        'specialite' => $user['specialite'],
-                        'genre' => $user['genre'],
-                        'niveau' => $user['niveau'],
-                        'objectif' => $user['objectif'],
-                        'domaine' => $user['domaine'],
-                        'numero' => $user['numero']
+                        'role' => $user['role'],
+                        'statut' => $user['statut'],
                     ];
 
                     // Rediriger l'utilisateur vers la page d'accueil
                     if($user['mel'] === "coulapalo@gmail.com"){
+                        header("Location: /monblug/admin");
+                        exit();
+                    }elseif($user['role'] == "admin"){
                         header("Location: /monblug/admin");
                         exit();
                     }else{
@@ -47,7 +54,7 @@ if (isset($_POST['connecter'])) {
                     }
                 } else {
                     // Mot de passe incorrect
-                    $error = "Mot de passe incorrect.";
+                    $error = "mdp incorrect.";
                 }
             } else {
                 // L'utilisateur n'existe pas

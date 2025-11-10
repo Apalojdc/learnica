@@ -417,10 +417,13 @@
                 </nav>
 
                 <!-- Section droite avec boutons inscription/connexion -->
-                <div class="lernica-nav-right" id="mobileNavRight">
-                    <a href="/monblug/login?#loginTab" class="lernica-nav-link active">Se connecter ou s'inscrire</a>
-                    <!-- <a href="/monblug/login?#loginTab" class="lernica-nav-link">Connexion</a> -->
-                </div>
+                 <?php
+                 if(empty($_SESSION['user']['nom_complet'])){
+                    echo "<div class='lernica-nav-right' id='mobileNavRight'>
+                        <a href='/monblug/login?#loginTab' class='lernica-nav-link active'>Se connecter ou s'inscrire</a>
+                    </div>";
+                 }
+                ?>
 
                 <!-- Bouton mobile -->
                 <button class="lernica-mobile-btn" id="mobileMenuBtn">

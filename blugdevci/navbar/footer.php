@@ -538,6 +538,27 @@
             font-size: 1rem;
         }
 
+        /* Logout Button */
+        .logout-btn {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 100000;
+        }
+        .logout-btn-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+        }
+
                 /* ==========================================================================
         RESPONSIVE DESIGN
         ========================================================================== */
@@ -4505,6 +4526,14 @@
             showTestimonial(index);
         });
         })();
+
+        let logoutBtn = document.getElementById('logoutBtn');
+        function logoutFunction() {
+            logoutBtn.style.display = 'block';
+        }
+        function closeLogoutBtn() {
+            logoutBtn.style.display = 'none';
+        }
     </script>
 
 </body>

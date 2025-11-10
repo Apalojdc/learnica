@@ -1,10 +1,10 @@
 <?php
          // Informations de connexion
           $host = 'localhost'; // Nom d'hôte MySQL
-          $dbname = 'blog_ci'; // Nom de la base de données
+          $dbname = 'learnica'; // Nom de la base de données
           $username = 'root'; // Nom d'utilisateur MySQL
           $password = ''; // Mot de passe MySQL (le même que votre mot de passe vPanel)
-          
+
     try {
         // Création de la connexion avec PDO
         $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);

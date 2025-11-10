@@ -9,10 +9,7 @@ $messageSucces = "";
 // include('config.php');
 if (isset($_POST['envoyer'])) {
     // Vérification des champs non vides
-    if (!empty($_POST['nom']) && !empty($_POST['mel']) && !empty($_POST['specialite']) && 
-        !empty($_POST['genre']) && !empty($_POST['niveau']) && 
-        !empty($_POST['objectif']) && !empty($_POST['domaine']) && 
-        !empty($_POST['numero']) && !empty($_POST['mdp'])) {
+    if (!empty($_POST['nom']) && !empty($_POST['mel']) && !empty($_POST['mdp'])) {
         
         // Vérification des mots de passe
         if ($_POST['mdp'] != $_POST['mdpconfirm']) {
@@ -23,42 +20,29 @@ if (isset($_POST['envoyer'])) {
             // Récupération et sécurisation des données du formulaire
             $nom = htmlspecialchars($_POST['nom']);
             $mel = htmlspecialchars($_POST['mel']);
-            $specialite = htmlspecialchars($_POST['specialite']);
-            $genre = htmlspecialchars($_POST['genre']);
-            $niveau = htmlspecialchars($_POST['niveau']);
-            $objectif = htmlspecialchars($_POST['objectif']);
-            $domaine = htmlspecialchars($_POST['domaine']);
-            $numero = htmlspecialchars($_POST['numero']);
             $mdp = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
-            $temps = date('Y-m-d H:i:s');
+            $role = "user";
+            $status = 1;
 
             // Vérification de l'existence de l'email ou du numéro
-            $query = $pdo->prepare("SELECT * FROM users WHERE mel = :mel OR numero = :numero");
+            $query = $pdo->prepare("SELECT * FROM users WHERE mel = :mel");
             $query->bindValue(':mel', $mel);
-            $query->bindValue(':numero', $numero);
             $query->execute();
 
             if ($query->rowCount() > 0) {
-                $messageSucces = "L'email ou le numéro de téléphone existe déjà.";
+                $messageSucces = "L'email existe déjà.";
             } else {
                 // Préparation de la requête d'insertion
                 $sql = $pdo->prepare("
-                    INSERT INTO users (nom_complet, mel, specialite, genre, niveau, objectif, domaine, numero, mdp, temps) 
-                    VALUES (:nomcomplet, :mel, :specialite, :genre, :niveau, :objectif, :domaine, :numero, :mdp, :temps)
-                ");
+                    INSERT INTO users (nom_complet, mel, role, mdp, statut) 
+                    VALUES (:nomcomplet, :mel, :role, :mdp, :statut)");
 
                 // Liaison des paramètres
                 $sql->bindValue(':nomcomplet', $nom);
                 $sql->bindValue(':mel', $mel);
-                $sql->bindValue(':specialite', $specialite);
-                $sql->bindValue(':genre', $genre);
-                $sql->bindValue(':niveau', $niveau);
-                $sql->bindValue(':objectif', $objectif);
-                $sql->bindValue(':domaine', $domaine);
-                $sql->bindValue(':numero', $numero);
                 $sql->bindValue(':mdp', $mdp);
-                $sql->bindValue(':temps', $temps);
-
+                $sql->bindValue(':role', $role);
+                $sql->bindValue(':statut', $statut);
                 // Exécution de la requête
                 $succes = $sql->execute();
 
@@ -72,15 +56,11 @@ if (isset($_POST['envoyer'])) {
 
                     // Stocker les données dans la session
                     $_SESSION['user'] = [
-                        'id_user' => $userData['Id_User'],
-                        'nom_complet' => $userData['Nom_complet'],
+                        'id_user' => $userData['id_user'],
+                        'nom_complet' => $userData['nom_complet'],
                         'mel' => $userData['mel'],
-                        'specialite' => $userData['specialite'],
-                        'genre' => $userData['genre'],
-                        'niveau' => $userData['niveau'],
-                        'objectif' => $userData['objectif'],
-                        'domaine' => $userData['domaine'],
-                        'numero' => $userData['numero']
+                        'role' => $userData['role'],
+                        'status' => $userData['status'],
                     ];
 
                     // Redirection vers l'accueil
@@ -119,30 +99,144 @@ if (isset($_POST['envoyer'])) {
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            line-height: 1.6;
+            color: #ffffff;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
+            overflow: hidden;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            position: relative;
+            background-image: url('https://www.75secondes.fr/medias/uploads/2024/04/analyste-programmeur.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.9;
         }
-        
 
+        /* Particles Background Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 255, 136, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 100px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            animation: logoGlow 3s ease-in-out infinite alternate;
+            text-decoration: none;
+        }
+
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 5px rgba(0, 255, 136, 0.3)); }
+            to { filter: drop-shadow(0 0 15px rgba(0, 255, 136, 0.6)); }
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a:hover {
+            color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .nav-links a.active {
+            color: #00ff88;
+            background: rgba(0, 255, 136, 0.2);
+        }
+
+        /* Main Container */
         .main-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1000px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            min-height: 700px;
+            grid-template-columns: 1fr;
+            min-height: 500px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+            top: 0;
+            z-index: 2;
+            margin: 80px auto 20px auto;
+        }
+
+        .main-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
 
         .left-panel {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0f0f0f 100%);
             color: white;
             padding: 60px 40px;
             display: flex;
@@ -155,64 +249,57 @@ if (isset($_POST['envoyer'])) {
         .left-panel::before {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
-            animation: float 20s infinite linear;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-100px) rotate(360deg); }
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
         }
 
         .logo {
             font-size: 2.5rem;
-            font-weight: bold;
+            font-weight: 800;
             margin-bottom: 30px;
-            color: #fff;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+            animation: logoGlow 3s ease-in-out infinite alternate;
             z-index: 1;
             position: relative;
         }
 
-        .logo::before {
-            content: '<';
-            color: #64ffda;
-        }
-
-        .logo::after {
-            content: ' />';
-            color: #64ffda;
-        }
-
         .welcome-text {
             font-size: 1.1rem;
-            line-height: 1.6;
-            opacity: 0.9;
+            line-height: 1.8;
+            color: #b0b0b0;
             z-index: 1;
             position: relative;
         }
 
         .welcome-text strong {
-            color: #64ffda;
+            color: #00ff88;
         }
 
         .right-panel {
-            padding: 40px;
+            padding: 30px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
         }
 
         .auth-tabs {
             display: flex;
-            margin-bottom: 40px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 4px;
+            margin-bottom: 30px;
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            border-radius: 15px;
+            padding: 6px;
+            border: 1px solid rgba(0, 255, 136, 0.2);
         }
 
         .auth-tab {
@@ -220,75 +307,88 @@ if (isset($_POST['envoyer'])) {
             padding: 12px 20px;
             text-align: center;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 10px;
             transition: all 0.3s ease;
             font-weight: 600;
-            color: #6c757d;
-        }
-
-        .auth-tab.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .form-container {
+            color: #b0b0b0;
             position: relative;
             overflow: hidden;
         }
 
-        .form-section {
-            opacity: 0;
-            transform: translateX(100%);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        .auth-tab::before {
+            content: '';
             position: absolute;
-            width: 100%;
             top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
+            transition: left 0.5s ease;
         }
 
-        .form-section.active {
-            opacity: 1;
-            transform: translateX(0);
+        .auth-tab:hover::before {
+            left: 100%;
+        }
+
+        .auth-tab.active {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
+        }
+
+        .form-container {
             position: relative;
         }
 
-        .form-section.prev {
-            transform: translateX(-100%);
-        }
-
         .form-title {
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            color: #2d3748;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             text-align: center;
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 8px;
             font-weight: 600;
-            color: #4a5568;
+            color: #00ff88;
         }
 
         .form-input {
             width: 100%;
             padding: 15px 20px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid rgba(0, 255, 136, 0.3);
             border-radius: 12px;
             font-size: 1rem;
             transition: all 0.3s ease;
-            background: #fff;
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            color: #fff;
         }
 
         .form-input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #00ff88;
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.2);
             transform: translateY(-2px);
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+        }
+
+        .form-input::placeholder {
+            color: #888;
         }
 
         .radio-group {
@@ -303,13 +403,16 @@ if (isset($_POST['envoyer'])) {
             gap: 8px;
             cursor: pointer;
             padding: 10px 15px;
-            border: 2px solid #e2e8f0;
+            border: 2px solid rgba(0, 255, 136, 0.3);
             border-radius: 8px;
             transition: all 0.3s ease;
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            color: #b0b0b0;
         }
 
         .radio-option:hover {
-            border-color: #667eea;
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.1);
         }
 
         .radio-option input[type="radio"] {
@@ -317,7 +420,7 @@ if (isset($_POST['envoyer'])) {
         }
 
         .radio-option input[type="radio"]:checked + span {
-            color: #667eea;
+            color: #00ff88;
             font-weight: 600;
         }
 
@@ -334,67 +437,66 @@ if (isset($_POST['envoyer'])) {
             justify-content: center;
             gap: 8px;
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.4);
         }
 
         .btn-secondary {
-            background: #f8f9fa;
-            color: #6c757d;
-            border: 2px solid #e2e8f0;
+            background: linear-gradient(145deg, #2a2a2a, #1e1e1e);
+            color: #b0b0b0;
+            border: 2px solid rgba(0, 255, 136, 0.3);
         }
 
         .btn-secondary:hover {
-            background: #e9ecef;
-            border-color: #ced4da;
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+            color: #00ff88;
         }
 
         .form-actions {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            margin-top: 30px;
+            margin-top: 20px;
             gap: 15px;
         }
 
-        .step-indicator {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-            gap: 10px;
-        }
-
-        .step {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #e2e8f0;
-            transition: all 0.3s ease;
-        }
-
-        .step.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            transform: scale(1.2);
-        }
 
         .error-message {
-            color: #e53e3e;
+            color: #ff6b6b;
             font-size: 0.9rem;
             margin-top: 5px;
             display: none;
         }
 
         .success-message {
-            color: #38a169;
+            color: #00ff88;
             font-size: 0.9rem;
             margin-top: 5px;
             display: none;
@@ -406,7 +508,7 @@ if (isset($_POST['envoyer'])) {
 
         .strength-bar {
             height: 4px;
-            background: #e2e8f0;
+            background: rgba(0, 255, 136, 0.2);
             border-radius: 2px;
             overflow: hidden;
         }
@@ -418,14 +520,31 @@ if (isset($_POST['envoyer'])) {
             border-radius: 2px;
         }
 
-        .strength-weak { background: #e53e3e; }
-        .strength-medium { background: #ed8936; }
-        .strength-strong { background: #38a169; }
+        .strength-weak { background: #ff6b6b; }
+        .strength-medium { background: #ffa726; }
+        .strength-strong { background: #00ff88; }
+
+        .mdpoublier {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .mdpoublier a {
+            color: #00ff88;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .mdpoublier a:hover {
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
 
         @media (max-width: 768px) {
             .main-container {
                 grid-template-columns: 1fr;
                 max-width: 400px;
+                margin: 80px auto 20px auto;
             }
 
             .left-panel {
@@ -437,12 +556,21 @@ if (isset($_POST['envoyer'])) {
                 padding: 30px 20px;
             }
 
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
             .form-actions {
                 flex-direction: column;
             }
 
             .form-actions .btn {
                 width: 100%;
+            }
+
+            .nav-links {
+                display: none;
             }
         }
 
@@ -468,12 +596,115 @@ if (isset($_POST['envoyer'])) {
         .connection-form.active {
             display: block;
         }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 400px;
+        }
+
+        .toast {
+            background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+            transform: translateX(450px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+            background-size: 200% 100%;
+            animation: shimmer 2s linear infinite;
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+            color: #00ff88;
+            flex-shrink: 0;
+        }
+
+        .toast-content {
+            flex: 1;
+            color: #fff;
+        }
+
+        .toast-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: #00ff88;
+        }
+
+        .toast-message {
+            font-size: 0.8rem;
+            color: #b0b0b0;
+            line-height: 1.4;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .toast-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <?php
+        // if(empty($_SESSION['user']['id_user'])){
+        //     include(__DIR__.'/../navbar/NavBarIndex.php');
+        // }else{
+        //      include(__DIR__.'/../navbar/NavBarAcceuil.php');
+        // }
+    ?>
+
     <div class="main-container">
         <!-- Panel gauche avec présentation -->
-        <div class="left-panel">
+        <!-- <div class="left-panel">
             <div class="logo">BlugDev</div>
             <div class="welcome-text">
                 <p>Bienvenue sur <strong>BlugDev</strong>, le carrefour des passionnés de développement et d'innovation technologique !</p>
@@ -484,7 +715,7 @@ if (isset($_POST['envoyer'])) {
                 <br>
                 <p><strong>Prêt à embarquer ?</strong> Faites partie de notre aventure dès aujourd'hui !</p>
             </div>
-        </div>
+        </div> -->
 
         <!-- Panel droit avec formulaires -->
         <div class="right-panel">
@@ -503,6 +734,9 @@ if (isset($_POST['envoyer'])) {
 
             <!-- Formulaire de connexion -->
             <div class="connection-form" id="connectionForm">
+                <div style = "color:red">
+                    <?= $error ?? '' ; ?>
+                </div>
                 <h2 class="form-title">Connexion</h2>
                 <form action="/monblug/auth" method="POST">
                     <div class="form-group">
@@ -532,18 +766,11 @@ if (isset($_POST['envoyer'])) {
 
             <!-- Formulaire d'inscription -->
             <div class="form-container" id="registerForm">
-                <!-- Indicateur d'étapes -->
-                <div class="step-indicator">
-                    <div class="step active" data-step="1"></div>
-                    <div class="step" data-step="2"></div>
-                    <div class="step" data-step="3"></div>
-                </div>
-
                 <form action="" method="POST">
-                    <!-- Étape 1: Informations personnelles -->
-                    <div class="form-section active" id="step1">
-                        <h2 class="form-title">Informations personnelles</h2>
-                        
+                    <h2 class="form-title">Inscription</h2>
+                    
+                    <!-- Grille pour les champs côte à côte -->
+                    <div class="form-grid">
                         <div class="form-group">
                             <label for="nom">
                                 <i class="fas fa-user"></i> Nom complet
@@ -557,89 +784,9 @@ if (isset($_POST['envoyer'])) {
                             </label>
                             <input type="email" id="email" name="mel" class="form-input" placeholder="simplecodeur@gmail.com" required>
                         </div>
-
-                        <div class="form-group">
-                            <label for="specialite">
-                                <i class="fas fa-code"></i> Spécialité
-                            </label>
-                            <input type="text" id="specialite" name="specialite" class="form-input" placeholder="Front End" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label>
-                                <i class="fas fa-venus-mars"></i> Genre
-                            </label>
-                            <div class="radio-group">
-                                <label class="radio-option">
-                                    <input type="radio" name="genre" value="Masculin" required>
-                                    <span>Homme</span>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="genre" value="Feminin" required>
-                                    <span>Femme</span>
-                                </label>
-                                <label class="radio-option">
-                                    <input type="radio" name="genre" value="Demoiselle" required>
-                                    <span>Demoiselle</span>
-                                </label>
-                                
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="niveau">
-                                <i class="fas fa-graduation-cap"></i> Niveau d'étude
-                            </label>
-                            <input type="text" id="niveau" name="niveau" class="form-input" placeholder="1A/BTS" required>
-                        </div>
-
-                        <div class="form-actions">
-                            <div></div>
-                            <button type="button" class="btn btn-primary" id="nextStep1">
-                                Suivant <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
                     </div>
 
-                    <!-- Étape 2: Informations supplémentaires -->
-                    <div class="form-section" id="step2">
-                        <h2 class="form-title">Informations supplémentaires</h2>
-                        
-                        <div class="form-group">
-                            <label for="objectif">
-                                <i class="fas fa-bullseye"></i> Vos objectifs à atteindre
-                            </label>
-                            <input type="text" id="objectif" name="objectif" class="form-input" placeholder="Devenir développeur Full Stack" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="domaine">
-                                <i class="fas fa-heart"></i> Domaine informatique qui vous passionne
-                            </label>
-                            <input type="text" id="domaine" name="domaine" class="form-input" placeholder="Développement web" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="numero">
-                                <i class="fab fa-whatsapp"></i> Numéro WhatsApp
-                            </label>
-                            <input type="text" id="numero" name="numero" class="form-input" placeholder="##########" required>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-secondary" id="prevStep2">
-                                <i class="fas fa-arrow-left"></i> Retour
-                            </button>
-                            <button type="button" class="btn btn-primary" id="nextStep2">
-                                Suivant <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Étape 3: Mot de passe -->
-                    <div class="form-section" id="step3">
-                        <h2 class="form-title">Choisissez un mot de passe</h2>
-                        
+                    <div class="form-grid">
                         <div class="form-group">
                             <label for="mdp">
                                 <i class="fas fa-lock"></i> Mot de passe
@@ -661,15 +808,12 @@ if (isset($_POST['envoyer'])) {
                             <div class="error-message" id="passwordError">Les mots de passe ne correspondent pas</div>
                             <div class="success-message" id="passwordSuccess">Les mots de passe correspondent</div>
                         </div>
+                    </div>
 
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-secondary" id="prevStep3">
-                                <i class="fas fa-arrow-left"></i> Retour
-                            </button>
-                            <button type="submit" name="envoyer" class="btn btn-primary">
-                                <i class="fas fa-user-plus"></i> S'inscrire
-                            </button>
-                        </div>
+                    <div class="form-actions">
+                        <button type="submit" name="envoyer" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i> S'inscrire
+                        </button>
                     </div>
                 </form>
             </div>
@@ -697,89 +841,6 @@ if (isset($_POST['envoyer'])) {
             registerForm.style.display = 'block';
         });
 
-        // Gestion des étapes du formulaire d'inscription
-        let currentStep = 1;
-        const totalSteps = 3;
-
-        function showStep(step) {
-            // Masquer toutes les sections
-            document.querySelectorAll('.form-section').forEach(section => {
-                section.classList.remove('active', 'prev');
-            });
-
-            // Afficher la section courante
-            document.getElementById(`step${step}`).classList.add('active');
-
-            // Mettre à jour l'indicateur d'étapes
-            document.querySelectorAll('.step').forEach((stepEl, index) => {
-                stepEl.classList.toggle('active', index < step);
-            });
-        }
-
-        // Navigation entre les étapes
-        document.getElementById('nextStep1').addEventListener('click', () => {
-            if (validateStep1()) {
-                currentStep = 2;
-                showStep(currentStep);
-            }
-        });
-
-        document.getElementById('nextStep2').addEventListener('click', () => {
-            if (validateStep2()) {
-                currentStep = 3;
-                showStep(currentStep);
-            }
-        });
-
-        document.getElementById('prevStep2').addEventListener('click', () => {
-            currentStep = 1;
-            showStep(currentStep);
-        });
-
-        document.getElementById('prevStep3').addEventListener('click', () => {
-            currentStep = 2;
-            showStep(currentStep);
-        });
-
-        // Validation des étapes
-        function validateStep1() {
-            const requiredFields = ['nom', 'email', 'specialite', 'niveau'];
-            const genreChecked = document.querySelector('input[name="genre"]:checked');
-            
-            let isValid = true;
-            requiredFields.forEach(field => {
-                const input = document.getElementById(field);
-                if (!input.value.trim()) {
-                    input.style.borderColor = '#e53e3e';
-                    isValid = false;
-                } else {
-                    input.style.borderColor = '#e2e8f0';
-                }
-            });
-
-            if (!genreChecked) {
-                isValid = false;
-            }
-
-            return isValid;
-        }
-
-        function validateStep2() {
-            const requiredFields = ['objectif', 'domaine', 'numero'];
-            let isValid = true;
-            
-            requiredFields.forEach(field => {
-                const input = document.getElementById(field);
-                if (!input.value.trim()) {
-                    input.style.borderColor = '#e53e3e';
-                    isValid = false;
-                } else {
-                    input.style.borderColor = '#e2e8f0';
-                }
-            });
-
-            return isValid;
-        }
 
         // Validation du mot de passe
         const passwordInput = document.getElementById('mdp');
@@ -858,6 +919,121 @@ if (isset($_POST['envoyer'])) {
                 return false;
             }
         });
+
+        // Toast Notification System
+        class ToastManager {
+            constructor() {
+                this.container = document.getElementById('toastContainer');
+                this.toasts = [];
+                this.maxToasts = 3;
+            }
+
+            createToast(type, title, message) {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                
+                const iconMap = {
+                    'success': '✅',
+                    'error': '❌',
+                    'info': 'ℹ️',
+                    'warning': '⚠️'
+                };
+
+                toast.innerHTML = `
+                    <div class="toast-icon">${iconMap[type] || '💡'}</div>
+                    <div class="toast-content">
+                        <div class="toast-title">${title}</div>
+                        <div class="toast-message">${message}</div>
+                    </div>
+                    <button class="toast-close" onclick="toastManager.removeToast(this.parentElement)">×</button>
+                `;
+
+                return toast;
+            }
+
+            showToast(type, title, message, duration = 5000) {
+                if (this.toasts.length >= this.maxToasts) {
+                    this.removeToast(this.toasts[0]);
+                }
+
+                const toast = this.createToast(type, title, message);
+                this.container.appendChild(toast);
+                this.toasts.push(toast);
+
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 100);
+
+                setTimeout(() => {
+                    this.removeToast(toast);
+                }, duration);
+
+                return toast;
+            }
+
+            removeToast(toast) {
+                if (!toast || !this.container.contains(toast)) return;
+                
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (this.container.contains(toast)) {
+                        this.container.removeChild(toast);
+                        this.toasts = this.toasts.filter(t => t !== toast);
+                    }
+                }, 400);
+            }
+        }
+
+        const toastManager = new ToastManager();
+
+        // Message de bienvenue
+        setTimeout(() => {
+            toastManager.showToast(
+                'info',
+                'Bienvenue sur BlugDev ! 🎉',
+                'Rejoignez notre communauté de développeurs passionnés'
+            );
+        }, 2000);
+
+        // Animation des inputs au focus
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('fade-in');
+            });
+        });
+
+        // Effet parallax sur le main container
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.main-container');
+            const speed = scrolled * 0.1;
+            parallax.style.transform = `translateY(${speed}px)`;
+        });
+
+        // Interactions avec les onglets
+        document.querySelectorAll('.auth-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                toastManager.showToast(
+                    'info',
+                    'Navigation 🔄',
+                    'Changement d\'onglet effectué'
+                );
+            });
+        });
+
+        // Easter egg sur le logo
+        document.querySelector('.logo').addEventListener('click', (e) => {
+            e.preventDefault();
+            toastManager.showToast(
+                'success',
+                'Easter Egg! 🥚',
+                'Vous avez découvert un secret de BlugDev! 🎉'
+            );
+        });
     </script>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
 </body>
 </html>

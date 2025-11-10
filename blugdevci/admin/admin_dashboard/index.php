@@ -1,5 +1,5 @@
  <?php
-    $pdo = new PDO("mysql:host=localhost;dbname=blog_ci;charset=utf8", "root", "");
+    include(__DIR__.'/../../login/connexion.php');
 
     // Compter les messages par mois
     $sql = "SELECT MONTH(date_envoie) AS mois, COUNT(*) AS total

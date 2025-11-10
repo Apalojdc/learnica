@@ -661,7 +661,7 @@
     <!-- Navigation -->
     <?php
        
-        if(empty($_SESSION['user']['id_user'])){
+        if(empty($_SESSION['user']['nom_complet'])){
             include(__DIR__.'/../../navbar/NavBarIndex.php');
         }else{
              include(__DIR__.'/../../navbar/NavBarAcceuil.php');
@@ -789,7 +789,7 @@
             </div>
             <div class="team-grid">
                 <!-- Membre 1 -->
-                <div class="team-member fade-in" onclick="showMemberDetails('Apalo Coulibaly')">
+                <div class="team-member fade-in" onclick="showMemberDetails('Apaloh Coulibaly')">
                     <div class="member-phot">
                         <img class="member-photo" src="../../../imagesite/aplo.jpg" alt="">
                     </div>
@@ -842,6 +842,27 @@
                         Architecte backend chevronné, Ibrahim conçoit des systèmes robustes et scalables. 
                         Spécialiste en Node.js, Python et architectures microservices, il assure 
                         la performance technique de la plateforme.
+                    </p>
+                    <div class="member-social">
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-stack-overflow"></i></a>
+                    </div>
+                </div>
+                <!-- Membre 4 -->
+                <div class="team-member fade-in" onclick="showMemberDetails('Ibrahim Traoré')">
+                    <div class="member-phot">
+                        <img class="member-photo" src="../../../imagesite/konan.jpg" alt="">
+                    </div>
+                    <h3 class="member-name">KONAN kanga christ-aubin</h3>
+                    <p class="member-role">Développeur Full Stack</p>
+                    <p class="member-specialty">⚡ Specialisé en developpement web et mobile</p>
+                    <p class="member-description">
+                        Développeur d’applications web et mobiles Full Stack, je suis
+                         passionné par le code, les nouvelles technologies et l’innovation
+                         digitale. Avec 6 mois d’expérience, je travaille principalement avec PHP,
+                         Python et WinDev Mobile, tout en continuant à me former activement
+                          aux dernières pratiques du développement moderne.
                     </p>
                     <div class="member-social">
                         <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>

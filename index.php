@@ -22,6 +22,8 @@ $routes = [
     'backup'           => 'blugdevci/index.php',
     'accueil'    => 'blugdevci/home/index.php',
     'accueilAncien'    => 'blugdevci/indexAncien.php',
+    'page/premium' => 'blugdevci/home/premium/index.php',
+    'page/premium/form' => 'blugdevci/home/premium/premium_form.php',
 
     /**
      * Les pages pour l'accueil

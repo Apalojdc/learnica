@@ -182,8 +182,8 @@
 
             <div class="form-row">
                 <div class="form-group">
-                    <label for="firstName">Prénom</label>
-                    <input type="text" id="firstName" name="firstName" required>
+                    <label for="nom_complet">Nom complet</label>
+                    <input type="text" id="nom_complet" name="nom_complet" required>
                 </div>
                 <div class="form-group">
                     <label for="lastName">Nom</label>

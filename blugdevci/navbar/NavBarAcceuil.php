@@ -671,11 +671,11 @@
                         </li>
                         
                         <li class="lernica_style_nav_content-nav-item lernica_style_nav_content-dropdown">
-                            <a href="/monblug/admin/dashboard" class="lernica_style_nav_content-nav-link">
+                            <button class="lernica_style_nav_content-nav-link">
                                 <i class="lernica_style_nav_content-nav-icon fas fa-graduation-cap"></i>
                                 Formation
                                 <i class="lernica_style_nav_content-dropdown-indicator fas fa-chevron-down"></i>
-                            </a>
+                            </button>
                             <ul class="lernica_style_nav_content-dropdown-menu">
                                 <li class="lernica_style_nav_content-dropdown-item">
                                     <a href="/formation/cv" class="lernica_style_nav_content-dropdown-link">

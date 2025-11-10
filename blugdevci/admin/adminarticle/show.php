@@ -56,7 +56,7 @@
             <td>...</td>
             <td><?=htmlspecialchars($article['categorie'])?></td>
             <td><?=$article['date_ajoute']?></td>
-            <td><span class="status-badge status-active"><?=htmlspecialchars($article['statut'])?></span></td>
+            <td><span class="status-badge status-active"><?=htmlspecialchars($article['statut_article'])?></span></td>
             <td><span class="views-count"><?=htmlspecialchars($article['article_view'])?></span></td>
             <td>
                 <div class="action-buttons">

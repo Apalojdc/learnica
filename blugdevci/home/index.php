@@ -161,6 +161,62 @@ include(__DIR__.'/coursinformatique/commentaire_add_config.php');
             gap: 0.5rem;
             text-decoration: none;
         }
+        .btn-tertiary {
+            background: red;
+            color: white;
+            border: 1px solid red;
+            padding: 1rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            
+        }
+        .btn-tertiary:hover {
+            background: transparent;
+            color: red;
+            border: 1px solid red;
+            padding: 1rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-exit{
+            position: absolute;
+            top: 0;
+            right: 20px;
+            background: transparent;
+            color: #000;
+            border: 1px solid #000;
+            padding: 1rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            z-index: 100000;
+            transition: all var(--transition-normal);
+        }
+
+        .btn-exit:hover{
+            background: rgb(12, 12, 148);
+            color: white;
+            border: 1px solid rgb(250, 250, 255);
+            padding: 1rem 1rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            z-index: 100000;
+        }
+
+        button{
+            cursor: pointer;
+        }
 
         .btn-primary:hover {
             background: var(--accent-gradient);
@@ -3433,20 +3489,20 @@ include(__DIR__.'/coursinformatique/commentaire_add_config.php');
                             <i class="fas fa-user"></i>
                         </div>
                         <div class="admin-details">
-                            <h4> <?= $_SESSION['user']['nom_complet']?></h4>
-                            <span class="admin-role">Dévéloppeur <?= $_SESSION['user']['specialite']?></span>
+                            <h4> <?= $_SESSION['user']['nom_complet'] ?? 'Utilisateur anonyme'?></h4>
+                            <span class="admin-role"><?= $_SESSION['user']['role'] ?? 'Utilisateur'?></span>
                         </div>
                     </div>
                     <div class="admin-actions">
-                        <a href="/monblug/mon_profil/content/page_view?utilisateur=<?= $_SESSION['user']['id_user']?>" class="admin-btn btn-primary">
+                        <a href="/monblug/mon_profil/content/page_view?utilisateur=<?= $_SESSION['user']['nom_complet']?>" class="admin-btn btn-primary">
                             <i class="fas fa-cog"></i>
                             <span>Profil</span>
                         </a>
-                        <a href="/monblug/user/logout" class="admin-btn btn-secondary">
+                        <button onclick="logoutFunction()" class="admin-btn btn-secondary">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Sortie</span>
-                        </a>
-                    </div>
+                        </button>
+                        
                 </div>
             </div>
             
@@ -3460,6 +3516,12 @@ include(__DIR__.'/coursinformatique/commentaire_add_config.php');
                             <span class="nav-text">Tableau de bord</span>
                         </a>
                     </div> -->
+                    <div class="nav-item">
+                        <a href="/monblug/page/premium" class="nav-link">
+                            <i class="nav-icon fas fa-diamond" style="color: gold;"></i>
+                            <span class="nav-text">Devenir pro</span>
+                        </a>
+                    </div>
                     <div class="nav-item">
                         <a href="/monblug/home/cours/informatique" class="nav-link">
                             <i class="nav-icon fas fa-graduation-cap"></i>
@@ -3499,6 +3561,14 @@ include(__DIR__.'/coursinformatique/commentaire_add_config.php');
                             <span class="nav-text">Tous les documents</span>
                         </a>
                     </div>
+                    <?php if($_SESSION['user']['role'] == 'admin' || $_SESSION['user']['role'] == 'super_admin' || $_SESSION['user']['mel'] == 'coulapalo@gmail.com'): ?>
+                    <div class="nav-item">
+                        <a href="/monblug/admin" class="nav-link">
+                                <i class="nav-icon fas fa-shield-alt"></i>
+                                <span class="nav-text">Administration</span>
+                            </a>
+                        </div>
+                    <?php endif; ?>
                     <!-- <div class="nav-item">
                         <a href="#programming" class="nav-link">
                             <i class="nav-icon fas fa-code"></i>
@@ -3543,6 +3613,22 @@ include(__DIR__.'/coursinformatique/commentaire_add_config.php');
             </nav>
         </aside>
 
+        <!-- Logout Button -->
+                        <div class="logout-btn" id="logoutBtn">
+                            <div class="logout-btn-content">
+                                <h3 style="text-align: center; color: red; font-weight: 600;">Se deconnecter</h3>
+                                <p style="text-align: center; color: #000; padding: 1rem 0;">Voulez-vous vraiment vous déconnecter ?</p>
+                                <div class="logout-btn-content-buttons">
+                                    <button onclick="closeLogoutBtn()" class="admin-btn btn-exit">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <button onclick="window.location.href='/monblug/user/logout'" class="admin-btn btn-tertiary">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span>Oui, je me déconnecte</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
         <!-- Main Content -->
         <main class="main-content">
             

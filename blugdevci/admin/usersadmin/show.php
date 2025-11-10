@@ -48,15 +48,14 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Photo de profile</th>
                                     <th>Nom complet</th>
                                     <th>Email</th>
-                                    <th>Specialité</th>
+                                    <th>Role</th>
                                     <th>Sexe</th>
-                                    <th>Niveau d'étude</th>
-                                    <th>Objectif</th>
-                                    <th>Domaine</th>
-                                    <th>Numéro</th>
                                     <th>Statut</th>
+                                    <th>Téléphone</th>
+                                    <th>Date de création</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -64,14 +63,13 @@
                                 <?php foreach ($users as $user): ?>
                                 <tr>
                                     <td><?=htmlspecialchars($user['Id_User']) ?></td>
-                                    <td><?=htmlspecialchars($user['Nom_complet']) ?></td>
+                                    <td><?=htmlspecialchars($user['nom_complet']) ?></td>
                                     <td><?=htmlspecialchars($user['mel']) ?></td>
-                                    <td><?=htmlspecialchars($user['specialite']) ?></td>
+                                    <td><?=htmlspecialchars($user['role']) ?></td>
                                     <td><?=htmlspecialchars($user['genre']) ?></td>
-                                    <td><?=htmlspecialchars($user['niveau']) ?></td>
-                                    <td><?=htmlspecialchars($user['objectif']) ?></td>
-                                    <td><?=htmlspecialchars($user['domaine']) ?></td>
+                                    <td><?=htmlspecialchars($user['statut']) ?></td>
                                     <td><?=htmlspecialchars($user['numero']) ?></td>
+                                    <td><?=$user['temps'] ?></td>
                                     <td><span class="status-badge status-active">Actif</span></td>
                                     <td>
                                         <div class="action-buttons">

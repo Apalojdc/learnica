@@ -1323,6 +1323,12 @@ body {
                         </a>
                     </div>
                     <div class="nav-item">
+                        <a href="/monblug/accueil" class="nav-link">
+                            <i class="nav-icon fas fa-home"></i>
+                            <span class="nav-text">Accueil</span>
+                        </a>
+                    </div>
+                    <div class="nav-item">
                         <a href="#" class="nav-link" onclick="showSection('analytics', this)">
                             <i class="nav-icon fas fa-chart-pie"></i>
                             <span class="nav-text">Analyses</span>
